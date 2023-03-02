@@ -1,0 +1,121 @@
+/* ---------------------------------------- */
+/* imported reset                           */
+/* ---------------------------------------- */
+
+@import url(./reset.scss);
+
+/* ---------------------------------------- */
+/* variables, selection, scrollbar          */
+/* ---------------------------------------- */
+
+:root {
+  --clr-primary-100: 0, 0%, 0%;
+  --clr-primary-200: 0, 0%, 20%;
+  --clr-primary-900: 0, 0%, 100%;
+
+  --ff-primary: 'Montserrat', sans-serif;
+
+  --fw-300: 300;
+  --fw-400: 400;
+  --fw-600: 600;
+  --fw-700: 700;
+
+  --fs-300: 1rem;
+  --fs-400: 1.125rem;
+  --fs-500: 1.25rem;
+  --fs-600: 1.5rem;
+  --fs-700: 2.5rem;
+  --fs-800: 3rem;
+  --fs-900: 3.5rem;
+
+  --size-s: .25rem;
+
+  --timing-function-primary: ease-in;
+  --transition-time-primary: 200ms;
+}
+
+::selection {
+  background-color: hsl(var(--clr-primary-900));
+  color: hsl(var(--clr-primary-100));
+}
+
+::-webkit-scrollbar {
+  width: var(--size-s);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--clr-primary-900));
+}
+
+/* ---------------------------------------- */
+/* body and root                            */
+/* ---------------------------------------- */
+
+body {
+  background-color: hsl(var(--clr-primary-100));
+  color: hsl(var(--clr-primary-900));
+  font-family: var(--ff-primary);
+  font-weight: var(--fw-400);
+  font-size: var(--fs-400);
+}
+
+#root {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+/* ---------------------------------------- */
+/* auth component                           */
+/* ---------------------------------------- */
+
+.auth {
+  display: grid;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+
+  background-color: hsl(var(--clr-primary-200), .4);
+
+  .img-container {
+    display: flex;
+    margin-bottom: 4rem;
+  }
+
+  &__logo {
+    max-width: 142px;
+  }
+
+  &__header {
+    font-size: var(--fs-700);
+    font-weight: var(--fw-700);
+  }
+
+  &__signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .75rem 2rem;
+
+    background-color: hsl(var(--clr-primary-100));
+    color: hsl(var(--clr-primary-900));
+    font-weight: var(--fw-600);
+
+    border-radius: 100vmax;
+    border: 1px solid hsl(var(--clr-primary-900));
+    
+    transition: all var(--transition-time-primary) var(--timing-function-primary);
+    cursor: pointer;
+  }
+
+  &__signin:hover {
+    background-color: hsl(var(--clr-primary-900));
+    color: hsl(var(--clr-primary-100));
+  }
+
+  .signin-icon {
+    max-width: 25px;
+  }
+}
