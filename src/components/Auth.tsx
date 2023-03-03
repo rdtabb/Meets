@@ -1,14 +1,30 @@
 import { auth, provider } from "../firebase-config"
 import { signInWithPopup } from "firebase/auth"
 import Cookies from "universal-cookie"
+import { useState } from "react"
 
-export const Auth = () => {
+type AuthProps = {
+    setIsAuth: any,
+    setUsername: any,
+    setUserPicture: any
+}
+
+export const Auth = ({setIsAuth, setUsername, setUserPicture}: AuthProps) => {
     const cookies = new Cookies()
 
     const signin = async () => {
         try {
             const response = await signInWithPopup(auth, provider)
+            if (!response) {
+                return
+            }
             cookies.set("auth-token", response.user.refreshToken)
+            const name: string | null = response.user.displayName
+            const imgurl: string | null = response.user.photoURL
+            setUserPicture(imgurl)
+            setUsername(name)
+            setIsAuth(true)
+            localStorage.setItem("username", `${name}`)
         } catch(err) {
             console.error(err)
         }
