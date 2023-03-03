@@ -1,11 +1,13 @@
 import React from 'react'
 
 type DescProps = {
-    username: string,
+    username: string
     userPicture: string
+    handlePopup: any
+    status: any
   }
 
-const Desc = ({username, userPicture}: DescProps) => {
+const Desc = ({username, userPicture, handlePopup, status}: DescProps) => {
   return (
     <section className="profile">
         <div className="profile__wrapper">
@@ -13,9 +15,9 @@ const Desc = ({username, userPicture}: DescProps) => {
             <div className="profile__info">
                 <div className="profile__info-wrapper">
                     <h1 className="profile__header">{username}</h1>
-                    <button type="button" className="profile__edit-button"></button>
+                    <button onClick={handlePopup} type="button" className="profile__edit-button"></button>
                 </div>
-                <p className="profile__description">Исследователь океана</p>
+                <p className="profile__description">{status}</p>
             </div>
         </div>
         <button type="button" className="profile__add-button"></button>
