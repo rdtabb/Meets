@@ -316,8 +316,6 @@ body {
   row-gap: 20px;
 
   margin: 0 0 66px;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 @media (max-width: 890px) {
@@ -334,11 +332,9 @@ body {
 .card {
   background-color: hsl(var(--clr-primary-900));
   color: hsl(var(--clr-primary-100));
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
   border-radius: 10px;
   overflow: hidden;
+  position: relative;
   isolation: isolate;
 
   &__image {
@@ -347,10 +343,21 @@ body {
     height: 282px;
     object-fit: cover;
     transition: all 200ms ease-in;
+    position: relative;
+    z-index: 1;
+  }
 
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  &__delete {
+    position: absolute;
+    z-index: 100;
+    top: 1rem;
+    right: 1rem;
+    background: transparent url(../../public/close.svg) no-repeat center;
+    background-size: contain;
+    border: none;
+    width: 20px;
+    aspect-ratio: 1;
+    cursor: pointer;
   }
 
   &__like {
@@ -371,10 +378,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    margin: 0;
     padding: 25px 15px 31px 21px;
-    box-sizing: border-box;
+    position: relative;
+    z-index: 1000;
   }
 
   &__description {
@@ -529,6 +535,11 @@ body {
 
     padding: 0 0 13px;
   }
+}
+
+.popup__input:focus,
+.popup__input:focus-visible {
+  outline: none;
 }
 
 @media (max-width: 550px) {

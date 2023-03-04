@@ -1,11 +1,10 @@
-import React from "react";
-
 type postsprops = {
   posts: any;
   handleLike: any;
+  handleDelete: any
 };
 
-const Posts = ({ posts, handleLike }: postsprops) => {
+const Posts = ({ posts, handleLike, handleDelete }: postsprops) => {
   return (
     <section className="cards">
       {posts.map((post: any) => (
@@ -24,6 +23,7 @@ const Posts = ({ posts, handleLike }: postsprops) => {
               className="card__like"
             ></button>
           </div>
+          <button onClick={() => handleDelete(post.id)} className="card__delete"></button>
         </article>
       ))}
     </section>

@@ -1,5 +1,3 @@
-import React from 'react'
-
 type DescProps = {
     username: string
     userPicture: string

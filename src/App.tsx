@@ -9,59 +9,39 @@ const cookies = new Cookies();
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
+  const [users, setUsers] = useState([]);
+  const [newPostTitle, setNewPostTitle] = useState("")
+  const [newPostImage, setNewPostImage] = useState("")
   const [username, setUsername] = useState(
     localStorage.getItem("username") || ""
   );
   const [userPicture, setUserPicture] = useState(
     localStorage.getItem("userpicture") || ""
   );
-  const [users, setUsers] = useState([]);
-  const [status, setStatus] = useState("Click edit button to add status")
- 
-  const [posts, setPosts] = useState([
-    {
-      imgsrc: "src/assets/lisboa.avif",
-      city: "Lisboa",
-      liked: false,
-      id: 1,
-    },
-    {
-      imgsrc: "src/assets/tokyo.avif",
-      city: "Tokyo",
-      liked: false,
-      id: 2,
-    },
-    {
-      imgsrc: "src/assets/chicago.avif",
-      city: "Chicago",
-      liked: false,
-      id: 3,
-    },
-    {
-      imgsrc: "src/assets/fortaleza.avif",
-      city: "Fortaleza",
-      liked: false,
-      id: 4,
-    },
-    {
-      imgsrc: "src/assets/istanbul.avif",
-      city: "Istanbul",
-      liked: false,
-      id: 5,
-    },
-    {
-      imgsrc: "src/assets/bali.avif",
-      city: "Bali",
-      liked: false,
-      id: 6,
-    },
-  ]);
+
+  const lists = [
+    {imgsrc: "src/assets/lisboa.avif", city: "Lisboa", liked: false, id: 1},
+    {imgsrc: "src/assets/fortaleza.avif", city: "Fortaleza", liked: false, id: 2},
+    {imgsrc: "src/assets/chicago.avif", city: "Chicago", liked: false, id: 3},
+    {imgsrc: "src/assets/tokyo.avif", city: "Tokyo", liked: false, id: 4},
+    {imgsrc: "src/assets/istanbul.avif", city: "Istanbul", liked: false, id: 5},
+    {imgsrc: "src/assets/bali.avif", city: "Bali", liked: false, id: 6},
+  ]
+  
+  const [status, setStatus] = useState(
+    localStorage.getItem("status") || "Add status to profile"
+  );
+  localStorage.setItem("posts", JSON.stringify(lists))
+  const [posts, setPosts] = useState(
+    JSON.parse(localStorage.getItem("posts")!) || []
+  );
 
   const handleLike = (id: number) => {
-    const newPosts = posts.map((post) =>
+    const newPosts = posts.map((post: any) =>
       post.id == id ? { ...post, liked: !post.liked } : post
     );
     setPosts(newPosts);
+    localStorage.setItem("posts", JSON.stringify(newPosts));
   };
 
   const handlePopup = () => {
@@ -76,14 +56,59 @@ const App = () => {
     }
   };
 
-  const close = document.querySelector(".popup__close");
-  close?.addEventListener("click", () => {
-    const popup = document.querySelector(".popup");
-    popup?.classList.remove("popup_opened");
-    popup?.setAttribute("data-visible", "false");
-  });
+  const close = document.querySelectorAll(".popup__close");
+  close.forEach(close => {
+    close.addEventListener("click", () => {
+      const popups = document.querySelectorAll(".popup");
+      popups.forEach(popup => {
+        popup?.classList.remove("popup_opened");
+        popup?.setAttribute("data-visible", "false");
+      })
+    });
+  })
+
+  const addButton = document.querySelector(".profile__add-button")
+  addButton?.addEventListener('click', () => {
+    const addPost = document.querySelector('.popup-add-post')
+    const visibility = addPost?.getAttribute('data-visible')
+    if (visibility == 'true') {
+      addPost?.classList.remove('popup_opened')
+      addPost?.setAttribute('data-visible', 'false')
+    } else {
+      addPost?.classList.add('popup_opened')
+      addPost?.setAttribute('data-visible', 'false')
+    }
+  })
+
+  const handleNewPost = () => {
+    if (newPostTitle == "" && newPostImage == "") {
+      return
+    }
+
+    const id = posts.length ? posts[posts.length - 1].id + 1 : 1
+    const newPost = {
+      city: `${newPostTitle}`,
+      id, 
+      imgsrc: `${newPostImage}`,
+      liked: false
+    }
+    const newPosts = [...posts, newPost]
+    setPosts(newPosts)
+    localStorage.setItem("posts", JSON.stringify(newPosts.reverse()))
+
+    setNewPostImage("")
+    setNewPostTitle("")
+  }
 
   const usersDataRef = collection(db, "users");
+
+  const handleDelete = (id: number) => {
+    const newPosts = posts.filter((post: any) => (
+      post.id != id 
+    ))
+    setPosts(newPosts)
+    localStorage.setItem("posts", JSON.stringify(newPosts))
+  }
 
   useEffect(() => {
     const getUsers = async () => {
@@ -115,6 +140,12 @@ const App = () => {
       posts={posts}
       handlePopup={handlePopup}
       setUsername={setUsername}
+      setNewPostTitle={setNewPostTitle}
+      setNewPostImage={setNewPostImage}
+      newPostImage={newPostImage}
+      newPostTitle={newPostTitle}
+      handleNewPost={handleNewPost}
+      handleDelete={handleDelete}
     />
   );
 };
