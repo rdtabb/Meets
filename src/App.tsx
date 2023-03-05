@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile";
 import Cookies from "universal-cookie";
-import { collection, getDocs, addDoc, updateDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "./firebase-config";
 const cookies = new Cookies();
 
@@ -29,6 +28,9 @@ const App = () => {
   // ]
   // localStorage.setItem("posts", JSON.stringify(lists))
 
+  // const uid = firebase.auth().currentUser?.uid
+  // console.log(uid)
+
   const [status, setStatus] = useState(
     localStorage.getItem("status") || "Add status to profile"
   );
@@ -37,12 +39,18 @@ const App = () => {
    JSON.parse(localStorage.getItem("posts")!) || []
   );
 
-  const handleLike = (id: number) => {
+  const handleLike = async (id: number) => {
     const newPosts = posts.map((post: any) =>
       post.id == id ? { ...post, liked: !post.liked } : post
     );
     setPosts(newPosts);
     localStorage.setItem("posts", JSON.stringify(newPosts));
+
+    const newpostsdb = {
+      newPosts: newPosts
+    }
+    const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")
+    await updateDoc(userdoc, newpostsdb)
   };
 
   const handlePopup = () => {
@@ -81,7 +89,9 @@ const App = () => {
     }
   })
 
-  const handleNewPost = () => {
+  const usersDataRef = collection(db, "users");
+
+  const handleNewPost = async () => {
     if (newPostTitle == "" && newPostImage == "") {
       return
     }
@@ -102,18 +112,27 @@ const App = () => {
     addPostPopup?.classList.remove('popup_opened')
     setNewPostImage("")
     setNewPostTitle("")
+
+    const newpostsdb = {
+      newPosts: newPosts
+    }
+    const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")
+    await updateDoc(userdoc, newpostsdb)
   }
 
-  const handleDelete = (id: any) => {
+  const handleDelete = async (id: any) => {
     const newPosts = posts.filter((post: any) => (
       post.id != id 
     ))
     setPosts(newPosts)
     localStorage.setItem("posts", JSON.stringify(newPosts))
+
+    const newpostsdb = {
+      newPosts: newPosts
+    }
+    const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")
+    await updateDoc(userdoc, newpostsdb)
   }
-
-
-  const usersDataRef = collection(db, "users");
 
   useEffect(() => {
     const getUsers = async () => {

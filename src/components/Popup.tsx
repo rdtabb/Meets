@@ -1,4 +1,6 @@
-import { useRef, useEffect, useState } from "react";
+import { useState } from "react";
+import { updateDoc, doc } from "firebase/firestore";
+import { db } from "../firebase-config";
 
 type popupProps = {
   username: string;
@@ -7,11 +9,11 @@ type popupProps = {
   status: string;
 };
 
-const Popup = ({ setUsername, username, setStatus, status }: popupProps) => {
+const Popup = ({ setUsername, setStatus }: popupProps) => {
   const [newName, setNewName] = useState("");
   const [newStatus, setNewStatus] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const popup = document.querySelector(".popup");
     popup?.classList.remove("popup_opened");
     popup?.setAttribute("data-visible", "false");
@@ -24,6 +26,12 @@ const Popup = ({ setUsername, username, setStatus, status }: popupProps) => {
     localStorage.setItem("status", `${newStatus}`)
     setNewName("");
     setNewStatus("");
+
+    const newstatusdb = {
+      newStatus: newStatus
+    }
+    const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")
+    await updateDoc(userdoc, newstatusdb)
   };
 
   return (
