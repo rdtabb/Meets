@@ -27,9 +27,7 @@ export const Auth = ({setIsAuth, setUsername, setUserPicture}: AuthProps) => {
 
             await addDoc(usersDataRef, {
                 name: name,
-                imgurl: imgurl,
-                posts: [],
-                status: ""
+                imgurl: imgurl
             })
 
             setIsAuth(true)

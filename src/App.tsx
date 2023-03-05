@@ -18,19 +18,6 @@ const App = () => {
     localStorage.getItem("userpicture") || ""
   );
 
-  // const lists = [
-  //   {imgsrc: "src/assets/lisboa.avif", city: "Lisboa", liked: false, id: 1},
-  //   {imgsrc: "src/assets/fortaleza.avif", city: "Fortaleza", liked: false, id: 2},
-  //   {imgsrc: "src/assets/chicago.avif", city: "Chicago", liked: false, id: 3},
-  //   {imgsrc: "src/assets/tokyo.avif", city: "Tokyo", liked: false, id: 4},
-  //   {imgsrc: "src/assets/istanbul.avif", city: "Istanbul", liked: false, id: 5},
-  //   {imgsrc: "src/assets/bali.avif", city: "Bali", liked: false, id: 6},
-  // ]
-  // localStorage.setItem("posts", JSON.stringify(lists))
-
-  // const uid = firebase.auth().currentUser?.uid
-  // console.log(uid)
-
   const [status, setStatus] = useState(
     localStorage.getItem("status") || "Add status to profile"
   );
