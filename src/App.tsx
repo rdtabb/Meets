@@ -19,21 +19,22 @@ const App = () => {
     localStorage.getItem("userpicture") || ""
   );
 
-  const lists = [
-    {imgsrc: "src/assets/lisboa.avif", city: "Lisboa", liked: false, id: 1},
-    {imgsrc: "src/assets/fortaleza.avif", city: "Fortaleza", liked: false, id: 2},
-    {imgsrc: "src/assets/chicago.avif", city: "Chicago", liked: false, id: 3},
-    {imgsrc: "src/assets/tokyo.avif", city: "Tokyo", liked: false, id: 4},
-    {imgsrc: "src/assets/istanbul.avif", city: "Istanbul", liked: false, id: 5},
-    {imgsrc: "src/assets/bali.avif", city: "Bali", liked: false, id: 6},
-  ]
-  
+  // const lists = [
+  //   {imgsrc: "src/assets/lisboa.avif", city: "Lisboa", liked: false, id: 1},
+  //   {imgsrc: "src/assets/fortaleza.avif", city: "Fortaleza", liked: false, id: 2},
+  //   {imgsrc: "src/assets/chicago.avif", city: "Chicago", liked: false, id: 3},
+  //   {imgsrc: "src/assets/tokyo.avif", city: "Tokyo", liked: false, id: 4},
+  //   {imgsrc: "src/assets/istanbul.avif", city: "Istanbul", liked: false, id: 5},
+  //   {imgsrc: "src/assets/bali.avif", city: "Bali", liked: false, id: 6},
+  // ]
+  // localStorage.setItem("posts", JSON.stringify(lists))
+
   const [status, setStatus] = useState(
     localStorage.getItem("status") || "Add status to profile"
   );
-  localStorage.setItem("posts", JSON.stringify(lists))
+  
   const [posts, setPosts] = useState(
-    JSON.parse(localStorage.getItem("posts")!) || []
+   JSON.parse(localStorage.getItem("posts")!) || []
   );
 
   const handleLike = (id: number) => {
@@ -94,21 +95,25 @@ const App = () => {
     }
     const newPosts = [...posts, newPost]
     setPosts(newPosts)
-    localStorage.setItem("posts", JSON.stringify(newPosts.reverse()))
+    localStorage.setItem("posts", JSON.stringify(newPosts))
 
+    const addPostPopup = document.querySelector('.popup-add-post')
+    addPostPopup?.setAttribute('data-visible', 'false')
+    addPostPopup?.classList.remove('popup_opened')
     setNewPostImage("")
     setNewPostTitle("")
   }
 
-  const usersDataRef = collection(db, "users");
-
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: any) => {
     const newPosts = posts.filter((post: any) => (
       post.id != id 
     ))
     setPosts(newPosts)
     localStorage.setItem("posts", JSON.stringify(newPosts))
   }
+
+
+  const usersDataRef = collection(db, "users");
 
   useEffect(() => {
     const getUsers = async () => {

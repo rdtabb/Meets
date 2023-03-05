@@ -357,7 +357,17 @@ body {
     border: none;
     width: 20px;
     aspect-ratio: 1;
+    opacity: 0;
     cursor: pointer;
+    transition: all 200ms ease-in;
+  }
+
+  &:hover &__delete {
+    opacity: .3;
+  }
+
+  &:hover &__delete:hover {
+    opacity: 1;
   }
 
   &__like {
@@ -401,6 +411,10 @@ body {
 @media (max-width: 890px) {
   .card__image {
     max-height: 300px;
+  }
+
+  .card__delete {
+    opacity: 1;
   }
 }
 
@@ -540,6 +554,11 @@ body {
 .popup__input:focus,
 .popup__input:focus-visible {
   outline: none;
+}
+
+.popup__input::selection {
+  background-color: black;
+  color: white;
 }
 
 @media (max-width: 550px) {

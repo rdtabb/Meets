@@ -21,7 +21,7 @@ const AddPost = ({
           name="popupForm"
           className="popup__form"
         >
-          <h2 className="popup__header">Edit your profile</h2>
+          <h2 className="popup__header">Add new post</h2>
           <div className="popup__inputs">
             <input
               placeholder="Enter picture url"
