@@ -16,6 +16,7 @@ const Usersearch = ({users}: searchprops) => {
                 <p>{user.name}</p>
                 <img src={user.imgurl} alt="" />
                 <p>{user.newStatus}</p>
+                <p>{user.id}</p>
             </li>
         ))}
         </ul>

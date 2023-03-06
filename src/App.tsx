@@ -6,6 +6,7 @@ import Cookies from "universal-cookie";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 const cookies = new Cookies();
 
 const App = () => {
@@ -28,6 +29,8 @@ const App = () => {
    JSON.parse(localStorage.getItem("posts")!) || []
   );
 
+  const uid: any = localStorage.getItem("uid")
+
   const handleLike = async (id: number) => {
     const newPosts = posts.map((post: any) =>
       post.id == id ? { ...post, liked: !post.liked } : post
@@ -38,7 +41,7 @@ const App = () => {
     const newpostsdb = {
       newPosts: newPosts
     }
-    const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")
+    const userdoc = doc(db, "users", `${uid}`)
     await updateDoc(userdoc, newpostsdb)
   };
 
@@ -105,7 +108,7 @@ const App = () => {
     const newpostsdb = {
       newPosts: newPosts
     }
-    const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")
+    const userdoc = doc(db, "users", uid)
     await updateDoc(userdoc, newpostsdb)
   }
 
@@ -119,7 +122,7 @@ const App = () => {
     const newpostsdb = {
       newPosts: newPosts
     }
-    const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")
+    const userdoc = doc(db, "users", uid)
     await updateDoc(userdoc, newpostsdb)
   }
 

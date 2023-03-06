@@ -27,11 +27,12 @@ const Popup = ({ setUsername, setStatus }: popupProps) => {
     setNewName("");
     setNewStatus("");
 
+    const uid: any = localStorage.getItem("uid")
     const newstatusdb = {
       name: newName,
       newStatus: newStatus
     }
-    const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")
+    const userdoc = doc(db, "users", uid)
     await updateDoc(userdoc, newstatusdb)
   };
 
