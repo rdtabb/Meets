@@ -6,7 +6,6 @@ import Cookies from "universal-cookie";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { getAuth } from "firebase/auth";
 const cookies = new Cookies();
 
 const App = () => {
@@ -130,7 +129,6 @@ const App = () => {
     const getUsers = async () => {
       const data: any = await getDocs(usersDataRef);
       setUsers(data.docs.map((doc: any) => ({ ...doc.data() })));
-      console.log(users)
     };
     getUsers();
   }, [isAuth]);

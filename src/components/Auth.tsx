@@ -1,7 +1,7 @@
 import { auth, provider } from "../firebase-config"
-import { getAuth, signInWithPopup } from "firebase/auth"
+import { signInWithPopup } from "firebase/auth"
 import Cookies from "universal-cookie"
-import { collection, addDoc, setDoc, doc } from 'firebase/firestore'
+import { collection, setDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase-config'
 
 type AuthProps = {
@@ -10,7 +10,7 @@ type AuthProps = {
     setUserPicture: any
 }
 
-export const Auth = ({setIsAuth, setUsername, setUserPicture}: AuthProps) => {
+export const Auth = ({setIsAuth}: AuthProps) => {
     const cookies = new Cookies()
     const usersDataRef = collection(db, "users")
     

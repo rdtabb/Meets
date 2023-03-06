@@ -6,23 +6,26 @@ type searchprops ={
 
 const Usersearch = ({users}: searchprops) => {
   return (
-    <>
-        <form action="">
-            <input type="text" placeholder="Search for users"/>
+    <main className="search">
+        <form className="search__form" onSubmit={(e) => e.preventDefault()} action="">
+            <input className="search__bar" type="text" placeholder="Search for users"/>
+            <Link className="search__link" to='/'>Profile</Link>
         </form>
-        <ul>
+        <ul className="search__userlist">
         {users.map((user: any) => (
-            <li>
-                <p>{user.name}</p>
-                <img src={user.imgurl} alt="" />
-                <p>{user.newStatus}</p>
-                <p>{user.id}</p>
+            <li key={user.id} className="user">
+                <div className="user__wrapper">
+                    <img className="user__picture" src={user.imgurl} alt="" />
+                    <article className="user__desc">
+                        <p className="user__heading">{user.name}</p>
+                        <p className="user__status">{user.newStatus}</p>
+                    </article>
+                </div>
+                <img className="user__chat" src="src/assets/chats.svg" alt="" />
             </li>
         ))}
         </ul>
-        <Link to='/'>To profile</Link>
-    </>
-    
+    </main>
   )
 }
 
