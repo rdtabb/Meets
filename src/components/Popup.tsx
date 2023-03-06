@@ -28,6 +28,7 @@ const Popup = ({ setUsername, setStatus }: popupProps) => {
     setNewStatus("");
 
     const newstatusdb = {
+      name: newName,
       newStatus: newStatus
     }
     const userdoc = doc(db, "users", "xZGOnuUFGdDETxFc68uu")

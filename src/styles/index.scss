@@ -141,6 +141,8 @@ body {
 
 .header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 0 0 40px;
   padding: 0 0 41px;
 
@@ -148,6 +150,26 @@ body {
 
   &__logo {
     max-width: 142px;
+  }
+
+  &__search {
+    text-decoration: none;
+    color: inherit;
+    font-weight: var(--fw-600);
+    display: flex;
+    gap: .5rem;
+    opacity: .5;
+    transition: all 200ms ease-in;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__search-icon {
+    width: 20px;
+    aspect-ratio: 1;
+    object-fit: cover;
   }
 }
 

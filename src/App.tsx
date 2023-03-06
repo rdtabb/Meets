@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile";
+import Usersearch from "./components/Usersearch";
 import Cookies from "universal-cookie";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "./firebase-config";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 const cookies = new Cookies();
 
 const App = () => {
@@ -125,6 +127,7 @@ const App = () => {
     const getUsers = async () => {
       const data: any = await getDocs(usersDataRef);
       setUsers(data.docs.map((doc: any) => ({ ...doc.data() })));
+      console.log(users)
     };
     getUsers();
   }, [isAuth]);
@@ -142,22 +145,32 @@ const App = () => {
   }
 
   return (
-    <Profile
-      setStatus={setStatus}
-      status={status}
-      handleLike={handleLike}
-      username={username}
-      userPicture={userPicture}
-      posts={posts}
-      handlePopup={handlePopup}
-      setUsername={setUsername}
-      setNewPostTitle={setNewPostTitle}
-      setNewPostImage={setNewPostImage}
-      newPostImage={newPostImage}
-      newPostTitle={newPostTitle}
-      handleNewPost={handleNewPost}
-      handleDelete={handleDelete}
-    />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Profile
+          setStatus={setStatus}
+          status={status}
+          handleLike={handleLike}
+          username={username}
+          userPicture={userPicture}
+          posts={posts}
+          handlePopup={handlePopup}
+          setUsername={setUsername}
+          setNewPostTitle={setNewPostTitle}
+          setNewPostImage={setNewPostImage}
+          newPostImage={newPostImage}
+          newPostTitle={newPostTitle}
+          handleNewPost={handleNewPost}
+          handleDelete={handleDelete}
+        />} />
+        <Route path="/usersearch" element={
+          <Usersearch
+            users={users}
+          />
+        }/>
+      </Routes>
+    </Router>
+    
   );
 };
 

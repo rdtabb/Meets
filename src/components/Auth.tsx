@@ -1,5 +1,5 @@
 import { auth, provider } from "../firebase-config"
-import { signInWithPopup } from "firebase/auth"
+import { getAuth, signInWithPopup } from "firebase/auth"
 import Cookies from "universal-cookie"
 import { collection, addDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
@@ -27,7 +27,8 @@ export const Auth = ({setIsAuth, setUsername, setUserPicture}: AuthProps) => {
 
             await addDoc(usersDataRef, {
                 name: name,
-                imgurl: imgurl
+                imgurl: imgurl,
+                id: getAuth().currentUser?.uid
             })
 
             setIsAuth(true)
