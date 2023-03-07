@@ -9,7 +9,7 @@ type popupProps = {
   status: string;
 };
 
-const Popup = ({ setUsername, setStatus }: popupProps) => {
+const Popup = () => {
   const [newName, setNewName] = useState("");
   const [newStatus, setNewStatus] = useState("");
 
@@ -20,10 +20,6 @@ const Popup = ({ setUsername, setStatus }: popupProps) => {
     if (newName == "" && newStatus == "") {
       return;
     }
-    setStatus(newStatus);
-    setUsername(newName);
-    localStorage.setItem("username", `${newName}`)
-    localStorage.setItem("status", `${newStatus}`)
     setNewName("");
     setNewStatus("");
 
@@ -50,6 +46,7 @@ const Popup = ({ setUsername, setStatus }: popupProps) => {
               onChange={(e) => setNewName(e.target.value)}
               placeholder="Enter name"
               required
+              name="name-input"
               value={newName}
               type="text"
               className="popup__input popup__input--name"
@@ -58,6 +55,7 @@ const Popup = ({ setUsername, setStatus }: popupProps) => {
               onChange={(e) => setNewStatus(e.target.value)}
               placeholder="Edit status"
               required
+              name="status-input"
               value={newStatus}
               type="text"
               className="popup__input popup__input--description"

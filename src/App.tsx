@@ -3,7 +3,7 @@ import { Auth } from "./components/Auth";
 import Profile from "./components/Profile";
 import Usersearch from "./components/Usersearch";
 import Cookies from "universal-cookie";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import { collection, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 const cookies = new Cookies();
@@ -13,30 +13,51 @@ const App = () => {
   const [users, setUsers] = useState([]);
   const [newPostTitle, setNewPostTitle] = useState("")
   const [newPostImage, setNewPostImage] = useState("")
-  const [username, setUsername] = useState(
-    localStorage.getItem("username") || ""
-  );
+  const [username, setUsername] = useState("");
   const [userPicture, setUserPicture] = useState(
     localStorage.getItem("userpicture") || ""
   );
+  const [status, setStatus] = useState("Add status to profile");
+  const [posts, setPosts] = useState<any>([]);
 
-  const [status, setStatus] = useState(
-    localStorage.getItem("status") || "Add status to profile"
-  );
-  
-  const [posts, setPosts] = useState(
-   JSON.parse(localStorage.getItem("posts")!) || []
-  );
+  useEffect(() => {
+    const getPosts = async () => {
+      try {
+        const userdoc: any = doc(db, "users", uid)
+        const dataSnap = getDoc(userdoc)
+        const dataset: any = (await dataSnap).data()
+        const posts = await dataset.newPosts
+        setPosts(posts)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    getPosts()
+  }, [posts])
+
+  useEffect(() => {
+    const getSetNameStatus = async () => {
+      try {
+        const userdoc: any = doc(db, "users", uid)
+        const dataSnap = getDoc(userdoc)
+        const dataset: any = (await dataSnap).data()
+        const status = await dataset.newStatus
+        const name = await dataset.name
+        setUsername(name)
+        setStatus(status)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    getSetNameStatus()
+  }, [username, status, posts])
 
   const uid: any = localStorage.getItem("uid")
 
   const handleLike = async (id: number) => {
-    const newPosts = posts.map((post: any) =>
+    const newPosts: any = posts.map((post: any) =>
       post.id == id ? { ...post, liked: !post.liked } : post
     );
-    setPosts(newPosts);
-    localStorage.setItem("posts", JSON.stringify(newPosts));
-
     const newpostsdb = {
       newPosts: newPosts
     }
@@ -94,9 +115,7 @@ const App = () => {
       imgsrc: `${newPostImage}`,
       liked: false
     }
-    const newPosts = [...posts, newPost]
-    setPosts(newPosts)
-    localStorage.setItem("posts", JSON.stringify(newPosts))
+    const newPosts: any = [...posts, newPost]
 
     const addPostPopup = document.querySelector('.popup-add-post')
     addPostPopup?.setAttribute('data-visible', 'false')
@@ -115,9 +134,6 @@ const App = () => {
     const newPosts = posts.filter((post: any) => (
       post.id != id 
     ))
-    setPosts(newPosts)
-    localStorage.setItem("posts", JSON.stringify(newPosts))
-
     const newpostsdb = {
       newPosts: newPosts
     }
@@ -137,6 +153,8 @@ const App = () => {
     return (
       <div className="app">
         <Auth
+          setPosts={setPosts}
+          setStatus={setStatus}
           setIsAuth={setIsAuth}
           setUsername={setUsername}
           setUserPicture={setUserPicture}
@@ -171,7 +189,6 @@ const App = () => {
         }/>
       </Routes>
     </Router>
-    
   );
 };
 

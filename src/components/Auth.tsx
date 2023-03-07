@@ -1,16 +1,18 @@
 import { auth, provider } from "../firebase-config"
 import { signInWithPopup } from "firebase/auth"
 import Cookies from "universal-cookie"
-import { collection, setDoc, doc } from 'firebase/firestore'
+import { collection, setDoc, doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
 
 type AuthProps = {
     setIsAuth: any,
     setUsername: any,
     setUserPicture: any
+    setPosts: any
+    setStatus: any
 }
 
-export const Auth = ({setIsAuth}: AuthProps) => {
+export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) => {
     const cookies = new Cookies()
     const usersDataRef = collection(db, "users")
     
@@ -23,16 +25,32 @@ export const Auth = ({setIsAuth}: AuthProps) => {
             const imgurl: string | null = response.user.photoURL
             const id: any = response.user.uid
             const docref = doc(db, "users", `${id}`)
+            const docSnap: any = await getDoc(docref)
 
             localStorage.setItem("userpicture", `${imgurl}`)
-            localStorage.setItem("username", `${name}`)
             localStorage.setItem("uid", `${id}`)
 
-            await setDoc(docref, {
-                name: name,
-                imgurl: imgurl,
-                id
-            })
+            if (docSnap.exists) {
+                try {
+                    const dataset: any = docSnap.data()
+                    const posts = dataset.newPosts
+                    const status = dataset.newStatus
+                    const name = dataset.name
+                    setPosts(posts)
+                    setStatus(status)
+                    setUsername(name)
+                } catch (err) {
+                    console.error(err)
+                }
+            } else {
+                await setDoc(docref, {
+                    name: name,
+                    imgurl: imgurl,
+                    id,
+                    newPosts: []
+                })
+            }
+            
 
             setIsAuth(true)
         } catch(err) {

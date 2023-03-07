@@ -180,7 +180,7 @@ body {
 
 @media (max-width: 890px) {
   .header {
-    padding: 0 0 31.6px 27px;
+    padding: 0 27px 31.6px;
     margin-bottom: 42px;
   }
 
@@ -251,6 +251,7 @@ body {
     display: flex;
     gap: 18px;
     align-items: center;
+    justify-content: center;
 
     margin: 0;
     padding: 0;
