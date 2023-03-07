@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile";
 import Usersearch from "./components/Usersearch";
+import Auser from "./components/anotheruserpage/Auser";
 import Cookies from "universal-cookie";
 import { collection, getDocs, updateDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "./firebase-config";
@@ -186,6 +187,9 @@ const App = () => {
           <Usersearch
             users={users}
           />
+        }/>
+        <Route path="/user/:id" element={
+          <Auser users={users} />
         }/>
       </Routes>
     </Router>

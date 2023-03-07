@@ -12,7 +12,7 @@ type ProfileProps = {
   posts: any;
   handleLike: any;
   handlePopup: any;
-  status: string;
+  status: any;
   setStatus: any;
   setNewPostTitle: React.Dispatch<React.SetStateAction<string>>;
   setNewPostImage: React.Dispatch<React.SetStateAction<string>>;
@@ -51,12 +51,7 @@ const Profile = ({
         <Posts handleLike={handleLike} posts={posts} handleDelete={handleDelete} />
       </main>
       <Footer />
-      <Popup
-        status={status}
-        setStatus={setStatus}
-        setUsername={setUsername}
-        username={username}
-      />
+      <Popup />
       <AddPost
         setNewPostImage={setNewPostImage}
         setNewPostTitle={setNewPostTitle}

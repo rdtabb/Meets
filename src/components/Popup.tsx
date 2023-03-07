@@ -2,13 +2,6 @@ import { useState } from "react";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../firebase-config";
 
-type popupProps = {
-  username: string;
-  setUsername: any;
-  setStatus: any;
-  status: string;
-};
-
 const Popup = () => {
   const [newName, setNewName] = useState("");
   const [newStatus, setNewStatus] = useState("");

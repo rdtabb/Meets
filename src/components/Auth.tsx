@@ -61,11 +61,11 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
     return (
         <main className="auth">
             <div className="img-container">
-                <img className="auth__logo" src="../../public/meets-logo.svg" alt="meets-logo" />
+                <img className="auth__logo" src="src/assets/meets-logo.svg" alt="meets-logo" />
             </div>
             <h1 className="auth__header">Sign in with Google</h1>
             <button onClick={signin} className="auth__signin">
-                <img className="signin-icon" src="../../public/google-icon.svg" alt="" />
+                <img className="signin-icon" src="src/assets/google-icon.svg" alt="" />
                 Sign in
             </button>
         </main>
