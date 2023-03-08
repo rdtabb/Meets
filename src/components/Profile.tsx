@@ -1,9 +1,11 @@
 import Header from "./Header";
 import Desc from "./Desc";
-import Posts from "./Posts";
 import Footer from "./Footer";
 import Popup from "./Popup";
 import AddPost from "./AddPost";
+import React, { Suspense } from "react";
+
+const Shows = React.lazy(() => import("./Posts"))
 
 type ProfileProps = {
   username: string;
@@ -48,7 +50,9 @@ const Profile = ({
           username={username}
           userPicture={userPicture}
         />
-        <Posts handleLike={handleLike} posts={posts} handleDelete={handleDelete} />
+        <Suspense fallback={<p>Loading...</p>}>
+          <Shows handleLike={handleLike} posts={posts} handleDelete={handleDelete} />
+        </Suspense>
       </main>
       <Footer />
       <Popup />

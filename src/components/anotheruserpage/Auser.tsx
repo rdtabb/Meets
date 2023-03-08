@@ -3,20 +3,40 @@ import Aheader from "./Aheader";
 import Adesc from "./Adesc";
 import Aposts from "./Aposts";
 import Footer from "../Footer";
+import { useEffect, useState } from "react";
+import { db } from "../../firebase-config";
+import { doc, getDoc } from "firebase/firestore";
 
 type auserprops = {
   users: any;
 };
 
 const Auser = ({ users }: auserprops) => {
-  const { id } = useParams();
-  const user: any = users.find((user: any) => user.id.toString() == id);
+  const [user, setUserData] = useState<any>({})
+  const [userPosts, setUserPosts] = useState([])
+  const { id }: any = useParams();
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userdoc: any = doc(db, "users", id);
+        const data: any = await getDoc(userdoc)
+        const docSnap = await data.data()
+        console.log(docSnap)
+        setUserData(docSnap)
+        setUserPosts(docSnap.newPosts)
+        console.log(userPosts)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    fetchUser()
+  }, [])
 
   return (
     <div className="container">
       <Aheader />
       <Adesc name={user.name} status={user.newStatus} url={user.imgurl} />
-      <Aposts posts={user.newPosts} name={user.name} />
+      <Aposts posts={userPosts} name={user.name} />
       <Footer />
     </div>
   );

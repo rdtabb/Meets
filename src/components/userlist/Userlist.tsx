@@ -21,8 +21,10 @@ const Userlist = ({users}: userlistprops) => {
                             <p className="user__status">{user.newStatus}</p>
                         </article>
                     </div>
-                    <img className="user__chat" src="src/assets/chats.svg" alt="" />
-                    <Link to={`/user/${user.id}`}>Go to {user.name} profile</Link>
+                    <div className="user__icons">
+                        <img className="user__chat" src="src/assets/chats.svg" alt="" />
+                        <Link to={`/user/${user.id}`}><img className="user__icon" src="src/assets/profile-icon.svg" alt="" /></Link>
+                    </div>
                 </li>
             ))}
         </ul>
