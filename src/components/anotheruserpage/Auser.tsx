@@ -3,7 +3,7 @@ import Aheader from "./Aheader";
 import Adesc from "./Adesc";
 import Aposts from "./Aposts";
 import Footer from "../Footer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { db } from "../../firebase-config";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -15,16 +15,14 @@ const Auser = ({ users }: auserprops) => {
   const [user, setUserData] = useState<any>({})
   const [userPosts, setUserPosts] = useState([])
   const { id }: any = useParams();
-  useEffect(() => {
+  useCallback(() => {
     const fetchUser = async () => {
       try {
         const userdoc: any = doc(db, "users", id);
         const data: any = await getDoc(userdoc)
         const docSnap = await data.data()
-        console.log(docSnap)
         setUserData(docSnap)
         setUserPosts(docSnap.newPosts)
-        console.log(userPosts)
       } catch (err) {
         console.error(err)
       }

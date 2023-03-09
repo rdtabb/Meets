@@ -1,0 +1,50 @@
+.auth {
+    display: grid;
+    gap: 2rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+
+    background-color: hsl(var(--clr-primary-200), .4);
+
+    .img-container {
+        display: flex;
+        margin-bottom: 4rem;
+    }
+
+    &__logo {
+        max-width: 142px;
+    }
+
+    &__header {
+        font-size: var(--fs-700);
+        font-weight: var(--fw-700);
+    }
+
+    &__signin {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        padding: .75rem 2rem;
+
+        background-color: hsl(var(--clr-primary-100));
+        color: hsl(var(--clr-primary-900));
+        font-weight: var(--fw-600);
+
+        border-radius: 100vmax;
+        border: 1px solid hsl(var(--clr-primary-900));
+
+        transition: all var(--transition-time-primary) var(--timing-function-primary);
+        cursor: pointer;
+    }
+
+    &__signin:hover {
+        background-color: hsl(var(--clr-primary-900));
+        color: hsl(var(--clr-primary-100));
+    }
+
+    .signin-icon {
+        max-width: 25px;
+    }
+}

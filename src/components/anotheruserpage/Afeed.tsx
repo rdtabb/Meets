@@ -15,10 +15,10 @@ const Afeed = ({posts}: afeedprops) => {
             style={
               post.liked
                 ? {
-                    backgroundImage: "url(src/assets/like-active.svg)",
+                    backgroundImage: "url(../../../public/like-activep.svg)",
                   }
                 : {
-                    backgroundImage: "url(src/assets/like.svg)",
+                    backgroundImage: "url(../../../public/likep.svg)",
                   }
             }
             className="card__like"

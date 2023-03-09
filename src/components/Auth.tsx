@@ -16,7 +16,6 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
     const cookies = new Cookies()
     const usersDataRef = collection(db, "users")
     
-
     const signin = async () => {
         try {
             const response = await signInWithPopup(auth, provider)
@@ -24,7 +23,7 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
             const name: string | null = response.user.displayName
             const imgurl: string | null = response.user.photoURL
             const id: any = response.user.uid
-            const docref = doc(db, "users", `${id}`)
+            const docref: any = doc(db, "users", `${id}`)
             const docSnap: any = await getDoc(docref)
 
             localStorage.setItem("userpicture", `${imgurl}`)
@@ -32,6 +31,7 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
 
             if (docSnap.exists) {
                 try {
+                    console.log(`user with id ${id} exists!`)
                     const dataset: any = docSnap.data()
                     const posts = dataset.newPosts
                     const status = dataset.newStatus
@@ -40,21 +40,24 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                     setStatus(status)
                     setUsername(name)
                 } catch (err) {
-                    console.error(err)
+                    console.log(err)
                 }
-            } else {
-                await setDoc(docref, {
-                    name: name,
-                    imgurl: imgurl,
-                    id,
-                    newPosts: []
-                })
-            }
-            
-
+            } else if (docref.exists) {
+                try {
+                    console.log(`user with id ${id} does not exist;()`)
+                    await setDoc(docref, {
+                        name: name,
+                        imgurl: imgurl,
+                        id,
+                        newPosts: []
+                    })
+                } catch (err) {
+                    console.log(err)
+                }
+            }       
             setIsAuth(true)
         } catch(err) {
-            console.error(err)
+            console.log(err)
         }
     }
 

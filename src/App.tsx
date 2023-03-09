@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile";
 import Usersearch from "./components/Usersearch";
@@ -42,7 +42,7 @@ const App = () => {
     getPosts();
   }, [posts]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const getSetNameStatus = async () => {
       try {
         const userdoc: any = doc(db, "users", uid);
@@ -57,7 +57,7 @@ const App = () => {
       }
     };
     getSetNameStatus();
-  }, [username, status, posts]);
+  }, [username, status]);
 
   const uid: any = localStorage.getItem("uid");
 
@@ -146,13 +146,14 @@ const App = () => {
     await updateDoc(userdoc, newpostsdb);
   };
 
-  useEffect(() => {
+  useCallback(() => {
     const getUsers = async () => {
       const data: any = await getDocs(usersDataRef);
       setUsers(data.docs.map((doc: any) => ({ ...doc.data() })));
     };
     getUsers();
   }, [isAuth]);
+  // isAuth
 
   if (!isAuth) {
     return (

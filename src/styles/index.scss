@@ -8,86 +8,92 @@
 /* variables, selection, scrollbar          */
 /* ---------------------------------------- */
 
-:root {
-  --clr-primary-100: 0, 0%, 0%;
-  --clr-primary-200: 0, 0%, 20%;
-  --clr-primary-900: 0, 0%, 100%;
+@import url(./variables.scss);
 
-  --clr-accent: 0, 0%, 33%;
+// :root {
+//   --clr-primary-100: 0, 0%, 0%;
+//   --clr-primary-200: 0, 0%, 20%;
+//   --clr-primary-900: 0, 0%, 100%;
 
-  --ff-primary: 'Montserrat', sans-serif;
+//   --clr-accent: 0, 0%, 33%;
 
-  --fw-300: 300;
-  --fw-400: 400;
-  --fw-600: 600;
-  --fw-700: 700;
+//   --ff-primary: 'Montserrat', sans-serif;
 
-  --fs-300: 1rem;
-  --fs-400: 1.125rem;
-  --fs-500: 1.25rem;
-  --fs-600: 1.5rem;
-  --fs-650: 2rem;
-  --fs-700: 2.5rem;
-  --fs-800: 3rem;
-  --fs-900: 3.5rem;
+//   --fw-300: 300;
+//   --fw-400: 400;
+//   --fw-600: 600;
+//   --fw-700: 700;
 
-  --size-s: .25rem;
+//   --fs-300: 1rem;
+//   --fs-400: 1.125rem;
+//   --fs-500: 1.25rem;
+//   --fs-600: 1.5rem;
+//   --fs-650: 2rem;
+//   --fs-700: 2.5rem;
+//   --fs-800: 3rem;
+//   --fs-900: 3.5rem;
 
-  --timing-function-primary: ease-in;
-  --transition-time-primary: 200ms;
-}
+//   --size-s: .25rem;
 
-::selection {
-  background-color: hsl(var(--clr-primary-900));
-  color: hsl(var(--clr-primary-100));
-}
+//   --timing-function-primary: ease-in;
+//   --transition-time-primary: 200ms;
+// }
 
-::-webkit-scrollbar {
-  width: var(--size-s);
-}
+// ::selection {
+//   background-color: hsl(var(--clr-primary-900));
+//   color: hsl(var(--clr-primary-100));
+// }
 
-::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--clr-primary-900));
-}
+// ::-webkit-scrollbar {
+//   width: var(--size-s);
+// }
+
+// ::-webkit-scrollbar-thumb {
+//   background-color: hsl(var(--clr-primary-900));
+// }
 
 /* ---------------------------------------- */
 /* body and root                            */
 /* ---------------------------------------- */
 
-body {
-  background-color: hsl(var(--clr-primary-100));
-  color: hsl(var(--clr-primary-900));
-  font-family: var(--ff-primary);
-  font-weight: var(--fw-400);
-  font-size: var(--fs-400);
-  padding: 45px 0 60px;
-}
+@import url(./comp-styles/body-root.scss);
 
-.container {
-  --width: 50rem;
-  --padding: 1rem;
+// body {
+//   background-color: hsl(var(--clr-primary-100));
+//   color: hsl(var(--clr-primary-900));
+//   font-family: var(--ff-primary);
+//   font-weight: var(--fw-400);
+//   font-size: var(--fs-400);
+//   padding: 45px 0 60px;
+// }
 
-  width: min(var(--width), 100% - 1rem);
-  margin-inline: auto;
-}
+// .container {
+//   --width: 50rem;
+//   --padding: 1rem;
 
-#root {
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-}
+//   width: min(var(--width), 100% - 1rem);
+//   margin-inline: auto;
+// }
 
-#root:has(.header-profile) {
-  place-items: start;
-}
+// #root {
+//   display: grid;
+//   place-items: center;
+//   min-height: 100vh;
+// }
 
-#root:has(.search) {
-  place-items: start;
-}
+// #root:has(.header-profile) {
+//   place-items: start;
+// }
+
+// #root:has(.search) {
+//   place-items: start;
+// }
 
 /* ---------------------------------------- */
 /* auth component                           */
 /* ---------------------------------------- */
+
+// @import url(./comp-styles/auth.scss);
 
 .auth {
   display: grid;
@@ -177,6 +183,21 @@ body {
     object-fit: cover;
   }
 }
+
+.header-profile__link {
+  width: 40px;
+  aspect-ratio: 1;
+  transition: opacity 200ms ease-in;
+
+  &:hover {
+    opacity: .6;
+  }
+}
+
+.icons-wrapper {
+    display: flex;
+    gap: 1rem;
+  }
 
 @media (max-width: 890px) {
   .header {
@@ -482,6 +503,7 @@ body {
   display: none;
   place-items: center;
   inset: 0;
+  transition: display 200ms ease-in;
 
   &::before {
     content: '';
@@ -493,13 +515,13 @@ body {
 
   &__container {
     position: relative;
-    display: grid;
     isolation: isolate;
     background-color: hsl(var(--clr-primary-900));
     color: hsl(var(--clr-primary-100));
     border: none;
     border-radius: 10px;
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+    transition: display 200ms ease-in;
 
     z-index: 1000;
     width: min(430px, 100% - 38px);
@@ -533,6 +555,7 @@ body {
 
   &_opened {
     display: grid;
+    transition: all 200ms ease-in;
   }
 
   &__header {
@@ -628,6 +651,8 @@ body {
 /* search page                              */
 /* ---------------------------------------- */
 
+// @import url(./comp-styles/search.scss);
+
 .search {
   --width: 50rem;
   --padding: 1rem;
@@ -683,6 +708,12 @@ body {
     gap: 1rem;
   }
 }
+
+/* ---------------------------------------- */
+/* user component                           */
+/* ---------------------------------------- */
+
+// @import url(./comp-styles/user.scss);
 
 .user {
   border-bottom: 1px solid hsl(var(--clr-primary-900), .2);

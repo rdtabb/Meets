@@ -1,0 +1,41 @@
+:root {
+    --clr-primary-100: 0, 0%, 0%;
+    --clr-primary-200: 0, 0%, 20%;
+    --clr-primary-900: 0, 0%, 100%;
+  
+    --clr-accent: 0, 0%, 33%;
+  
+    --ff-primary: 'Montserrat', sans-serif;
+  
+    --fw-300: 300;
+    --fw-400: 400;
+    --fw-600: 600;
+    --fw-700: 700;
+  
+    --fs-300: 1rem;
+    --fs-400: 1.125rem;
+    --fs-500: 1.25rem;
+    --fs-600: 1.5rem;
+    --fs-650: 2rem;
+    --fs-700: 2.5rem;
+    --fs-800: 3rem;
+    --fs-900: 3.5rem;
+  
+    --size-s: .25rem;
+  
+    --timing-function-primary: ease-in;
+    --transition-time-primary: 200ms;
+  }
+  
+  ::selection {
+    background-color: hsl(var(--clr-primary-900));
+    color: hsl(var(--clr-primary-100));
+  }
+  
+  ::-webkit-scrollbar {
+    width: var(--size-s);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--clr-primary-900));
+  }
