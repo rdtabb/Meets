@@ -38,7 +38,6 @@ const Popup = () => {
             <input
               onChange={(e) => setNewName(e.target.value)}
               placeholder="Enter name"
-              required
               name="name-input"
               value={newName}
               type="text"
@@ -47,7 +46,6 @@ const Popup = () => {
             <input
               onChange={(e) => setNewStatus(e.target.value)}
               placeholder="Edit status"
-              required
               name="status-input"
               value={newStatus}
               type="text"

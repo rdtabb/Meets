@@ -17,6 +17,9 @@ const cookies = new Cookies();
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
+  if (!isAuth) {
+    return
+  }
   const [users, setUsers] = useState([]);
   const [newPostTitle, setNewPostTitle] = useState("");
   const [newPostImage, setNewPostImage] = useState("");
