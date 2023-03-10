@@ -15,7 +15,7 @@ const Auser = ({ users }: auserprops) => {
   const [user, setUserData] = useState<any>({})
   const [userPosts, setUserPosts] = useState([])
   const { id }: any = useParams();
-  useCallback(() => {
+  useEffect(() => {
     const fetchUser = async () => {
       try {
         const userdoc: any = doc(db, "users", id);

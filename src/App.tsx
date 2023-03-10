@@ -27,20 +27,21 @@ const App = () => {
   const [status, setStatus] = useState("Add status to profile");
   const [posts, setPosts] = useState<any>([]);
 
+  const getPosts = useCallback(async () => {
+    try {
+      const userdoc: any = doc(db, "users", uid);
+      const dataSnap = getDoc(userdoc);
+      const dataset: any = (await dataSnap).data();
+      const posts: any = await dataset.newPosts;
+      return posts
+    } catch (err) {
+      console.error(err);
+    }
+  }, [])
+
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const userdoc: any = doc(db, "users", uid);
-        const dataSnap = getDoc(userdoc);
-        const dataset: any = (await dataSnap).data();
-        const posts = await dataset.newPosts;
-        setPosts(posts);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getPosts();
-  }, [posts]);
+    getPosts().then(setPosts)
+  }, [getPosts]);
 
   useLayoutEffect(() => {
     const getSetNameStatus = async () => {
@@ -70,6 +71,7 @@ const App = () => {
     };
     const userdoc = doc(db, "users", `${uid}`);
     await updateDoc(userdoc, newpostsdb);
+    getPosts().then(setPosts)
   };
 
   const handlePopup = () => {
@@ -135,6 +137,7 @@ const App = () => {
     };
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newpostsdb);
+    getPosts().then(setPosts)
   };
 
   const handleDelete = async (id: any) => {
@@ -144,16 +147,16 @@ const App = () => {
     };
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newpostsdb);
+    getPosts().then(setPosts)
   };
 
-  useCallback(() => {
+  useEffect(() => {
     const getUsers = async () => {
       const data: any = await getDocs(usersDataRef);
       setUsers(data.docs.map((doc: any) => ({ ...doc.data() })));
     };
     getUsers();
   }, [isAuth]);
-  // isAuth
 
   if (!isAuth) {
     return (
