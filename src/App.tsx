@@ -22,9 +22,7 @@ const App = () => {
   const [newPostTitle, setNewPostTitle] = useState("");
   const [newPostImage, setNewPostImage] = useState("");
   const [username, setUsername] = useState("");
-  const [userPicture, setUserPicture] = useState(
-    localStorage.getItem("userpicture") || ""
-  );
+  const [userPicture, setUserPicture] = useState(localStorage.getItem("userpicture") || "");
   const [status, setStatus] = useState("Add status to profile");
   const [posts, setPosts] = useState<any>([]);
 

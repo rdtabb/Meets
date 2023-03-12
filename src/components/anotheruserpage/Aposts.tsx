@@ -11,6 +11,7 @@ const Aposts = ({ posts, name }: apostsprops) => {
       {posts.length ? (
         <Afeed 
          posts={posts}
+         username={name}
         />
       ) : (
         <section>
