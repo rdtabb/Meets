@@ -50,8 +50,9 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     await updateDoc(userdoc, updateLiked);
     getLikedPosts().then(setLikedPosts);
   };
+
   return (
-    <LikedContext.Provider value={handleLike}>{children}</LikedContext.Provider>
+    <LikedContext.Provider value={{handleLike, setLikedPosts, likedPosts}}>{children}</LikedContext.Provider>
   );
 };
 

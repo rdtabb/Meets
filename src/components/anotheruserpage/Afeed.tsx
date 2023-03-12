@@ -1,9 +1,14 @@
+import { useContext } from "react"
+import LikedContext from "../../context/LikedContext"
+
 type afeedprops = {
   posts: any
   username: any
 }
 
 const Afeed = ({posts, username}: afeedprops) => {
+
+  const { handleLike }: any = useContext(LikedContext)
 
   return (
     <section className="cards">
@@ -24,6 +29,7 @@ const Afeed = ({posts, username}: afeedprops) => {
                   }
             }
             className="card__like"
+            onClick={() => handleLike(post.city, post.imgsrc, username)}
           ></button>
         </div>
       </article>

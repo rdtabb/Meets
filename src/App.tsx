@@ -3,6 +3,7 @@ import { Auth } from "./components/Auth";
 import Profile from "./components/Profile";
 import Usersearch from "./components/Usersearch";
 import Auser from "./components/anotheruserpage/Auser";
+import LikedPosts from "./components/likedposts/LIkedPosts";
 import Cookies from "universal-cookie";
 import {
   collection,
@@ -198,6 +199,7 @@ const App = () => {
           />
           <Route path="/usersearch" element={<Usersearch users={users} />} />
           <Route path="/user/:id" element={<Auser users={users} />} />
+          <Route path="/likedposts" element={<LikedPosts />}/>
         </Routes>
       </Router>
     </ErrorBoundary>

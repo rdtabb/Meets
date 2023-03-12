@@ -35,6 +35,7 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                     const posts = dataset.newPosts
                     const status = dataset.newStatus
                     const name = dataset.name
+                    const likedPosts = dataset.liked
                     setPosts(posts)
                     setStatus(status)
                     setUsername(name)
@@ -51,7 +52,8 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                         name: name,
                         imgurl: imgurl,
                         id,
-                        newPosts: []
+                        newPosts: [],
+                        liked: []
                     })
                 } catch (err) {
                     console.log(err)

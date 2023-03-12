@@ -171,10 +171,17 @@ body {
     }
   }
 
-  &__search-icon {
-    width: 20px;
-    aspect-ratio: 1;
+  &__icon {
+    width: 30px;
+    height: 30px;
     object-fit: cover;
+  }
+
+  &__routes {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-end;
   }
 }
 
