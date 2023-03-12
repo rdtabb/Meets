@@ -3,7 +3,7 @@ import Aheader from "./Aheader";
 import Adesc from "./Adesc";
 import Aposts from "./Aposts";
 import Footer from "../Footer";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { doc, getDoc } from "firebase/firestore";
 

@@ -29,6 +29,22 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
             localStorage.setItem("userpicture", `${imgurl}`)
             localStorage.setItem("uid", `${id}`)
 
+            if (docref.exists) {
+                try {
+                    const dataset: any = docSnap.data()
+                    const posts = dataset.newPosts
+                    const status = dataset.newStatus
+                    const name = dataset.name
+                    setPosts(posts)
+                    setStatus(status)
+                    setUsername(name)
+                } catch (err) {
+                    console.log(err)
+                } finally {
+                    setIsAuth(true)
+                }
+            }  
+
             if (!docref.exists) {
                 try {
                     await setDoc(docref, {
@@ -44,22 +60,7 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                 }
             }  
 
-            //used to be docsnap
-            if (docref.exists) {
-                try {
-                    const dataset: any = docSnap.data()
-                    const posts = dataset.newPosts
-                    const status = dataset.newStatus
-                    const name = dataset.name
-                    setPosts(posts)
-                    setStatus(status)
-                    setUsername(name)
-                } catch (err) {
-                    console.log(err)
-                } finally {
-                    setIsAuth(true)
-                }
-            }    
+            //used to be docsna  
         } catch(err) {
             console.log(err)
         }

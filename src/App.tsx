@@ -13,13 +13,11 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ErrorBoundary from "./components/error/ErrorBoundary";
 const cookies = new Cookies();
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
-  if (!isAuth) {
-    return
-  }
   const [users, setUsers] = useState([]);
   const [newPostTitle, setNewPostTitle] = useState("");
   const [newPostImage, setNewPostImage] = useState("");
@@ -46,7 +44,7 @@ const App = () => {
     getPosts().then(setPosts)
   }, [getPosts]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const getSetNameStatus = async () => {
       try {
         const userdoc: any = doc(db, "users", uid);
@@ -176,33 +174,35 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Profile
-              setStatus={setStatus}
-              status={status}
-              handleLike={handleLike}
-              username={username}
-              userPicture={userPicture}
-              posts={posts}
-              handlePopup={handlePopup}
-              setUsername={setUsername}
-              setNewPostTitle={setNewPostTitle}
-              setNewPostImage={setNewPostImage}
-              newPostImage={newPostImage}
-              newPostTitle={newPostTitle}
-              handleNewPost={handleNewPost}
-              handleDelete={handleDelete}
-            />
-          }
-        />
-        <Route path="/usersearch" element={<Usersearch users={users} />} />
-        <Route path="/user/:id" element={<Auser users={users} />} />
-      </Routes>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Profile
+                setStatus={setStatus}
+                status={status}
+                handleLike={handleLike}
+                username={username}
+                userPicture={userPicture}
+                posts={posts}
+                handlePopup={handlePopup}
+                setUsername={setUsername}
+                setNewPostTitle={setNewPostTitle}
+                setNewPostImage={setNewPostImage}
+                newPostImage={newPostImage}
+                newPostTitle={newPostTitle}
+                handleNewPost={handleNewPost}
+                handleDelete={handleDelete}
+              />
+            }
+          />
+          <Route path="/usersearch" element={<Usersearch users={users} />} />
+          <Route path="/user/:id" element={<Auser users={users} />} />
+        </Routes>
+      </Router>
+    </ErrorBoundary>
   );
 };
 

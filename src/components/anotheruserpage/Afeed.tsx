@@ -1,8 +1,17 @@
 type afeedprops = {
-    posts: any
+  posts: any
 }
 
 const Afeed = ({posts}: afeedprops) => {
+
+  const handleLike = (id: string, name: string, src: string) => {
+    console.log(`post information is the following:
+      id: ${id},
+      name: ${name},
+      imgsrc: ${src}
+    `)
+  }
+
   return (
     <section className="cards">
     {posts.map((post: any) => (
@@ -22,6 +31,7 @@ const Afeed = ({posts}: afeedprops) => {
                   }
             }
             className="card__like"
+            onClick={() => handleLike(post.id, post.city, post.imgsrc)}
           ></button>
         </div>
       </article>

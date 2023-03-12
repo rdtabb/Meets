@@ -8,92 +8,86 @@
 /* variables, selection, scrollbar          */
 /* ---------------------------------------- */
 
-@import url(./variables.scss);
+:root {
+  --clr-primary-100: 0, 0%, 0%;
+  --clr-primary-200: 0, 0%, 20%;
+  --clr-primary-900: 0, 0%, 100%;
 
-// :root {
-//   --clr-primary-100: 0, 0%, 0%;
-//   --clr-primary-200: 0, 0%, 20%;
-//   --clr-primary-900: 0, 0%, 100%;
+  --clr-accent: 0, 0%, 33%;
 
-//   --clr-accent: 0, 0%, 33%;
+  --ff-primary: 'Montserrat', sans-serif;
 
-//   --ff-primary: 'Montserrat', sans-serif;
+  --fw-300: 300;
+  --fw-400: 400;
+  --fw-600: 600;
+  --fw-700: 700;
 
-//   --fw-300: 300;
-//   --fw-400: 400;
-//   --fw-600: 600;
-//   --fw-700: 700;
+  --fs-300: 1rem;
+  --fs-400: 1.125rem;
+  --fs-500: 1.25rem;
+  --fs-600: 1.5rem;
+  --fs-650: 2rem;
+  --fs-700: 2.5rem;
+  --fs-800: 3rem;
+  --fs-900: 3.5rem;
 
-//   --fs-300: 1rem;
-//   --fs-400: 1.125rem;
-//   --fs-500: 1.25rem;
-//   --fs-600: 1.5rem;
-//   --fs-650: 2rem;
-//   --fs-700: 2.5rem;
-//   --fs-800: 3rem;
-//   --fs-900: 3.5rem;
+  --size-s: .25rem;
 
-//   --size-s: .25rem;
+  --timing-function-primary: ease-in;
+  --transition-time-primary: 200ms;
+}
 
-//   --timing-function-primary: ease-in;
-//   --transition-time-primary: 200ms;
-// }
+::selection {
+  background-color: hsl(var(--clr-primary-900));
+  color: hsl(var(--clr-primary-100));
+}
 
-// ::selection {
-//   background-color: hsl(var(--clr-primary-900));
-//   color: hsl(var(--clr-primary-100));
-// }
+::-webkit-scrollbar {
+  width: var(--size-s);
+}
 
-// ::-webkit-scrollbar {
-//   width: var(--size-s);
-// }
-
-// ::-webkit-scrollbar-thumb {
-//   background-color: hsl(var(--clr-primary-900));
-// }
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--clr-primary-900));
+}
 
 /* ---------------------------------------- */
 /* body and root                            */
 /* ---------------------------------------- */
 
-@import url(./comp-styles/body-root.scss);
+body {
+  background-color: hsl(var(--clr-primary-100));
+  color: hsl(var(--clr-primary-900));
+  font-family: var(--ff-primary);
+  font-weight: var(--fw-400);
+  font-size: var(--fs-400);
+  padding: 45px 0 60px;
+}
 
-// body {
-//   background-color: hsl(var(--clr-primary-100));
-//   color: hsl(var(--clr-primary-900));
-//   font-family: var(--ff-primary);
-//   font-weight: var(--fw-400);
-//   font-size: var(--fs-400);
-//   padding: 45px 0 60px;
-// }
+.container {
+  --width: 50rem;
+  --padding: 1rem;
 
-// .container {
-//   --width: 50rem;
-//   --padding: 1rem;
+  width: min(var(--width), 100% - 1rem);
+  margin-inline: auto;
+}
 
-//   width: min(var(--width), 100% - 1rem);
-//   margin-inline: auto;
-// }
+#root {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
 
-// #root {
-//   display: grid;
-//   place-items: center;
-//   min-height: 100vh;
-// }
+#root:has(.header-profile) {
+  place-items: start;
+}
 
-// #root:has(.header-profile) {
-//   place-items: start;
-// }
-
-// #root:has(.search) {
-//   place-items: start;
-// }
+#root:has(.search) {
+  place-items: start;
+}
 
 /* ---------------------------------------- */
 /* auth component                           */
 /* ---------------------------------------- */
-
-// @import url(./comp-styles/auth.scss);
 
 .auth {
   display: grid;
