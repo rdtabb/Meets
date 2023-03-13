@@ -1,4 +1,5 @@
 import Afeed from "./Afeed"
+import NoPosts from "./NoPosts"
 
 type apostsprops = {
     posts: any
@@ -14,9 +15,9 @@ const Aposts = ({ posts, name }: apostsprops) => {
          username={name}
         />
       ) : (
-        <section>
-            <p>there are no posts</p>
-        </section>
+        <NoPosts 
+          name={name}
+        />
       )}
     </>
   )

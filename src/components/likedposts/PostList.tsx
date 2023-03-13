@@ -13,10 +13,11 @@ const PostList = () => {
                     {likedPosts.map((post: any) => (
                         <article key={post.id} className="card">
                             <img className="card__image" src={post.imgsrc} alt={post.city} />
-                            <div className="card__action">
-                               <h2 className="card__description">
+                            <div className="card__action card__action--liked">
+                                <h2 className="card__description">
                                     {post.city}
                                 </h2> 
+                                <p className="card__creator">by {post.creator}</p>
                             </div>
                             <button
                                 className="card__delete"

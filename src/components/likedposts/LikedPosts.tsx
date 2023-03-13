@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import ErrorBoundary from "../error/ErrorBoundary"
 import LikedHeader from "./LikedHeader"
 import LikedDesc from "./LikedDesc"
+import NoLiked from "./NoLiked"
 
 type PropsType = {
     username: string,
@@ -27,7 +28,7 @@ const LikedPosts = ({username, status, userPicture}: PropsType) => {
                 {likedPosts.length ? (
                     <PostList />
                 ) : (
-                    <p>you do not have liked posts</p>
+                    <NoLiked />
                 )}
             </div>
         </ErrorBoundary>

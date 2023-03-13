@@ -22,6 +22,7 @@
   --fw-600: 600;
   --fw-700: 700;
 
+  --fs-200: .75rem;
   --fs-300: 1rem;
   --fs-400: 1.125rem;
   --fs-500: 1.25rem;
@@ -283,7 +284,6 @@ body {
     display: flex;
     gap: 18px;
     align-items: center;
-    justify-content: center;
 
     margin: 0;
     padding: 0;
@@ -349,6 +349,7 @@ body {
 
     &__info-wrapper {
       gap: 10px;
+      justify-content: center;
     }
 
     &__add-button {
@@ -451,6 +452,15 @@ body {
     padding: 25px 15px 31px 21px;
     position: relative;
     z-index: 1000;
+  }
+
+  &__action--liked {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__creator {
+    font-size: var(--fs-200);
   }
 
   &__description {
@@ -662,7 +672,6 @@ body {
 /* search page                              */
 /* ---------------------------------------- */
 
-// @import url(./comp-styles/search.scss);
 
 .search {
   --width: 50rem;
@@ -724,8 +733,6 @@ body {
 /* user component                           */
 /* ---------------------------------------- */
 
-// @import url(./comp-styles/user.scss);
-
 .user {
   border-bottom: 1px solid hsl(var(--clr-primary-900), .2);
   padding: 1rem;
@@ -758,21 +765,21 @@ body {
   }
 
   &__picture {
-    --box-sizing: 5.5rem;
+    --box-sizing: clamp(3rem, 7vw, 5.5rem);
 
-    width: var(--box-sizing);
-    height: var(--box-sizing);
+    max-width: var(--box-sizing);
+    max-height: var(--box-sizing);
     border-radius: 50%;
     object-fit: cover;
   }
 
   &__heading {
-    font-size: var(--fs-650);
+    font-size: clamp(var(--fs-500), 5vw, var(--fs-650));
     font-weight: var(--fw-600);
   }
 
   &__status {
-    font-size: var(--fs-300);
+    font-size: clamp(.75rem, 2vw, var(--fs-300));
     font-weight: var(--fw-300);
   }
 
@@ -785,5 +792,41 @@ body {
     &:hover {
       opacity: .6;
     }
+  }
+}
+
+@media (max-width: 40rem) {
+  .user__icons {
+    flex-direction: column;
+  }
+
+  .user__chat,
+  .user__icon {
+    object-fit: contain;
+  }
+}
+
+/* ---------------------------------------- */
+/* no-liked posts                           */
+/* ---------------------------------------- */
+
+.no-liked {
+  min-height: 40vh;
+  display: grid;
+  place-items: center;
+
+  &__wrapper {
+    display: grid;
+    place-items: center;
+    gap: 1rem;
+  }
+
+  &__box {
+    max-width: 50%;
+  }
+
+  &__heading {
+    font-size: clamp(var(--fs-400), 10vw, var(--fs-700));
+    font-weight: var(--fw-700);
   }
 }
