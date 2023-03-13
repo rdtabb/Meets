@@ -1,9 +1,9 @@
 import { useState, useEffect, useLayoutEffect, useCallback } from "react";
 import { Auth } from "./components/Auth";
-import Profile from "./components/Profile";
-import Usersearch from "./components/Usersearch";
+import Profile from "./components/Profile/Profile";
+import Usersearch from "./components/userlist/Usersearch";
 import Auser from "./components/anotheruserpage/Auser";
-import LikedPosts from "./components/likedposts/LIkedPosts";
+import LikedPosts from "./components/likedposts/LikedPosts";
 import Cookies from "universal-cookie";
 import {
   collection,
@@ -160,15 +160,17 @@ const App = () => {
 
   if (!isAuth) {
     return (
-      <div className="app">
-        <Auth
-          setPosts={setPosts}
-          setStatus={setStatus}
-          setIsAuth={setIsAuth}
-          setUsername={setUsername}
-          setUserPicture={setUserPicture}
-        />
-      </div>
+      <ErrorBoundary>
+        <div className="app">
+          <Auth
+            setPosts={setPosts}
+            setStatus={setStatus}
+            setIsAuth={setIsAuth}
+            setUsername={setUsername}
+            setUserPicture={setUserPicture}
+          />
+        </div>
+      </ErrorBoundary>
     );
   }
 

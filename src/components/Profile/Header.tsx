@@ -9,7 +9,7 @@ const Header = () => {
             <img className="header__search-icon header__icon" src="src/assets/icons8-search.svg" alt="search-icon" />
           </Link>
           <Link className="header__liked" to='/likedposts'>
-            <img className="header__liked-icon header__icon" src="src/assets/like.svg" alt="" />
+            <img className="header__liked-icon header__icon" src="src/assets/likew.svg" alt="" />
           </Link>
         </div>
     </header>

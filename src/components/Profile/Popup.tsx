@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { updateDoc, doc } from "firebase/firestore";
-import { db } from "../firebase-config";
+import { db } from "../../firebase-config";
 
 const Popup = () => {
   const [newName, setNewName] = useState("");

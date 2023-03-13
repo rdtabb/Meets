@@ -177,6 +177,19 @@ body {
     object-fit: cover;
   }
 
+  &__liked {
+    transition: all 200ms ease-in;
+    opacity: .6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__liked-icon {
+    object-fit: contain;
+  }
+
   &__routes {
     display: flex;
     gap: 1rem;

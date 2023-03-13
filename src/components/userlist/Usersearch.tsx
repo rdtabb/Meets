@@ -1,4 +1,4 @@
-import Userlist from "./userlist/Userlist";
+import Userlist from "./Userlist";
 
 type searchprops ={
     users: any

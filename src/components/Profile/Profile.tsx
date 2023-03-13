@@ -4,8 +4,9 @@ import Footer from "./Footer";
 import Popup from "./Popup";
 import AddPost from "./AddPost";
 import React, { Suspense } from "react";
+import ErrorBoundary from "../error/ErrorBoundary";
 
-const Shows = React.lazy(() => import("./Posts"))
+const Posts = React.lazy(() => import("./Posts"))
 
 type ProfileProps = {
   username: string;
@@ -50,9 +51,11 @@ const Profile = ({
           username={username}
           userPicture={userPicture}
         />
-        <Suspense fallback={<p>Loading...</p>}>
-          <Shows handleLike={handleLike} posts={posts} handleDelete={handleDelete} />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<p>Loading...</p>}>
+            <Posts handleLike={handleLike} posts={posts} handleDelete={handleDelete} />
+          </Suspense>
+        </ErrorBoundary>
       </main>
       <Footer />
       <Popup />

@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import Aheader from "./Aheader";
 import Adesc from "./Adesc";
 import Aposts from "./Aposts";
-import Footer from "../Footer";
+import Footer from "../Profile/Footer";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { doc, getDoc } from "firebase/firestore";
