@@ -51,8 +51,22 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     getLikedPosts().then(setLikedPosts);
   };
 
+  const handleDelete = async (id: string) => {
+    const newPosts = likedPosts.filter((post: any) => 
+      post.id != id
+    )
+    const updateLiked = {
+      liked: newPosts
+    }
+    const userdoc = doc(db, "users", uid);
+    await updateDoc(userdoc, updateLiked);
+    getLikedPosts().then(setLikedPosts);
+  }
+
   return (
-    <LikedContext.Provider value={{handleLike, setLikedPosts, likedPosts}}>{children}</LikedContext.Provider>
+    <LikedContext.Provider value={{handleLike, setLikedPosts, likedPosts, handleDelete}}>
+      {children}
+    </LikedContext.Provider>
   );
 };
 

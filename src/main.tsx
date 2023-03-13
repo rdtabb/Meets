@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary>
       <DataProvider>
-        <App />
+          <App />
       </DataProvider>
     </ErrorBoundary>
   </React.StrictMode>,

@@ -175,9 +175,6 @@ body {
     width: 30px;
     height: 30px;
     object-fit: cover;
-  }
-
-  &__liked {
     transition: all 200ms ease-in;
     opacity: .6;
 
@@ -194,7 +191,7 @@ body {
     display: flex;
     gap: 1rem;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
   }
 }
 
@@ -209,9 +206,9 @@ body {
 }
 
 .icons-wrapper {
-    display: flex;
-    gap: 1rem;
-  }
+  display: flex;
+  gap: 1rem;
+}
 
 @media (max-width: 890px) {
   .header {
@@ -603,7 +600,7 @@ body {
     display: grid;
     gap: 27px;
     margin-bottom: 40px;
-  } 
+  }
 
   &__input {
     background: transparent;
@@ -658,7 +655,7 @@ body {
 
   .popup__input {
     padding-bottom: 10px;
-}
+  }
 }
 
 /* ---------------------------------------- */
@@ -790,4 +787,3 @@ body {
     }
   }
 }
-

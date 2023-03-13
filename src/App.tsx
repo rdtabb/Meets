@@ -201,7 +201,11 @@ const App = () => {
           />
           <Route path="/usersearch" element={<Usersearch users={users} />} />
           <Route path="/user/:id" element={<Auser users={users} />} />
-          <Route path="/likedposts" element={<LikedPosts />}/>
+          <Route path="/likedposts" element={<LikedPosts 
+            userPicture={userPicture}
+            username={username}
+            status={status}
+          />}/>
         </Routes>
       </Router>
     </ErrorBoundary>

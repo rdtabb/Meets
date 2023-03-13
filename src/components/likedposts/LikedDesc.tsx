@@ -1,12 +1,10 @@
-type DescProps = {
-  username: string
-  userPicture: string
-  handlePopup: any
-  status: any
+type PropsType = {
+    username: string,
+    status: string,
+    userPicture: string
 }
 
-const Desc = ({username, userPicture, handlePopup, status}: DescProps) => {
-
+const LikedDesc = ({userPicture, username, status}: PropsType) => {
   return (
     <section className="profile">
         <div className="profile__wrapper">
@@ -14,14 +12,12 @@ const Desc = ({username, userPicture, handlePopup, status}: DescProps) => {
             <div className="profile__info">
                 <div className="profile__info-wrapper">
                     <h1 className="profile__header">{username}</h1>
-                    <button onClick={handlePopup} type="button" className="profile__edit-button"></button>
                 </div>
                 <p className="profile__description">{status}</p>
             </div>
         </div>
-        <button type="button" className="profile__add-button"></button>
     </section>
   )
 }
 
-export default Desc
+export default LikedDesc

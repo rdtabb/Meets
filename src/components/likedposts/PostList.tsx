@@ -4,23 +4,29 @@ import { Suspense } from "react"
 import ErrorBoundary from "../error/ErrorBoundary"
 
 const PostList = () => {
-    const { likedPosts }: any = useContext(LikedContext)
+    const { likedPosts, handleDelete }: any = useContext(LikedContext)
 
     return (
-        <div className="cards">
+        <section className="cards">
             <ErrorBoundary>
-                <Suspense fallback={<h1>Sorry, something went wrong</h1>}>
+                <Suspense fallback={<h1>Loading...</h1>}>
                     {likedPosts.map((post: any) => (
-                        <div key={post.id} className="card">
-                            <img className="card__image" src={post.imgsrc} alt="" />
-                            <h2 className="card__description">
-                                {post.city}
-                            </h2>
-                        </div>
+                        <article key={post.id} className="card">
+                            <img className="card__image" src={post.imgsrc} alt={post.city} />
+                            <div className="card__action">
+                               <h2 className="card__description">
+                                    {post.city}
+                                </h2> 
+                            </div>
+                            <button
+                                className="card__delete"
+                                onClick={() => handleDelete(post.id)}
+                            ></button>
+                        </article>
                     ))}
                 </Suspense>
             </ErrorBoundary>
-        </div>
+        </section>
     )
 }
 
