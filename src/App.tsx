@@ -4,6 +4,7 @@ import Profile from "./components/Profile/Profile";
 import Usersearch from "./components/userlist/Usersearch";
 import Auser from "./components/anotheruserpage/Auser";
 import LikedPosts from "./components/likedposts/LikedPosts";
+import Chat from "./components/chat/Chat";
 import Cookies from "universal-cookie";
 import {
   collection,
@@ -206,6 +207,7 @@ const App = () => {
             username={username}
             status={status}
           />}/>
+          <Route path="/chat" element={<Chat />}/>
         </Routes>
       </Router>
     </ErrorBoundary>

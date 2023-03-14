@@ -65,12 +65,13 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
 
   const explosives = document.querySelectorAll('.card__like--auser')
   explosives.forEach(explosive => {
-    explosive.addEventListener('click', () => {
+    explosive.addEventListener('click', (e) => {
+      console.log(e.target)
       explosive.classList.remove('explosive')
       explosive.classList.add('explosive')
       setTimeout(() => {
         explosive.classList.remove('explosive')
-      }, 500)
+      }, 400)
     })
   })
 
