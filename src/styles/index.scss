@@ -186,6 +186,7 @@ body {
 
   &__liked-icon {
     object-fit: contain;
+    opacity: .3;
   }
 
   &__routes {
@@ -365,6 +366,28 @@ body {
   }
 }
 
+.explosive {
+  animation: explode 400ms ease-in;
+}
+
+@keyframes explode {
+  0% {
+    scale: 1;
+    background-image: url(../assets/like.svg);
+  }
+  25% {
+    scale: .7;
+  }
+  50% {
+    scale: 1.3;
+    background-image: url(../assets/like-active.svg);
+  }
+  100% {
+    scale: 1;
+    background-image: url(../assets/like.svg);
+  }
+}
+
 /* ---------------------------------------- */
 /* cards component                          */
 /* ---------------------------------------- */
@@ -432,11 +455,14 @@ body {
   }
 
   &__like {
-    width: 22px;
-    height: 19px;
+    --sizing: 22px;
+
+    width: var(--sizing);
+    height: var(--sizing);
+    border-radius: 40%;
     border: none;
     background: transparent no-repeat center;
-    background-size: cover;
+    background-size: contain;
     transition: opacity 200ms ease-in;
     cursor: pointer;
 
@@ -828,5 +854,11 @@ body {
   &__heading {
     font-size: clamp(var(--fs-400), 10vw, var(--fs-700));
     font-weight: var(--fw-700);
+  }
+}
+
+@media (max-width: 40rem) {
+  .no-liked__heading {
+    text-align: center;
   }
 }

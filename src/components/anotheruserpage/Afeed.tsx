@@ -28,7 +28,7 @@ const Afeed = ({posts, username}: afeedprops) => {
                     backgroundImage: "url(../../../public/likep.svg)",
                   }
             }
-            className="card__like"
+            className="card__like card__like--auser"
             onClick={() => handleLike(post.city, post.imgsrc, username)}
           ></button>
         </div>

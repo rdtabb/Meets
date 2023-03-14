@@ -63,6 +63,17 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     getLikedPosts().then(setLikedPosts);
   }
 
+  const explosives = document.querySelectorAll('.card__like--auser')
+  explosives.forEach(explosive => {
+    explosive.addEventListener('click', () => {
+      explosive.classList.remove('explosive')
+      explosive.classList.add('explosive')
+      setTimeout(() => {
+        explosive.classList.remove('explosive')
+      }, 500)
+    })
+  })
+
   return (
     <LikedContext.Provider value={{handleLike, setLikedPosts, likedPosts, handleDelete}}>
       {children}
