@@ -1,8 +1,10 @@
 import { auth, provider } from "../firebase-config"
-import { signInWithPopup } from "firebase/auth"
+import { signInWithPopup, getAdditionalUserInfo } from "firebase/auth"
 import Cookies from "universal-cookie"
 import { collection, setDoc, doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase-config'
+import LikedContext from "../context/LikedContext"
+import { useContext } from "react"
 
 type AuthProps = {
     setIsAuth: any,
@@ -14,22 +16,27 @@ type AuthProps = {
 
 export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) => {
     const cookies = new Cookies()
+    const { setLikedPosts }: any = useContext(LikedContext)
     const usersDataRef = collection(db, "users")
     
     const signin = async () => {
         try {
             const response = await signInWithPopup(auth, provider)
+            
+            const info = getAdditionalUserInfo(response)
+            const isNew: any = info?.isNewUser
+
             cookies.set("auth-token", response.user.refreshToken)
             const name: string | null = response.user.displayName
             const imgurl: string | null = response.user.photoURL
-            const id: any = response.user.uid
+            const id: string = response.user.uid
             const docref: any = doc(db, "users", `${id}`)
             const docSnap: any = await getDoc(docref)
 
             localStorage.setItem("userpicture", `${imgurl}`)
             localStorage.setItem("uid", `${id}`)
 
-            if (docref.exists) {
+            if (!isNew) {
                 try {
                     const dataset: any = docSnap.data()
                     const posts = dataset.newPosts
@@ -39,6 +46,7 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                     setPosts(posts)
                     setStatus(status)
                     setUsername(name)
+                    setLikedPosts(likedPosts)
                 } catch (err) {
                     console.log(err)
                 } finally {
@@ -46,7 +54,7 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                 }
             }  
 
-            if (!docref.exists) {
+            if (isNew) {
                 try {
                     await setDoc(docref, {
                         name: name,
@@ -61,8 +69,6 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                     setIsAuth(true)
                 }
             }  
-
-            //used to be docsna  
         } catch(err) {
             console.log(err)
         }
