@@ -402,6 +402,22 @@ body {
   margin: 0 0 66px;
 }
 
+.cards--empty {
+  min-height: 40vw;
+  place-items: center;
+
+  &__wrapper {
+    display: grid;
+    place-items: center;
+  }
+
+  &__header {
+    font-size: var(--fs-800);
+    font-weight: var(--fw-700);
+    text-align: center;
+  }
+}
+
 @media (max-width: 890px) {
   .cards {
     padding-inline: 19px;
@@ -862,3 +878,7 @@ body {
     text-align: center;
   }
 }
+
+/* ---------------------------------------- */
+/* chat component                           */
+/* ---------------------------------------- */

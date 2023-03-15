@@ -1,37 +1,37 @@
 import { auth, provider } from "../firebase-config"
-import { signInWithPopup, getAdditionalUserInfo } from "firebase/auth"
+import { signInWithPopup, getAdditionalUserInfo, AdditionalUserInfo } from "firebase/auth"
 import Cookies from "universal-cookie"
-import { collection, setDoc, doc, getDoc } from 'firebase/firestore'
+import { collection, setDoc, doc, getDoc, DocumentReference, DocumentData, DocumentSnapshot } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import LikedContext from "../context/LikedContext"
 import { useContext } from "react"
 
 type AuthProps = {
-    setIsAuth: any,
-    setUsername: any,
-    setUserPicture: any
-    setPosts: any
-    setStatus: any
+    setIsAuth: React.Dispatch<any>,
+    setUsername: React.Dispatch<React.SetStateAction<string>>,
+    setUserPicture: React.Dispatch<React.SetStateAction<string>>
+    setPosts: React.Dispatch<any>
+    setStatus: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) => {
     const cookies = new Cookies()
     const { setLikedPosts }: any = useContext(LikedContext)
-    const usersDataRef = collection(db, "users")
+    // const usersDataRef = collection(db, "users")
     
     const signin = async () => {
         try {
             const response = await signInWithPopup(auth, provider)
             
-            const info = getAdditionalUserInfo(response)
-            const isNew: any = info?.isNewUser
+            const info: AdditionalUserInfo | null = getAdditionalUserInfo(response)
+            const isNew: boolean | undefined = info?.isNewUser
 
             cookies.set("auth-token", response.user.refreshToken)
             const name: string | null = response.user.displayName
             const imgurl: string | null = response.user.photoURL
             const id: string = response.user.uid
-            const docref: any = doc(db, "users", `${id}`)
-            const docSnap: any = await getDoc(docref)
+            const docref: DocumentReference<DocumentData> = doc(db, "users", `${id}`)
+            const docSnap: DocumentSnapshot<DocumentData> = await getDoc(docref)
 
             localStorage.setItem("userpicture", `${imgurl}`)
             localStorage.setItem("uid", `${id}`)
@@ -61,7 +61,8 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                         imgurl: imgurl,
                         id,
                         newPosts: [],
-                        liked: []
+                        liked: [],
+                        newStatus: "Add your status!"
                     })
                 } catch (err) {
                     console.log(err)

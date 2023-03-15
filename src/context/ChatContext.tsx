@@ -1,6 +1,6 @@
 import { createContext, ReactElement, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase-config";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { getDoc, doc, updateDoc, FieldValue, addDoc, setDoc } from "firebase/firestore";
 import { DocumentReference, DocumentData, DocumentSnapshot } from "firebase/firestore";
 
 export const ChatContext = createContext({})
@@ -11,6 +11,7 @@ type ChildrenType = {
 
 export const ChatProvider = ({children}: ChildrenType) => {
     const [messages, setMessages] = useState<any>([])
+    const [newMessage, setNewMessage] = useState("")
 
     const getMessages = useCallback(async () => {
         try {
@@ -28,29 +29,35 @@ export const ChatProvider = ({children}: ChildrenType) => {
     }, [getMessages])
 
     type SubmitProps = {
+        e: SubmitEvent
         creator: string,
-        image: string,
+        image: string | null | undefined,
         message: string,
-        timestamp: string,
+        timestamp: FieldValue,
         userpair: string,
     }
 
-    const handleSubmit = async ({creator, image, message, timestamp, userpair}: SubmitProps) => {
-        const docref = doc(db, "messages", "kMbtyrwvoMN1IKsxqpNX")
-        const newMessage = {
-            creator,
-            image,
-            message,
-            timestamp,
-            userpair
+    const handleSubmit = async (e: any, creator: any, image: any, message: any, timestamp: any, userpair: any) => {
+        e.preventDefault()
+        try {
+            const docref: any = doc(db, "messages", "kMbtyrwvoMN1IKsxqpNX")
+            const newMessage = {
+                creator,
+                image,
+                message,
+                timestamp,
+                userpair
+            }
+            await setDoc(docref, {
+                newmessage: newMessage
+            })
+        } catch(err) {
+            console.log(err)
         }
-        await updateDoc(docref, {
-            message: newMessage
-        })
     }
 
     return (
-        <ChatContext.Provider value={{messages, handleSubmit}}>
+        <ChatContext.Provider value={{messages, handleSubmit, newMessage, setNewMessage}}>
             {children}
         </ChatContext.Provider>
     )

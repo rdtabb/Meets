@@ -44,22 +44,24 @@ const App = () => {
     getPosts().then(setPosts)
   }, [getPosts]);
 
+
+  const getSetNameStatus = useCallback(async () => {
+    try {
+      const userdoc: any = doc(db, "users", uid);
+      const dataSnap = getDoc(userdoc);
+      const dataset: any = (await dataSnap).data();
+      const status = await dataset.newStatus;
+      const name = await dataset.name;
+      setUsername(name);
+      setStatus(status);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [username, status, posts])
+
   useEffect(() => {
-    const getSetNameStatus = async () => {
-      try {
-        const userdoc: any = doc(db, "users", uid);
-        const dataSnap = getDoc(userdoc);
-        const dataset: any = (await dataSnap).data();
-        const status = await dataset.newStatus;
-        const name = await dataset.name;
-        setUsername(name);
-        setStatus(status);
-      } catch (err) {
-        console.error(err);
-      }
-    };
     getSetNameStatus();
-  }, [username, status]);
+  }, [getSetNameStatus]);
 
   const uid: any = localStorage.getItem("uid");
 
@@ -207,7 +209,7 @@ const App = () => {
             username={username}
             status={status}
           />}/>
-          <Route path="/chat" element={<Chat />}/>
+          <Route path="/chat" element={<Chat username={username} />}/>
         </Routes>
       </Router>
     </ErrorBoundary>

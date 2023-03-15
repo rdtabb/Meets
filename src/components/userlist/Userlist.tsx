@@ -22,7 +22,7 @@ const Userlist = ({users}: userlistprops) => {
                         </article>
                     </div>
                     <div className="user__icons">
-                        <img className="user__chat" src="src/assets/chats.svg" alt="" />
+                        <Link to="/chat" state={{ name: user.name }}><img className="user__chat" src="src/assets/chats.svg" alt="" /></Link>
                         <Link to={`/user/${user.id}`}><img className="user__icon" src="src/assets/profile-icon.svg" alt="" /></Link>
                     </div>
                 </li>

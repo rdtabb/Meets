@@ -1,10 +1,12 @@
-
+import ErrorBoundary from "../../error/ErrorBoundary"
 
 const Messages = () => {
   return (
-    <div>
-      
-    </div>
+    <ErrorBoundary>
+      <div>
+        list of messages here
+      </div>
+    </ErrorBoundary>
   )
 }
 

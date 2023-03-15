@@ -25,15 +25,13 @@ const AddPost = ({
           <div className="popup__inputs">
             <input
               placeholder="Enter picture url"
-              required
               type="text"
               className="popup__input"
               value={newPostImage}
               onChange={(e) => setNewPostImage(e.target.value)}
             ></input>
             <input
-              placeholder="Edit title of the post"
-              required
+              placeholder="Add post title"
               type="text"
               className="popup__input"
               value={newPostTitle}

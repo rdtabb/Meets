@@ -1,13 +1,37 @@
 import { useContext } from "react"
-import {ChatContext} from '../../../context/ChatContext'
+import { ChatContext } from '../../../context/ChatContext'
+import { auth } from "../../../firebase-config"
+import { useLocation } from "react-router-dom"
+import { FieldValue, serverTimestamp } from "firebase/firestore"
 
-const SubmitMessage = () => {
-  const { handleSubmit }: any = useContext(ChatContext)
+type ContextPropsType = {
+  setNewMessage: React.Dispatch<React.SetStateAction<string>>
+  newMessage: string
+  handleSubmit: () => Promise<void>
+}
+
+type PropsType = {
+  username: string
+}
+
+const SubmitMessage = ({ username }: PropsType) => {
+  const { setNewMessage, newMessage, handleSubmit }: any = useContext(ChatContext)
+
+  const image: string | null | undefined = auth.currentUser?.photoURL
+  const { state } = useLocation()
+  const name = state?.name
+  const timestamp: FieldValue = serverTimestamp()
+  const userpair: string = `${username}-${name}`
+  const loweruserpair: string = userpair.toLowerCase()
 
   return (
-    <div>
-      
-    </div>
+    <section className="chat__form">
+      <form 
+        onSubmit={(e) => handleSubmit(e, username, image, newMessage, timestamp, loweruserpair)}
+      >
+        <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)}/>
+      </form>
+    </section>
   )
 }
 
