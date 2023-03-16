@@ -25,15 +25,6 @@ export const ChatProvider = ({children}: ChildrenType) => {
     //     }
     // }, [])
 
-    // useEffect(() => {
-    //     getMessages().then(setMessages)
-    // }, [getMessages])
-
-    // useEffect(() => {
-    //     console.log(`updated userpair to the ${userpair}`)
-    //     console.log(`updated reversed to the ${reversed}`)
-    // }, [userpair, reversed])
-
     const getMessages = useCallback(async () => {
             try {
                 const messagedoc: any = collection(db, "messages")
@@ -68,7 +59,7 @@ export const ChatProvider = ({children}: ChildrenType) => {
                 randomId
             })
             setNewMessage("")
-            getMessages()
+            getMessages().then(setMessages)
         } catch(err) {
             console.log(`Error in ChatContext in handleSubmit: ${err}`)
         }
