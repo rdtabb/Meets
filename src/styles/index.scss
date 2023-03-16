@@ -882,3 +882,56 @@ body {
 /* ---------------------------------------- */
 /* chat component                           */
 /* ---------------------------------------- */
+
+.chat {
+  display: grid;
+  gap: 2.5rem;
+  overflow-y: scroll;
+
+  &__meslist {
+    list-style: none;
+    display: grid;
+    align-content: end;
+    gap: 1rem;
+    height: 50vh;
+    overflow-y: scroll;
+  }
+}
+
+.item {
+  height: fit-content;
+
+  &__wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  &__info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+
+  &__creator {
+    opacity: .8;
+  }
+}
+
+.chat__form {
+  input {
+    width: 100%;
+    padding: .75rem 2rem;
+    border-radius: 100vmax;
+    border: 1px solid hsl(var(--clr-primary-900));
+    background-color: hsl(var(--clr-primary-100));
+    color: hsl(var(--clr-primary-900));
+    transition: all 200ms ease-in;
+
+    &:focus {
+      outline: none;
+      border: 1px solid hsl(300, 88%, 46%);
+    }
+  }
+}

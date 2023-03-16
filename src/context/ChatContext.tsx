@@ -1,6 +1,6 @@
 import { createContext, ReactElement, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase-config";
-import { getDoc, doc, updateDoc, FieldValue, addDoc, setDoc } from "firebase/firestore";
+import { getDoc, doc, updateDoc, FieldValue, addDoc, setDoc, collection, getDocs } from "firebase/firestore";
 import { DocumentReference, DocumentData, DocumentSnapshot } from "firebase/firestore";
 
 export const ChatContext = createContext({})
@@ -15,10 +15,10 @@ export const ChatProvider = ({children}: ChildrenType) => {
 
     const getMessages = useCallback(async () => {
         try {
-            const messagedoc: DocumentReference<DocumentData> = doc(db, "messages", "kMbtyrwvoMN1IKsxqpNX")
-            const dataSnap: DocumentSnapshot<DocumentData> = await getDoc(messagedoc)
-            const dataset: DocumentData | undefined = dataSnap.data()
-            return dataset
+            const messagedoc: any = collection(db, "messages")
+            const dataSnap: any = await getDocs(messagedoc)
+            const dataset = dataSnap.docs.map((doc: any) => ({ ...doc.data() }))
+            return dataset.reverse()
         } catch (err) {
             console.log(`error in the ChatContext: ${err}`)
         }
@@ -27,6 +27,8 @@ export const ChatProvider = ({children}: ChildrenType) => {
     useEffect(() => {
         getMessages().then(setMessages)
     }, [getMessages])
+
+    const randomId: number = Math.floor((Math.random() * 100000000) + 1)
 
     type SubmitProps = {
         e: SubmitEvent
@@ -40,16 +42,14 @@ export const ChatProvider = ({children}: ChildrenType) => {
     const handleSubmit = async (e: any, creator: any, image: any, message: any, timestamp: any, userpair: any) => {
         e.preventDefault()
         try {
-            const docref: any = doc(db, "messages", "kMbtyrwvoMN1IKsxqpNX")
-            const newMessage = {
+            const docref: any = collection(db, "messages")
+            await addDoc(docref, {
                 creator,
                 image,
                 message,
                 timestamp,
-                userpair
-            }
-            await setDoc(docref, {
-                newmessage: newMessage
+                userpair,
+                randomId
             })
         } catch(err) {
             console.log(err)

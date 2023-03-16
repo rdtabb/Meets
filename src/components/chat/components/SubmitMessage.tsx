@@ -4,10 +4,10 @@ import { auth } from "../../../firebase-config"
 import { useLocation } from "react-router-dom"
 import { FieldValue, serverTimestamp } from "firebase/firestore"
 
-type ContextPropsType = {
-  setNewMessage: React.Dispatch<React.SetStateAction<string>>
-  newMessage: string
-  handleSubmit: () => Promise<void>
+interface ContextPropsType {
+  setNewMessage?: any
+  newMessage?: string
+  handleSubmit?: any
 }
 
 type PropsType = {
@@ -29,7 +29,7 @@ const SubmitMessage = ({ username }: PropsType) => {
       <form 
         onSubmit={(e) => handleSubmit(e, username, image, newMessage, timestamp, loweruserpair)}
       >
-        <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)}/>
+        <input placeholder="Type your message here..." type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)}/>
       </form>
     </section>
   )
