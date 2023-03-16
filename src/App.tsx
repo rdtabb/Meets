@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile/Profile";
 import Usersearch from "./components/userlist/Usersearch";
@@ -36,14 +36,13 @@ const App = () => {
       const posts: any = await dataset.newPosts;
       return posts
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   }, [])
 
   useEffect(() => {
     getPosts().then(setPosts)
   }, [getPosts]);
-
 
   const getSetNameStatus = useCallback(async () => {
     try {

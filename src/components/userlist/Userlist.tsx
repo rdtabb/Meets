@@ -7,7 +7,7 @@ type userlistprops = {
 const Userlist = ({users}: userlistprops) => {
   return (
     <main className="search">
-        <form className="search__form" onSubmit={(e) => e.preventDefault()} action="">
+        <form className="search__form" onSubmit={(e) => e.preventDefault()}>
             <input className="search__bar" type="text" placeholder="Search for users"/>
             <Link className="search__link" to='/'>Profile</Link>
         </form>

@@ -886,15 +886,15 @@ body {
 .chat {
   display: grid;
   gap: 2.5rem;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 
   &__meslist {
     list-style: none;
     display: grid;
     align-content: end;
     gap: 1rem;
-    height: 50vh;
-    overflow-y: scroll;
+    // height: 50vh;
+    // overflow-y: scroll;
   }
 }
 
@@ -916,6 +916,11 @@ body {
 
   &__creator {
     opacity: .8;
+  }
+
+  &__icon {
+    border-radius: 50%;
+    object-fit: cover;
   }
 }
 
