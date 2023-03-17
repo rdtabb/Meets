@@ -16,7 +16,8 @@ import {
 import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/error/ErrorBoundary";
-const cookies = new Cookies();
+
+export const cookies = new Cookies();
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
@@ -199,12 +200,14 @@ const App = () => {
                 newPostTitle={newPostTitle}
                 handleNewPost={handleNewPost}
                 handleDelete={handleDelete}
+                setIsAuth={setIsAuth}
               />
             }
           />
           <Route path="/usersearch" element={<Usersearch users={users} />} />
           <Route path="/user/:id" element={<Auser users={users} />} />
           <Route path="/likedposts" element={<LikedPosts 
+            setIsAuth={setIsAuth}
             userPicture={userPicture}
             username={username}
             status={status}

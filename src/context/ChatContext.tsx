@@ -1,6 +1,6 @@
 import { createContext, ReactElement, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase-config";
-import { addDoc, collection, getDocs, onSnapshot, query, where, getDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, query, where, getDoc, orderBy } from "firebase/firestore";
 
 export const ChatContext = createContext({})
 
@@ -17,7 +17,7 @@ export const ChatProvider = ({children}: ChildrenType) => {
     const getMessages = useCallback(async () => {
             try {
                 const messagedoc: any = collection(db, "messages")
-                const querymessages: any = query(messagedoc, where("userpair", "in", [`${userpair}`, `${reversed}`]))
+                const querymessages: any = query(messagedoc, where("userpair", "in", [`${userpair}`, `${reversed}`]), orderBy("timestamp"))
                 const snaps: any = await getDocs(querymessages)
                 let messagesarr: any = []
                 snaps.forEach((snap: any) => {

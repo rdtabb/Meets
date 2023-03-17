@@ -11,15 +11,16 @@ type PropsType = {
     username: string,
     status: string,
     userPicture: string
+    setIsAuth: React.Dispatch<any>
 }
 
-const LikedPosts = ({username, status, userPicture}: PropsType) => {
+const LikedPosts = ({username, status, userPicture, setIsAuth}: PropsType) => {
     const { likedPosts }: any = useContext(LikedContext)
 
     return (
         <ErrorBoundary>
             <div className="container">
-                <LikedHeader />
+                <LikedHeader setIsAuth={setIsAuth} />
                 <LikedDesc 
                     userPicture={userPicture} 
                     username={username} 

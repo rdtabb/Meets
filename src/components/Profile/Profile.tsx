@@ -22,7 +22,8 @@ type ProfileProps = {
   newPostImage: any;
   newPostTitle: any;
   handleNewPost: any;
-  handleDelete: any
+  handleDelete: any;
+  setIsAuth: React.Dispatch<any>
 };
 
 const Profile = ({
@@ -31,19 +32,20 @@ const Profile = ({
   posts,
   handleLike,
   handlePopup,
-  setUsername,
   status,
-  setStatus,
   setNewPostImage,
   setNewPostTitle,
   newPostImage,
   newPostTitle,
   handleNewPost,
-  handleDelete
+  handleDelete,
+  setIsAuth
 }: ProfileProps) => {
   return (
     <div className="container">
-      <Header />
+      <ErrorBoundary>
+        <Header setIsAuth={setIsAuth} />
+      </ErrorBoundary>
       <main className="main">
         <Desc
           status={status}
