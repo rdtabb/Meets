@@ -52,6 +52,7 @@ const App = () => {
       const status = await dataset.newStatus;
       const name = await dataset.name;
       setUsername(name);
+      localStorage.setItem("username", name)
       setStatus(status);
     } catch (err) {
       console.error(err);

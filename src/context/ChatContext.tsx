@@ -1,6 +1,6 @@
 import { createContext, ReactElement, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase-config";
-import { FieldValue, addDoc, collection, getDocs, onSnapshot, query, where, getDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, query, where, getDoc } from "firebase/firestore";
 
 export const ChatContext = createContext({})
 
@@ -11,24 +11,13 @@ type ChildrenType = {
 export const ChatProvider = ({children}: ChildrenType) => {
     const [messages, setMessages] = useState<any>([])
     const [newMessage, setNewMessage] = useState("")
-    const [userpair, setUserpair] = useState<string>("")
-    const [reversed, setReversed] = useState<string>("")
-
-    // const getMessages = useCallback(async () => {
-    //     try {
-    //         const messagedoc: any = collection(db, "messages")
-    //         const dataSnap: any = await getDocs(messagedoc)
-    //         const dataset = dataSnap.docs.map((doc: any) => ({ ...doc.data() }))
-    //         return dataset
-    //     } catch (err) {
-    //         console.log(`error in the ChatContext in getMessages(): ${err}`)
-    //     }
-    // }, [])
+    const [userpair, setUserpair] = useState<string | null>(localStorage.getItem("userpair") || "")
+    const [reversed, setReversed] = useState<string | null>(localStorage.getItem("reversed") || "")
 
     const getMessages = useCallback(async () => {
             try {
                 const messagedoc: any = collection(db, "messages")
-                const querymessages: any = query(messagedoc, where("userpair", "in", [`Green Tea-Rinat Tabaev`, `Rinat Tabaev-Green Tea`]))
+                const querymessages: any = query(messagedoc, where("userpair", "in", [`${userpair}`, `${reversed}`]))
                 const snaps: any = await getDocs(querymessages)
                 let messagesarr: any = []
                 snaps.forEach((snap: any) => {
@@ -36,7 +25,7 @@ export const ChatProvider = ({children}: ChildrenType) => {
                 })
                 return messagesarr
             } catch (err) {
-                console.error(err)
+                console.error(`Error in ChatContext in getMessages(): ${err}`)
             }
     }, [])
 

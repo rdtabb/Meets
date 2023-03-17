@@ -19,14 +19,10 @@ const SubmitMessage = ({ username }: PropsType) => {
   const normaluserpair: string = `${username}-${name}`
   const reverseduserpair: string = `${name}-${username}`
 
-  // useEffect(() => {
-  //   console.log(`This is const NORMALUSERPAIT before setting state: ${normaluserpair}`)
-  //   console.log(`This is const REVERSEDUSERPAIR before setting state: ${reverseduserpair}`)
-  //   setReversed(reverseduserpair)
-  //   setUserpair(normaluserpair)
-  //   console.log(`This is USERPAIR state itself: ${userpair}`)
-  //   console.log(`This is REVERSED state itself: ${reversed}`)
-  // }, [])
+  useEffect(() => {
+    localStorage.setItem("userpair", normaluserpair)
+    localStorage.setItem("reversed", reverseduserpair)
+  })
 
   return (
     <section className="chat__form">
