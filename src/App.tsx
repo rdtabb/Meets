@@ -35,7 +35,7 @@ const App = () => {
       const dataSnap = getDoc(userdoc);
       const dataset: any = (await dataSnap).data();
       const posts: any = await dataset.newPosts;
-      return posts
+      return posts.reverse()
     } catch (err) {
       console.log(err);
     }
@@ -121,7 +121,12 @@ const App = () => {
       return;
     }
 
-    const id = posts.length ? posts[posts.length - 1].id + 1 : 1;
+    const usedoc: any = doc(db, "users", uid);
+    const dataSnap = getDoc(usedoc);
+    const dataset: any = (await dataSnap).data();
+    const nposts: any = await dataset.newPosts;
+
+    const id = nposts.length ? nposts[nposts.length - 1].id + 1 : 1;
     const newPost = {
       city: `${newPostTitle}`,
       id,

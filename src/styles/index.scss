@@ -945,7 +945,29 @@ body {
   }
 }
 
+.form__img {
+  --spacing: 3.25rem;
+  width: var(--spacing);
+  height: var(--spacing);
+  object-fit: cover;
+  object-position: bottom center;
+  transition: all 200ms ease-in;
+  cursor: pointer;
+
+  &:hover {
+    opacity: .6;
+  }
+}
+
 .chat__form {
+  form {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+
   input {
     width: 100%;
     padding: .75rem 2rem;
