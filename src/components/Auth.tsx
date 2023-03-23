@@ -14,7 +14,7 @@ type AuthProps = {
     setStatus: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) => {
+export const Auth = ({setIsAuth, setUsername, setPosts, setStatus, setUserPicture}: AuthProps) => {
     const cookies = new Cookies()
     const { setLikedPosts }: any = useContext(LikedContext)
     // const usersDataRef = collection(db, "users")
@@ -33,7 +33,6 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
             const docref: DocumentReference<DocumentData> = doc(db, "users", `${id}`)
             const docSnap: DocumentSnapshot<DocumentData> = await getDoc(docref)
 
-            localStorage.setItem("userpicture", `${imgurl}`)
             localStorage.setItem("uid", `${id}`)
 
             if (!isNew) {
@@ -43,10 +42,12 @@ export const Auth = ({setIsAuth, setUsername, setPosts, setStatus}: AuthProps) =
                     const status = dataset.newStatus
                     const name = dataset.name
                     const likedPosts = dataset.liked
+                    const picture = dataset.imgurl
                     setPosts(posts)
                     setStatus(status)
                     setUsername(name)
                     setLikedPosts(likedPosts)
+                    setUserPicture(picture)
                 } catch (err) {
                     console.log(err)
                 } finally {

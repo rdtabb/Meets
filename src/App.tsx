@@ -12,6 +12,7 @@ import {
   updateDoc,
   doc,
   getDoc,
+  onSnapshot
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -25,7 +26,7 @@ const App = () => {
   const [newPostTitle, setNewPostTitle] = useState("");
   const [newPostImage, setNewPostImage] = useState("");
   const [username, setUsername] = useState("");
-  const [userPicture, setUserPicture] = useState(localStorage.getItem("userpicture") || "");
+  const [userPicture, setUserPicture] = useState("");
   const [status, setStatus] = useState("Add status to profile");
   const [posts, setPosts] = useState<any>([]);
 
@@ -60,18 +61,31 @@ const App = () => {
     }
   }, [username, status, posts])
 
-  useEffect(() => {
-    getSetNameStatus();
-  }, [getSetNameStatus]);
+  const getUserPicture = useCallback(async () => {
+    try {
+      const userdoc: any = doc(db, "users", uid);
+      const dataSnap = getDoc(userdoc);
+      const dataset: any = (await dataSnap).data();
+      const picture = await dataset.imgurl
+      setUserPicture(picture)
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
 
   const uid: any = localStorage.getItem("uid");
+
+  onSnapshot(doc(db, "users", `${uid}`), () => {
+    getSetNameStatus()
+    getUserPicture()
+  })
 
   const handleLike = async (id: number) => {
     const newPosts: any = posts.map((post: any) =>
       post.id == id ? { ...post, liked: !post.liked } : post
     );
     const newpostsdb = {
-      newPosts: newPosts,
+      newPosts: newPosts.reverse(),
     };
     const userdoc = doc(db, "users", `${uid}`);
     await updateDoc(userdoc, newpostsdb);
@@ -152,7 +166,7 @@ const App = () => {
   const handleDelete = async (id: any) => {
     const newPosts = posts.filter((post: any) => post.id != id);
     const newpostsdb = {
-      newPosts: newPosts,
+      newPosts: newPosts.reverse(),
     };
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newpostsdb);

@@ -21,7 +21,7 @@ const Messages = () => {
             </li>
           ))
         ) : (
-          <p>no messages</p>
+          <p className="chat__empty">You have no messages with that user!</p>
         )}
         
       </ul>

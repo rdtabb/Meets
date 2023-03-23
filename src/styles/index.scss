@@ -907,15 +907,18 @@ body {
 .chat {
   display: grid;
   gap: 2.5rem;
-  // overflow-y: scroll;
 
   &__meslist {
     list-style: none;
     display: grid;
     align-content: end;
     gap: 1rem;
-    // height: 50vh;
-    // overflow-y: scroll;
+  }
+
+  &__empty {
+    text-align: center;
+    font-weight: var(--fw-600);
+    font-size: clamp(var(--fs-400), 7vw, var(--fs-650));
   }
 }
 
@@ -946,16 +949,21 @@ body {
 }
 
 .form__img {
-  --spacing: 3.25rem;
+  --spacing: 2.5rem;
   width: var(--spacing);
   height: var(--spacing);
   object-fit: cover;
   object-position: bottom center;
   transition: all 200ms ease-in;
   cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: .6;
 
   &:hover {
-    opacity: .6;
+    opacity: 1;
   }
 }
 
@@ -965,8 +973,8 @@ body {
     gap: 1rem;
     justify-content: space-between;
     align-items: center;
+    position: relative;
   }
-
 
   input {
     width: 100%;

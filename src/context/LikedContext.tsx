@@ -68,9 +68,6 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     explosive.addEventListener('click', (e) => {
       explosive.classList.remove('explosive')
       explosive.classList.add('explosive')
-      // setTimeout(() => {
-      //   explosive.classList.remove('explosive')
-      // }, 400)
     })
   })
 
