@@ -40,7 +40,7 @@ const App = () => {
     } catch (err) {
       console.log(err);
     }
-  }, [])
+  }, [isAuth])
 
   useEffect(() => {
     getPosts().then(setPosts)
@@ -71,7 +71,7 @@ const App = () => {
     } catch (err) {
       console.error(err)
     }
-  }, [])
+  }, [isAuth])
 
   const uid: any = localStorage.getItem("uid");
 
