@@ -7,10 +7,18 @@ type userlistprops = {
 const Userlist = ({users}: userlistprops) => {
   return (
     <main className="search">
-        <form className="search__form" onSubmit={(e) => e.preventDefault()}>
-            <input className="search__bar" type="text" placeholder="Search for users"/>
-            <Link className="search__link" to='/'>Profile</Link>
-        </form>
+        <header className="header header--search">
+            <img src="src/assets/meets-logo.svg" alt="Meets-logo" className="header__logo"></img>
+            <div className="header__routes">
+                <Link to="/">
+                    <img
+                        className="header__icon"
+                        src="../../../public/profile-icon.svg"
+                        alt=""
+                    />
+                </Link>
+            </div>
+        </header>
         <ul className="search__userlist">
             {users.map((user: any) => (
                 <li key={user.id} className="user">

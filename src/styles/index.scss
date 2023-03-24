@@ -744,14 +744,6 @@ body {
   width: min(var(--width), 100% - var(--padding) * 2);
   margin-inline: auto;
   display: grid;
-  gap: clamp(2rem, 7vw, 5rem);
-
-  &__form {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 3rem;
-  }
 
   &__link {
     min-width: fit-content;
@@ -766,35 +758,13 @@ body {
       opacity: .6;
     }
   }
-
-  &__bar {
-    padding: .75rem 2rem;
-    width: 100%;
-    background: transparent;
-    border: 1px solid hsl(var(--clr-primary-900), .2);
-    border-radius: 100vmax;
-    color: hsl(var(--clr-primary-900));
-    transition: all 200ms ease-in;
-
-    &:focus,
-    &:focus-visible {
-      outline: none;
-      border: 1px solid hsl(300, 88%, 46%);
-    }
-
-    &::selection {
-      background-color: hsl(var(--clr-primary-900));
-      color: hsl(var(--clr-primary-100));
-    }
-  }
-
-  &__userlist {
-    list-style: none;
-    display: grid;
-    gap: 1rem;
-  }
 }
 
+.search__userlist {
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+}
 /* ---------------------------------------- */
 /* user component                           */
 /* ---------------------------------------- */
@@ -881,6 +851,7 @@ body {
   display: grid;
   place-items: center;
   margin-bottom: 3rem;
+  text-align: center;
 
   img {
     max-width: 50%;
@@ -920,6 +891,22 @@ body {
 @media (max-width: 40rem) {
   .no-liked__heading {
     text-align: center;
+  }
+}
+
+/* ---------------------------------------- */
+/* error in errorboundary                   */
+/* ---------------------------------------- */
+
+.error {
+  display: grid;
+  place-items: center;
+  margin-block: 3rem;
+  text-align: center;
+
+  &__heading {
+    font-size: clamp(var(--fs-400), 10vw, var(--fs-700));
+    font-weight: var(--fw-700);
   }
 }
 
