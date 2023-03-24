@@ -1,11 +1,12 @@
 type PropsType = {
-    name: string
+  name: string
 }
 
 const NoPosts = ({name}: PropsType) => {
   return (
-    <section>
-        <p>Oops, {name} has no posts!</p>
+    <section className="auser__noposts">
+      <img src="src/assets/box.svg" alt="" />
+      <p>Oops, {name} has no posts!</p>
     </section>
   )
 }

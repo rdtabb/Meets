@@ -62,6 +62,9 @@ body {
   font-weight: var(--fw-400);
   font-size: var(--fs-400);
   padding: 45px 0 60px;
+  min-height: 100vh;
+
+  display: grid;
 }
 
 .container {
@@ -75,7 +78,7 @@ body {
 #root {
   display: grid;
   place-items: center;
-  min-height: 100vh;
+  min-height: 40vh;
 }
 
 #root:has(.header-profile) {
@@ -866,6 +869,26 @@ body {
   .user__chat,
   .user__icon {
     object-fit: contain;
+  }
+}
+
+/* ---------------------------------------- */
+/* auser__noposts component                 */
+/* ---------------------------------------- */
+
+.auser__noposts {
+  min-height: 40vh;
+  display: grid;
+  place-items: center;
+  margin-bottom: 3rem;
+
+  img {
+    max-width: 50%;
+  }
+
+  p {
+    font-size: clamp(var(--fs-400), 10vw, var(--fs-700));
+    font-weight: var(--fw-700);
   }
 }
 

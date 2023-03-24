@@ -184,15 +184,13 @@ const App = () => {
   if (!isAuth) {
     return (
       <ErrorBoundary>
-        <div className="app">
-          <Auth
-            setPosts={setPosts}
-            setStatus={setStatus}
-            setIsAuth={setIsAuth}
-            setUsername={setUsername}
-            setUserPicture={setUserPicture}
-          />
-        </div>
+        <Auth
+          setPosts={setPosts}
+          setStatus={setStatus}
+          setIsAuth={setIsAuth}
+          setUsername={setUsername}
+          setUserPicture={setUserPicture}
+        />
       </ErrorBoundary>
     );
   }
