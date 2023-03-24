@@ -1,4 +1,5 @@
 # Meets network
+https://user-images.githubusercontent.com/121361578/227626358-8bc2ac9a-7871-4306-acb0-b6237fa0bae0.mp4
 
 ## Description
 Meets is the social network where after signin in with Google account you can edit your profile name and status, add posts with photos and titles, view other users profiles and text them
