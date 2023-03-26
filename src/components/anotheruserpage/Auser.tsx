@@ -3,6 +3,7 @@ import Aheader from "./Aheader";
 import Adesc from "./Adesc";
 import Aposts from "./Aposts";
 import Footer from "../Profile/Footer";
+import ImagePopup from "../Profile/ImagePopup";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { doc, getDoc } from "firebase/firestore";
@@ -36,6 +37,7 @@ const Auser = ({ users }: auserprops) => {
       <Adesc name={user.name} status={user.newStatus} url={user.imgurl} />
       <Aposts posts={userPosts} name={user.name} />
       <Footer />
+      <ImagePopup />
     </div>
   );
 };

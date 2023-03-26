@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import LikedContext from "../../context/LikedContext"
+import GeneralContext from "../../context/GeneralContext"
 
 type afeedprops = {
   posts: any
@@ -7,14 +8,16 @@ type afeedprops = {
 }
 
 const Afeed = ({posts, username}: afeedprops) => {
-
   const { handleLike }: any = useContext(LikedContext)
+  const { openImagePopup }: any = useContext(GeneralContext)
 
   return (
     <section className="cards">
     {posts.map((post: any) => (
       <article key={post.id} className="card">
-        <img src={post.imgsrc} alt="" className="card__image"></img>
+        <div className="card__imgwrapper">
+          <img onClick={() => openImagePopup(post.imgsrc, post.city)} src={post.imgsrc} alt={post.city} className="card__image"></img>
+        </div>
         <div className="card__action">
           <h2 className="card__description">{post.city}</h2>
           <button
@@ -23,10 +26,9 @@ const Afeed = ({posts, username}: afeedprops) => {
               post.liked
                 ? {
                     backgroundImage: "url(../../../public/like-activep.svg)",
-                  }
-                : {
-                    backgroundImage: "url(../../../public/likep.svg)",
-                  }
+                } : {
+                  backgroundImage: "url(../../../public/likep.svg)",
+                }
             }
             className="card__like card__like--auser"
             onClick={() => handleLike(post.city, post.imgsrc, username)}

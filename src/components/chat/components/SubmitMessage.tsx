@@ -30,7 +30,6 @@ const SubmitMessage = ({ username }: PropsType) => {
         onSubmit={(e) => handleSubmit(e, username, image, newMessage, timestamp, normaluserpair)}
       >
         <input placeholder="Type your message here..." type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)}/>
-        <img src="src/assets/sendm.svg" alt="" className="form__img" />
       </form>
     </section>
   )

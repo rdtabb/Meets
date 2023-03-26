@@ -13,11 +13,28 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
             popupImage?.setAttribute('src', `${imgsrc}`)
             popupImage?.setAttribute('alt', `${city}`)
         const caption: Element = document.querySelector('.popup__caption')!
-            caption.innerHTML = city
+            caption.innerHTML = `${city}`
     }
 
+    const handleClose = () => {
+        const popups = document.querySelectorAll(".popup");
+        popups.forEach((popup) => {
+            popup?.setAttribute("data-visible", "false");
+            setTimeout(() => {
+            popup?.classList.remove("popup_opened");
+            }, 200)
+        });
+    }
+
+    const handleAddPostButton = () => {
+        const addPost = document.querySelector(".popup-add-post");
+        addPost?.classList.add("popup_opened");
+        addPost?.setAttribute("data-visible", "true");
+    }
+
+
     return (
-        <GeneralContext.Provider value={{ openImagePopup }}>
+        <GeneralContext.Provider value={{ openImagePopup, handleAddPostButton, handleClose }}>
             {children}
         </GeneralContext.Provider>
     )

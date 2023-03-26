@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase-config";
+import GeneralContext from "../../context/GeneralContext";
 
 const Popup = () => {
   const [newName, setNewName] = useState("");
   const [newStatus, setNewStatus] = useState("");
+
+  const { handleClose }: any = useContext(GeneralContext)
 
   const handleSubmit = async () => {
     const popup = document.querySelector(".popup");
@@ -60,7 +63,7 @@ const Popup = () => {
             Save
           </button>
         </form>
-        <button type="button" className="popup__close"></button>
+        <button onClick={handleClose} type="button" className="popup__close"></button>
       </div>
     </div>
   );

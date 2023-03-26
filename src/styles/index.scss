@@ -3,6 +3,7 @@
 /* ---------------------------------------- */
 
 @import url(./reset.scss);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap');
 
 /* ---------------------------------------- */
 /* variables, selection, scrollbar          */
@@ -460,6 +461,28 @@ body {
     transition: all 200ms ease-in;
     position: relative;
     z-index: 1;
+    cursor: pointer;
+  }
+
+  &__imgwrapper {
+    position: relative;
+  }
+
+  &__imgwrapper::after {
+    content: "";
+    position: absolute;
+    z-index: 20000;
+    inset: 0;
+
+    background-color: hsl(var(--clr-primary-100));
+    pointer-events: none;
+    opacity: 0;
+
+    transition: opacity 200ms ease-in;
+  }
+
+  &__imgwrapper:hover::after {
+    opacity: .3;
   }
 
   &__delete {
@@ -478,7 +501,7 @@ body {
   }
 
   &:hover &__delete {
-    opacity: .3;
+    opacity: .8;
   }
 
   &:hover &__delete:hover {
@@ -607,9 +630,14 @@ body {
     padding: 34px 36px 37px;
   }
 
+  &--image__container {
+    width: fit-content;
+    margin-inline: auto;
+  }
+
   &__container--image {
-    width: min(800px, 100% - 10px);
-    max-height: 490px;
+    width: min(1000px, 100% - 10px);
+    max-height: 600px;
     padding: 0;
     background: none;
   }
@@ -617,9 +645,10 @@ body {
   &__image {
     object-fit: cover;
     object-position: center;
-    max-height: 490px;
-    width: 100%;
+    max-height: 600px;
+    // width: 100%;
     border-radius: 10px;
+    margin-inline: auto;
   }
 
   &__caption {

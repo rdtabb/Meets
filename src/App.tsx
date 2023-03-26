@@ -104,27 +104,6 @@ const App = () => {
     }
   };
 
-  const close = document.querySelectorAll(".popup__close");
-  close.forEach((close) => {
-    close.addEventListener("click", () => {
-      const popups = document.querySelectorAll(".popup");
-      popups.forEach((popup) => {
-        popup?.setAttribute("data-visible", "false");
-        setTimeout(() => {
-          popup?.classList.remove("popup_opened");
-        }, 200)
-        
-      });
-    });
-  });
-
-  const addButton = document.querySelector(".profile__add-button");
-  addButton?.addEventListener("click", () => {
-    const addPost = document.querySelector(".popup-add-post");
-    addPost?.classList.add("popup_opened");
-    addPost?.setAttribute("data-visible", "true");
-  });
-
   const usersDataRef = collection(db, "users");
 
   const handleNewPost = async () => {

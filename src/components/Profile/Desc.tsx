@@ -1,3 +1,6 @@
+import GeneralContext from "../../context/GeneralContext"
+import { useContext } from "react"
+
 type DescProps = {
   username: string
   userPicture: string
@@ -6,6 +9,8 @@ type DescProps = {
 }
 
 const Desc = ({username, userPicture, handlePopup, status}: DescProps) => {
+
+  const { handleAddPostButton }: any = useContext(GeneralContext)
 
   return (
     <section className="profile">
@@ -19,7 +24,7 @@ const Desc = ({username, userPicture, handlePopup, status}: DescProps) => {
                 <p className="profile__description">{status}</p>
             </div>
         </div>
-        <button type="button" className="profile__add-button"></button>
+        <button onClick={handleAddPostButton} type="button" className="profile__add-button"></button>
     </section>
   )
 }

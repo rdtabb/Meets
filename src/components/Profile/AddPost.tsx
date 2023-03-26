@@ -1,3 +1,6 @@
+import GeneralContext from "../../context/GeneralContext";
+import { useContext } from "react";
+
 type addpostprops = {
   setNewPostTitle: React.Dispatch<React.SetStateAction<string>>;
   setNewPostImage: React.Dispatch<React.SetStateAction<string>>;
@@ -13,6 +16,8 @@ const AddPost = ({
   newPostTitle,
   handleNewPost
 }: addpostprops) => {
+  const { handleClose }: any = useContext(GeneralContext)
+
   return (
     <div data-visible="false" className="popup popup-add-post">
       <div className="popup__container">
@@ -42,7 +47,7 @@ const AddPost = ({
             Save
           </button>
         </form>
-        <button type="button" className="popup__close"></button>
+        <button onClick={handleClose} type="button" className="popup__close"></button>
       </div>
     </div>
   );
