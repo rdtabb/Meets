@@ -3,6 +3,7 @@ import Desc from "./Desc";
 import Footer from "./Footer";
 import Popup from "./Popup";
 import AddPost from "./AddPost";
+import ImagePopup from "./ImagePopup";
 import React, { Suspense } from "react";
 import ErrorBoundary from "../error/ErrorBoundary";
 
@@ -68,6 +69,7 @@ const Profile = ({
         newPostImage={newPostImage}
         handleNewPost={handleNewPost}
       />
+      <ImagePopup />
     </div>
   );
 };

@@ -1,3 +1,6 @@
+import GeneralContext from "../../context/GeneralContext";
+import { useContext } from "react";
+
 type feedprops = {
   posts: any;
   handleLike: any;
@@ -5,11 +8,13 @@ type feedprops = {
 };
 
 const Feed = ({ posts, handleLike, handleDelete }: feedprops) => {
+  const { openImagePopup }: any = useContext(GeneralContext)
+
   return (
     <section className="cards">
       {posts.map((post: any) => (
         <article key={post.id} className="card">
-          <img loading="eager" src={post.imgsrc} alt={post.city} className="card__image"></img>
+          <img onClick={() => openImagePopup(post.imgsrc, post.city)} loading="eager" src={post.imgsrc} alt={post.city} className="card__image"></img>
           <div className="card__action">
             <h2 className="card__description">{post.city}</h2>
             <button

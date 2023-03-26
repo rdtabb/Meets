@@ -77,18 +77,9 @@ body {
 
 #root {
   display: grid;
-  // place-items: center;
   place-items: start;
   min-height: 40vh;
 }
-
-// #root:has(.header-profile) {
-//   place-items: start;
-// }
-
-// #root:has(.search) {
-//   place-items: start;
-// }
 
 /* ---------------------------------------- */
 /* auth component                           */
@@ -614,6 +605,29 @@ body {
     width: min(430px, 100% - 38px);
 
     padding: 34px 36px 37px;
+  }
+
+  &__container--image {
+    width: min(800px, 100% - 10px);
+    max-height: 490px;
+    padding: 0;
+    background: none;
+  }
+
+  &__image {
+    object-fit: cover;
+    object-position: center;
+    max-height: 490px;
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  &__caption {
+    text-transform: uppercase;
+    color: hsl(var(--clr-primary-900));
+    font-weight: var(--fw-700);
+    padding-top: .5rem;
+    padding-left: 2rem;
   }
 
   &__form {
