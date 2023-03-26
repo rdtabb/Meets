@@ -33,6 +33,10 @@ export const ChatProvider = ({children}: ChildrenType) => {
         getMessages().then(setMessages)
     }, [getMessages])
 
+    onSnapshot(collection(db, "messages"), () => {
+        getMessages().then(setMessages)
+    })
+
     const randomId: number = Math.floor((Math.random() * 100000000) + (Math.random() * 1000) + (Math.random() * 1000))
 
     const handleSubmit = async (e: any, creator: any, image: any, message: any, timestamp: any, userpair: any) => {

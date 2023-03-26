@@ -32,7 +32,6 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         addPost?.setAttribute("data-visible", "true");
     }
 
-
     return (
         <GeneralContext.Provider value={{ openImagePopup, handleAddPostButton, handleClose }}>
             {children}
@@ -40,4 +39,4 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     )
 }
 
-export default GeneralContext
+export default GeneralContext    
