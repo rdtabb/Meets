@@ -109,8 +109,11 @@ const App = () => {
     close.addEventListener("click", () => {
       const popups = document.querySelectorAll(".popup");
       popups.forEach((popup) => {
-        popup?.classList.remove("popup_opened");
         popup?.setAttribute("data-visible", "false");
+        setTimeout(() => {
+          popup?.classList.remove("popup_opened");
+        }, 200)
+        
       });
     });
   });
@@ -118,14 +121,8 @@ const App = () => {
   const addButton = document.querySelector(".profile__add-button");
   addButton?.addEventListener("click", () => {
     const addPost = document.querySelector(".popup-add-post");
-    const visibility = addPost?.getAttribute("data-visible");
-    if (visibility == "true") {
-      addPost?.classList.remove("popup_opened");
-      addPost?.setAttribute("data-visible", "false");
-    } else {
-      addPost?.classList.add("popup_opened");
-      addPost?.setAttribute("data-visible", "false");
-    }
+    addPost?.classList.add("popup_opened");
+    addPost?.setAttribute("data-visible", "true");
   });
 
   const usersDataRef = collection(db, "users");

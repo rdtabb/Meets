@@ -77,17 +77,18 @@ body {
 
 #root {
   display: grid;
-  place-items: center;
+  // place-items: center;
+  place-items: start;
   min-height: 40vh;
 }
 
-#root:has(.header-profile) {
-  place-items: start;
-}
+// #root:has(.header-profile) {
+//   place-items: start;
+// }
 
-#root:has(.search) {
-  place-items: start;
-}
+// #root:has(.search) {
+//   place-items: start;
+// }
 
 /* ---------------------------------------- */
 /* auth component                           */
@@ -99,6 +100,7 @@ body {
   padding: 2rem;
   border-radius: 1rem;
   text-align: center;
+  place-self: center;
 
   background-color: hsl(var(--clr-primary-200), .4);
 
@@ -697,6 +699,15 @@ body {
   color: white;
 }
 
+.popup[data-visible="true"] {
+  animation: fadein 200ms linear;
+}
+
+.popup[data-visible="false"] {
+  animation: fadeout 200ms linear;
+}
+
+
 @media (max-width: 550px) {
   .popup__close {
     --positioning: -35px;
@@ -729,6 +740,24 @@ body {
 
   .popup__input {
     padding-bottom: 10px;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 

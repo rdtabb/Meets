@@ -26,7 +26,7 @@ const Popup = () => {
   };
 
   return (
-    <div data-visible="false" className="popup">
+    <div data-visible="false" className="popup popup--edit">
       <div className="popup__container">
         <form
           onSubmit={(e) => e.preventDefault()}
