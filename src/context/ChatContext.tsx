@@ -1,6 +1,6 @@
 import { createContext, ReactElement, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase-config";
-import { addDoc, collection, getDocs, onSnapshot, query, where, orderBy } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, query, where, orderBy, doc, deleteDoc } from "firebase/firestore";
 import { format } from "date-fns";
 
 export const ChatContext = createContext({})
@@ -20,21 +20,20 @@ export const ChatProvider = ({children}: ChildrenType) => {
                 const messagedoc: any = collection(db, "messages")
                 const querymessages: any = query(messagedoc, where("userpair", "in", [`${userpair}`, `${reversed}`]), orderBy("timestamp"))
                 const snaps: any = await getDocs(querymessages)
-                let messagesarr: any = []
+                let messagesarr: Array<any> = []
+                let idarr: string[] = []
                 snaps.forEach((snap: any) => {
                     messagesarr.push(snap.data())
+                    idarr.push(snap.id)
                 })
+                for (let i = 0; i < messagesarr.length; i++) {
+                    messagesarr[i].id = idarr[i]
+                }
                 return messagesarr
             } catch (err) {
                 console.error(`Error in ChatContext in getMessages(): ${err}`)
             }
     }, [])
-
-    useEffect(() => {
-        getMessages().then(setMessages)
-    }, [getMessages])
-
-    const randomId: number = Math.floor((Math.random() * 100000000) + (Math.random() * 1000) + (Math.random() * 1000))
 
     const handleSubmit = async (e: any, creator: any, image: any, message: any, timestamp: any, userpair: any) => {
         e.preventDefault()
@@ -47,7 +46,6 @@ export const ChatProvider = ({children}: ChildrenType) => {
                 message,
                 timestamp,
                 userpair,
-                randomId,
                 displayDate
             })
             setNewMessage("")
@@ -57,8 +55,25 @@ export const ChatProvider = ({children}: ChildrenType) => {
         }
     }
 
+    const handleDelete = useCallback(async (id: string) => {
+        try {
+            const docref = doc(db, "messages", id)
+            await deleteDoc(docref)
+        } catch (err) {
+            console.log(`Error in ChatContext in handleDelete(): ${err}`)
+        }
+    }, [])
+
+    useEffect(() => {
+        getMessages().then(setMessages)
+    }, [getMessages])
+
+    useEffect(() => {
+        getMessages().then(setMessages)
+    }, [handleDelete])
+
     return (
-        <ChatContext.Provider value={{messages, handleSubmit, newMessage, setNewMessage, setReversed, setUserpair, reversed, userpair}}>
+        <ChatContext.Provider value={{messages, handleSubmit, newMessage, setNewMessage, setReversed, setUserpair, reversed, userpair, handleDelete}}>
             {children}
         </ChatContext.Provider>
     )

@@ -49,7 +49,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--clr-primary-900));
+  background-color: hsl(var(--clr-primary-900), .5);
+  border-radius: 100vmax;
 }
 
 /* ---------------------------------------- */
@@ -994,8 +995,7 @@ body {
 .chat {
   display: grid;
   grid-template-rows: auto min-content;
-  gap: 2.5rem;
-  height: 70vh;
+  height: 68vh;
   overflow-y: scroll;
   width: 100%;
 
@@ -1010,10 +1010,14 @@ body {
     text-align: center;
     font-weight: var(--fw-600);
     font-size: clamp(var(--fs-400), 7vw, var(--fs-650));
+    place-self: center;
   }
 }
 
 .item {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+
   height: fit-content;
   padding: 1rem;
   background-color: hsl(var(--clr-accent), .3);
@@ -1045,6 +1049,24 @@ body {
   &__icon {
     border-radius: 50%;
     object-fit: cover;
+  }
+
+  &__delete {
+    --sizing: 1.5rem;
+
+    width: var(--sizing);
+    height: var(--sizing);
+    place-self: center;
+    border: none;
+    background: transparent url(../../public/delete.svg) center;
+    background-size: contain;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity calc(var(--transition-time-primary) / 2) var(--timing-function-primary);
+  }
+
+  &:hover &__delete {
+    opacity: 1;
   }
 }
 
