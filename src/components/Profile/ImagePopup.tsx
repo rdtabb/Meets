@@ -11,7 +11,7 @@ const ImagePopup = () => {
                     <img src="" alt="" className="popup__image" />
                     <p className="popup__caption"></p>
                 </div>
-                <button onClick={handleClose} type="button" className="popup__close"></button>
+                <button onClick={handleClose} type="button" className="popup__close popup__close--image"></button>
             </div>
         </div>
     )

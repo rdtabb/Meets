@@ -746,6 +746,15 @@ body {
   animation: fadeout 200ms linear;
 }
 
+@media (max-width: 1200px) {
+  .popup__close--image {
+    --positioning: -35px;
+
+    width: 20px;
+    right: 0px;
+    background-size: contain;
+  }
+}
 
 @media (max-width: 550px) {
   .popup__close {
@@ -984,9 +993,10 @@ body {
 
 .chat {
   display: grid;
+  grid-template-rows: auto min-content;
   gap: 2.5rem;
-  height: 100%;
-  overflow: scroll;
+  height: 70vh;
+  overflow-y: scroll;
   width: 100%;
 
   &__meslist {
@@ -1005,6 +1015,9 @@ body {
 
 .item {
   height: fit-content;
+  padding: 1rem;
+  background-color: hsl(var(--clr-accent), .3);
+  border-radius: .5rem;
 
   &__wrapper {
     display: flex;
@@ -1019,7 +1032,13 @@ body {
     gap: .5rem;
   }
 
-  &__creator {
+  &__row-one {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__creator,
+  &__time {
     opacity: .8;
   }
 
@@ -1049,6 +1068,8 @@ body {
 }
 
 .chat__form {
+  margin-top: 1.5rem;
+
   form {
     display: flex;
     gap: 1rem;
@@ -1071,4 +1092,9 @@ body {
       border: 1px solid hsl(300, 88%, 46%);
     }
   }
+}
+
+.dummyscroll {
+  width: 0;
+  height: 0;
 }

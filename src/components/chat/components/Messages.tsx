@@ -14,7 +14,10 @@ const Messages = () => {
               <div className="item__wrapper">
                 <img src={mes.image} alt="" className="item__icon" />
                 <article className="item__info-wrapper">
-                  <p className="item__creator">{mes.creator}</p>
+                  <div className="item__row-one">
+                    <p className="item__creator">{mes.creator}</p>
+                    <p className="item__time">{mes.displayDate}</p>
+                  </div>
                   <p className="item__message">{mes.message}</p>
                 </article>
               </div>

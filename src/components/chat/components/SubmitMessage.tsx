@@ -9,7 +9,7 @@ type PropsType = {
 }
 
 const SubmitMessage = ({ username }: PropsType) => {
-  const { setNewMessage, newMessage, handleSubmit }: any = useContext(ChatContext)
+  const { setNewMessage, newMessage, handleSubmit, messages }: any = useContext(ChatContext)
 
   const image: string | null | undefined = auth.currentUser?.photoURL
   const { state } = useLocation()
@@ -29,7 +29,7 @@ const SubmitMessage = ({ username }: PropsType) => {
       <form 
         onSubmit={(e) => handleSubmit(e, username, image, newMessage, timestamp, normaluserpair)}
       >
-        <input placeholder="Type your message here..." type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)}/>
+        <input className="chat__send" placeholder="Type your message here..." type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)}/>
       </form>
     </section>
   )

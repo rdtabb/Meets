@@ -1,6 +1,7 @@
 import { createContext, ReactElement, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase-config";
-import { addDoc, collection, getDocs, onSnapshot, query, where, getDoc, orderBy } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, query, where, orderBy } from "firebase/firestore";
+import { format } from "date-fns";
 
 export const ChatContext = createContext({})
 
@@ -33,23 +34,21 @@ export const ChatProvider = ({children}: ChildrenType) => {
         getMessages().then(setMessages)
     }, [getMessages])
 
-    onSnapshot(collection(db, "messages"), () => {
-        getMessages().then(setMessages)
-    })
-
     const randomId: number = Math.floor((Math.random() * 100000000) + (Math.random() * 1000) + (Math.random() * 1000))
 
     const handleSubmit = async (e: any, creator: any, image: any, message: any, timestamp: any, userpair: any) => {
         e.preventDefault()
         try {
             const docref: any = collection(db, "messages")
+            const displayDate: string = `${format(new Date(), 'MMMM dd, yyyy pp')}`
             await addDoc(docref, {
                 creator,
                 image,
                 message,
                 timestamp,
                 userpair,
-                randomId
+                randomId,
+                displayDate
             })
             setNewMessage("")
             getMessages().then(setMessages)

@@ -1,7 +1,8 @@
 import SubmitMessage from "./components/SubmitMessage"
 import ChatHeader from "./components/ChatHeader"
 import ErrorBoundary from "../error/ErrorBoundary"
-import React, { Suspense } from "react"
+import { ChatContext } from "../../context/ChatContext"
+import React, { Suspense, useRef, useEffect, useContext } from "react"
 
 const Messages = React.lazy(() => import("./components/Messages"))
 
@@ -10,6 +11,15 @@ type PropsType = {
 }
 
 const Chat = ({username}: PropsType) => {
+  const { messages }: any = useContext(ChatContext)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({behavior: "smooth"})
+    }
+  }, [messages])
+
   return (
     <div className="container">
       <ChatHeader />
@@ -19,8 +29,9 @@ const Chat = ({username}: PropsType) => {
                   <Messages />
               </Suspense>
           </ErrorBoundary>
-          <SubmitMessage username={username} />
+          <div ref={scrollRef} className="dummyscroll"></div>
       </main>
+      <SubmitMessage username={username} />
     </div>
     
   )
