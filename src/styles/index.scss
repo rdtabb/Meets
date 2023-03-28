@@ -152,6 +152,7 @@ body {
   transition: all var(--transition-time-primary) var(--timing-function-primary);
   opacity: .5;
   cursor: pointer;
+  font-size: clamp(var(--fs-200), 3vw, var(--fs-400));
 
   &:hover {
     opacity: 1;
@@ -190,8 +191,10 @@ body {
   }
 
   &__icon {
-    width: 30px;
-    height: 30px;
+    --icon-sizing: clamp(1.5rem, 4vw, 1.875rem);
+
+    width: var(--icon-sizing);
+    height: var(--icon-sizing);
     object-fit: cover;
     transition: all var(--transition-time-primary) var(--timing-function-primary);
     opacity: .6;
@@ -208,7 +211,7 @@ body {
 
   &__routes {
     display: flex;
-    gap: 1rem;
+    gap: clamp(.3rem, 2vw, 1rem);
     justify-content: space-between;
     align-items: center;
   }
@@ -231,7 +234,7 @@ body {
 
 @media (max-width: 890px) {
   .header {
-    padding: 0 27px 31.6px;
+    padding: 0 clamp(0px, 4vw, 27px) 31.6px;
     margin-bottom: 42px;
   }
 
@@ -614,6 +617,10 @@ body {
     z-index: var(--z-300);
   }
 
+  &--image::before {
+    background: hsl(var(--clr-primary-100), .9);
+  }
+
   &__container {
     position: relative;
     isolation: isolate;
@@ -813,8 +820,6 @@ body {
 /* ---------------------------------------- */
 /* search page                              */
 /* ---------------------------------------- */
-
-
 .search {
   --width: 50rem;
   --padding: 1rem;
@@ -1044,11 +1049,18 @@ body {
   &__creator,
   &__time {
     opacity: .8;
+    font-size: clamp(var(--fs-300), 4vw, var(--fs-400));
   }
 
   &__icon {
+    width: clamp(4rem, 7vw, 7rem);
+    aspect-ratio: 1;
     border-radius: 50%;
     object-fit: cover;
+  }
+
+  &__message {
+    font-size: clamp(var(--fs-300), 4vw, var(--fs-400));
   }
 
   &__delete {
@@ -1058,11 +1070,11 @@ body {
     height: var(--sizing);
     place-self: center;
     border: none;
-    background: transparent url(../../public/delete.svg) center;
+    background: transparent url(../assets/close.svg) center;
     background-size: contain;
     opacity: 0;
     cursor: pointer;
-    transition: opacity calc(var(--transition-time-primary) / 2) var(--timing-function-primary);
+    transition: opacity var(--transition-time-primary) var(--timing-function-primary);
   }
 
   &:hover &__delete {
@@ -1119,4 +1131,12 @@ body {
 .dummyscroll {
   width: 0;
   height: 0;
+}
+
+@media (max-width: 800px) {
+  .item__delete {
+    --sizing: 1rem;
+
+    opacity: .7;
+  }
 }

@@ -1,4 +1,5 @@
 import Userlist from "./Userlist";
+import Footer from "../Profile/Footer";
 
 type searchprops ={
     users: any
@@ -6,7 +7,12 @@ type searchprops ={
 
 const Usersearch = ({users}: searchprops) => {
   return (
-    <Userlist users={users}/>
+    <>
+      <Userlist users={users}/>
+      <div className="container">
+        <Footer />
+      </div>
+    </>
   )
 }
 

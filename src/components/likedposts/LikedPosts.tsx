@@ -1,11 +1,11 @@
 import { useContext } from "react"
 import LikedContext from "../../context/LikedContext"
 import PostList from "./PostList"
-import { Link } from "react-router-dom"
 import ErrorBoundary from "../error/ErrorBoundary"
 import LikedHeader from "./LikedHeader"
 import LikedDesc from "./LikedDesc"
 import NoLiked from "./NoLiked"
+import Footer from "../Profile/Footer"
 
 type PropsType = {
     username: string,
@@ -31,6 +31,7 @@ const LikedPosts = ({username, status, userPicture, setIsAuth}: PropsType) => {
                 ) : (
                     <NoLiked />
                 )}
+                <Footer />
             </div>
         </ErrorBoundary>
     )
