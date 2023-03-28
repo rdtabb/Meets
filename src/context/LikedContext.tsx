@@ -32,7 +32,9 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     getLikedPosts().then(setLikedPosts);
   }, [getLikedPosts]);
 
-  const handleLike = async (name: string, src: string, username: string) => {
+  const handleLike = async (e: {target: HTMLElement}, name: string, src: string, username: string) => {
+    e.target.classList.remove('explosive')
+    e.target.classList.add('explosive')
     const id: string = likedPosts.length
       ? likedPosts[likedPosts.length - 1].id + 1
       : 1;
@@ -62,14 +64,6 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     await updateDoc(userdoc, updateLiked);
     getLikedPosts().then(setLikedPosts);
   }
-
-  const explosives = document.querySelectorAll('.card__like--auser')
-  explosives.forEach(explosive => {
-    explosive.addEventListener('click', (e) => {
-      explosive.classList.remove('explosive')
-      explosive.classList.add('explosive')
-    })
-  })
 
   return (
     <LikedContext.Provider value={{handleLike, setLikedPosts, likedPosts, handleDelete}}>

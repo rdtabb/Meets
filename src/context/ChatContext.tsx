@@ -17,9 +17,9 @@ export const ChatProvider = ({children}: ChildrenType) => {
 
     const getMessages = useCallback(async () => {
             try {
-                const messagedoc: any = collection(db, "messages")
-                const querymessages: any = query(messagedoc, where("userpair", "in", [`${userpair}`, `${reversed}`]), orderBy("timestamp"))
-                const snaps: any = await getDocs(querymessages)
+                const messagedoc = collection(db, "messages")
+                const querymessages = query(messagedoc, where("userpair", "in", [`${userpair}`, `${reversed}`]), orderBy("timestamp"))
+                const snaps = await getDocs(querymessages)
                 let messagesarr: Array<any> = []
                 let idarr: string[] = []
                 snaps.forEach((snap: any) => {
@@ -67,10 +67,6 @@ export const ChatProvider = ({children}: ChildrenType) => {
     useEffect(() => {
         getMessages().then(setMessages)
     }, [getMessages])
-
-    useEffect(() => {
-        getMessages().then(setMessages)
-    }, [handleDelete])
 
     return (
         <ChatContext.Provider value={{messages, handleSubmit, newMessage, setNewMessage, setReversed, setUserpair, reversed, userpair, handleDelete}}>

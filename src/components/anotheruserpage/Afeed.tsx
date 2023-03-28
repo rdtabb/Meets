@@ -25,13 +25,13 @@ const Afeed = ({posts, username}: afeedprops) => {
             style={
               post.liked
                 ? {
-                    backgroundImage: "url(../../../public/like-activep.svg)",
+                  backgroundImage: "url(../../../public/like-activep.svg)",
                 } : {
                   backgroundImage: "url(../../../public/likep.svg)",
                 }
             }
             className="card__like card__like--auser"
-            onClick={() => handleLike(post.city, post.imgsrc, username)}
+            onClick={(e) => handleLike(e, post.city, post.imgsrc, username)}
           ></button>
         </div>
       </article>
