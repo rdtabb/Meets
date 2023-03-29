@@ -10,7 +10,7 @@ type DescProps = {
 
 const Desc = ({username, userPicture, handlePopup, status}: DescProps) => {
 
-  const { handleAddPostButton }: any = useContext(GeneralContext)
+  const { handleAddPostButton } = useContext(GeneralContext)
 
   return (
     <section className="profile">

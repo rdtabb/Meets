@@ -2,7 +2,7 @@ import GeneralContext from "../../context/GeneralContext"
 import { useContext } from "react"
 
 const ImagePopup = () => {
-    const { handleClose }: any = useContext(GeneralContext)
+    const { handleClose } = useContext(GeneralContext)
     
     return (
         <div data-visible="false" className="popup popup--image">

@@ -16,7 +16,7 @@ const AddPost = ({
   newPostTitle,
   handleNewPost
 }: addpostprops) => {
-  const { handleClose }: any = useContext(GeneralContext)
+  const { handleClose } = useContext(GeneralContext)
 
   return (
     <div data-visible="false" className="popup popup-add-post">

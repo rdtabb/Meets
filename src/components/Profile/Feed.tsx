@@ -8,7 +8,7 @@ type feedprops = {
 };
 
 const Feed = ({ posts, handleLike, handleDelete }: feedprops) => {
-  const { openImagePopup }: any = useContext(GeneralContext)
+  const { openImagePopup } = useContext(GeneralContext)
 
   return (
     <section className="cards">

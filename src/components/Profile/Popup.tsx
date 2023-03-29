@@ -7,7 +7,7 @@ const Popup = () => {
   const [newName, setNewName] = useState("");
   const [newStatus, setNewStatus] = useState("");
 
-  const { handleClose }: any = useContext(GeneralContext)
+  const { handleClose } = useContext(GeneralContext)
 
   const handleSubmit = async () => {
     const popup = document.querySelector(".popup");
