@@ -1,8 +1,9 @@
 import GeneralContext from "../../context/GeneralContext";
 import { useContext } from "react";
+import { newPostsType } from "../anotheruserpage/Auser";
 
 type feedprops = {
-  posts: any;
+  posts: Array<newPostsType>;
   handleLike: any;
   handleDelete: any;
 };
@@ -12,7 +13,7 @@ const Feed = ({ posts, handleLike, handleDelete }: feedprops) => {
 
   return (
     <section className="cards">
-      {posts.map((post: any) => (
+      {posts.map((post: newPostsType) => (
         <article key={post.id} className="card">
           <div className="card__imgwrapper">
             <img onClick={() => openImagePopup(post.imgsrc, post.city)} loading="eager" src={post.imgsrc} alt={post.city} className="card__image"></img>

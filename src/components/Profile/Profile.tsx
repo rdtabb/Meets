@@ -4,8 +4,10 @@ import Footer from "./Footer";
 import Popup from "./Popup";
 import AddPost from "./AddPost";
 import ImagePopup from "./ImagePopup";
+import Loading from "../loading/Loading";
 import React, { Suspense } from "react";
 import ErrorBoundary from "../error/ErrorBoundary";
+import { newPostsType } from "../anotheruserpage/Auser";
 
 const Posts = React.lazy(() => import("./Posts"))
 
@@ -13,7 +15,7 @@ type ProfileProps = {
   username: string;
   setUsername: any;
   userPicture: string;
-  posts: any;
+  posts: Array<newPostsType>;
   handleLike: any;
   handlePopup: any;
   status: any;
@@ -55,7 +57,7 @@ const Profile = ({
           userPicture={userPicture}
         />
         <ErrorBoundary>
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<Loading />}>
             <Posts handleLike={handleLike} posts={posts} handleDelete={handleDelete} />
           </Suspense>
         </ErrorBoundary>

@@ -1,11 +1,12 @@
-// import Feed from "./Feed";
 import ErrorBoundary from "../error/ErrorBoundary";
 import React, { Suspense } from "react";
+import { newPostsType } from "../anotheruserpage/Auser";
+import Loading from "../loading/Loading";
 
 const Feed = React.lazy(() => import('./Feed'))
 
 type postsprops = {
-  posts: any;
+  posts: Array<newPostsType>;
   handleLike: any;
   handleDelete: any
 };
@@ -15,7 +16,7 @@ const Posts = ({ posts, handleLike, handleDelete }: postsprops) => {
     <>
       {posts.length ? (
         <ErrorBoundary>
-          <Suspense fallback={<p>Loading posts...</p>}>
+          <Suspense fallback={<Loading />}>
             <Feed 
               posts={posts}
               handleDelete={handleDelete}

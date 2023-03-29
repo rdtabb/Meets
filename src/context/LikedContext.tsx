@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   ReactElement,
   useCallback,
@@ -9,7 +9,7 @@ import { db } from "../firebase-config";
 import { updateDoc, doc, getDoc } from "firebase/firestore";
 import { likedType } from "../components/anotheruserpage/Auser";
 
-export type LikedContextType = {
+type LikedContextType = {
   handleLike: (
     e: { target: HTMLElement; }, 
     name: string, src: string, 
@@ -17,21 +17,21 @@ export type LikedContextType = {
   ) => Promise<void>,
   setLikedPosts: React.Dispatch<any>,
   likedPosts: Array<likedType>,
-  handleDelete: (
-    e: { target: HTMLElement;}, 
-    name: string, 
-    src: string, 
-    username: string
-  ) => Promise<void>
+  handleDelete: (id: string) => Promise<void>
 }
 
-const LikedContext = createContext({});
+const LikedContext = createContext<LikedContextType>({
+  handleLike: async () => {},
+  handleDelete: async () => {},
+  likedPosts: [],
+  setLikedPosts: () => {}
+});
 
 type ChildrenType = { children?: ReactElement | ReactElement[] };
 
 export const DataProvider = ({ children }: ChildrenType): ReactElement => {
   const [likedPosts, setLikedPosts] = useState<any>([]);
-  const uid: any = localStorage.getItem("uid");
+  const uid = localStorage.getItem("uid")!;
 
   const getLikedPosts = useCallback(async () => {
     try {

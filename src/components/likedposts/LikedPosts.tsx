@@ -15,7 +15,7 @@ type PropsType = {
 }
 
 const LikedPosts = ({username, status, userPicture, setIsAuth}: PropsType) => {
-    const { likedPosts }: any = useContext(LikedContext)
+    const { likedPosts } = useContext(LikedContext)
 
     return (
         <ErrorBoundary>

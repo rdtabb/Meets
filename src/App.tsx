@@ -17,6 +17,7 @@ import {
 import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/error/ErrorBoundary";
+import { newPostsType } from "./components/anotheruserpage/Auser";
 
 export const cookies = new Cookies();
 
@@ -28,11 +29,11 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [userPicture, setUserPicture] = useState("");
   const [status, setStatus] = useState("Add status to profile");
-  const [posts, setPosts] = useState<any>([]);
+  const [posts, setPosts] = useState<Array<newPostsType>>([]);
 
   const getPosts = useCallback(async () => {
     try {
-      const userdoc: any = doc(db, "users", uid);
+      const userdoc = doc(db, "users", uid);
       const dataSnap = getDoc(userdoc);
       const dataset: any = (await dataSnap).data();
       const posts: any = await dataset.newPosts;
@@ -73,7 +74,7 @@ const App = () => {
     }
   }, [isAuth])
 
-  const uid: any = localStorage.getItem("uid");
+  const uid = localStorage.getItem("uid")!;
 
   onSnapshot(doc(db, "users", `${uid}`), () => {
     getSetNameStatus()
@@ -81,7 +82,7 @@ const App = () => {
   })
 
   const handleLike = async (id: number) => {
-    const newPosts: any = posts.map((post: any) =>
+    const newPosts: Array<newPostsType> = posts.map((post) =>
       post.id == id ? { ...post, liked: !post.liked } : post
     );
     const newpostsdb = {
@@ -111,10 +112,10 @@ const App = () => {
       return;
     }
 
-    const usedoc: any = doc(db, "users", uid);
+    const usedoc = doc(db, "users", uid);
     const dataSnap = getDoc(usedoc);
     const dataset: any = (await dataSnap).data();
-    const nposts: any = await dataset.newPosts;
+    const nposts = await dataset.newPosts;
 
     const id = nposts.length ? nposts[nposts.length - 1].id + 1 : 1;
     const newPost = {
@@ -123,7 +124,7 @@ const App = () => {
       imgsrc: `${newPostImage}`,
       liked: false,
     };
-    const newPosts: any = [...posts, newPost];
+    const newPosts: Array<newPostsType> = [...posts, newPost];
 
     const addPostPopup = document.querySelector(".popup-add-post");
     addPostPopup?.setAttribute("data-visible", "false");
@@ -139,8 +140,8 @@ const App = () => {
     getPosts().then(setPosts)
   };
 
-  const handleDelete = async (id: any) => {
-    const newPosts = posts.filter((post: any) => post.id != id);
+  const handleDelete = async (id: number) => {
+    const newPosts = posts.filter((post) => post.id != id);
     const newpostsdb = {
       newPosts: newPosts.reverse(),
     };

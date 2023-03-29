@@ -4,7 +4,7 @@ import { Suspense } from "react"
 import ErrorBoundary from "../error/ErrorBoundary"
 
 const PostList = () => {
-    const { likedPosts, handleDelete }: any = useContext(LikedContext)
+    const { likedPosts, handleDelete } = useContext(LikedContext)
 
     return (
         <section className="cards">

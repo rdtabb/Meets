@@ -16,8 +16,7 @@ type AuthProps = {
 
 export const Auth = ({setIsAuth, setUsername, setPosts, setStatus, setUserPicture}: AuthProps) => {
     const cookies = new Cookies()
-    const { setLikedPosts }: any = useContext(LikedContext)
-    // const usersDataRef = collection(db, "users")
+    const { setLikedPosts } = useContext(LikedContext)
     
     const signin = async () => {
         try {
