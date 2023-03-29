@@ -1,19 +1,20 @@
 import { useContext } from "react"
 import LikedContext from "../../context/LikedContext"
 import GeneralContext from "../../context/GeneralContext"
+import { newPostsType } from "./Auser"
 
 type afeedprops = {
-  posts: any
-  username: any
+  posts: Array<newPostsType>,
+  username: string | undefined
 }
 
 const Afeed = ({posts, username}: afeedprops) => {
   const { handleLike }: any = useContext(LikedContext)
-  const { openImagePopup }: any = useContext(GeneralContext)
+  const { openImagePopup } = useContext(GeneralContext)
 
   return (
     <section className="cards">
-    {posts.map((post: any) => (
+    {posts.map((post: newPostsType) => (
       <article key={post.id} className="card">
         <div className="card__imgwrapper">
           <img onClick={() => openImagePopup(post.imgsrc, post.city)} src={post.imgsrc} alt={post.city} className="card__image"></img>

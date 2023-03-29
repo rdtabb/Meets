@@ -1,5 +1,5 @@
 type PropsType = {
-  name: string
+  name: string | undefined
 }
 
 const NoPosts = ({name}: PropsType) => {

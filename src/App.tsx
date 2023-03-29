@@ -198,7 +198,7 @@ const App = () => {
             }
           />
           <Route path="/usersearch" element={<Usersearch users={users} />} />
-          <Route path="/user/:id" element={<Auser users={users} />} />
+          <Route path="/user/:id" element={<Auser/>} />
           <Route path="/likedposts" element={<LikedPosts 
             setIsAuth={setIsAuth}
             userPicture={userPicture}

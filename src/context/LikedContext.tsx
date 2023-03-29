@@ -7,6 +7,23 @@ import {
 } from "react";
 import { db } from "../firebase-config";
 import { updateDoc, doc, getDoc } from "firebase/firestore";
+import { likedType } from "../components/anotheruserpage/Auser";
+
+export type LikedContextType = {
+  handleLike: (
+    e: { target: HTMLElement; }, 
+    name: string, src: string, 
+    username: string
+  ) => Promise<void>,
+  setLikedPosts: React.Dispatch<any>,
+  likedPosts: Array<likedType>,
+  handleDelete: (
+    e: { target: HTMLElement;}, 
+    name: string, 
+    src: string, 
+    username: string
+  ) => Promise<void>
+}
 
 const LikedContext = createContext({});
 

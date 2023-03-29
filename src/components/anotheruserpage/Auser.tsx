@@ -7,21 +7,42 @@ import ImagePopup from "../Profile/ImagePopup";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { doc, getDoc } from "firebase/firestore";
+import { Params } from "react-router-dom";
 
-type auserprops = {
-  users: any;
-};
+export type likedType = {
+  city: string,
+  creator: string,
+  id: number,
+  imgsrc: string
+}
 
-const Auser = ({ users }: auserprops) => {
-  const [user, setUserData] = useState<any>({})
+export type newPostsType = {
+  city: string,
+  id: number,
+  imgsrc: string,
+  liked: boolean
+}
+
+type Usertype = {
+  id: string,
+  imgurl: string,
+  liked: Array<likedType>,
+  name: string,
+  newPosts: Array<newPostsType>,
+  newStatus: string
+}
+
+const Auser = () => {
+  const [user, setUserData] = useState<Usertype>()
   const [userPosts, setUserPosts] = useState([])
-  const { id }: any = useParams();
+  const { id }: Readonly<Params<string>> = useParams();
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userdoc: any = doc(db, "users", id);
+        const userdoc = doc(db, "users", id!);
         const data: any = await getDoc(userdoc)
-        const docSnap = await data.data()
+        const docSnap = await data.data()!
         setUserData(docSnap)
         setUserPosts(docSnap.newPosts)
       } catch (err) {
@@ -31,11 +52,12 @@ const Auser = ({ users }: auserprops) => {
     fetchUser()
   }, [])
 
+
   return (
     <div className="container">
       <Aheader />
-      <Adesc name={user.name} status={user.newStatus} url={user.imgurl} />
-      <Aposts posts={userPosts} name={user.name} />
+      <Adesc name={user?.name} status={user?.newStatus} url={user?.imgurl} />
+      <Aposts posts={userPosts} name={user?.name} />
       <Footer />
       <ImagePopup />
     </div>

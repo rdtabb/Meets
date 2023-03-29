@@ -1,6 +1,16 @@
 import { createContext, ReactElement } from "react";
 
-const GeneralContext = createContext({})
+export type GeneralContextType = {
+    openImagePopup: (imgsrc: string, city: string) => void,
+    handleClose: () => void,
+    handleAddPostButton: () => void
+}
+
+const GeneralContext = createContext<GeneralContextType>({
+    openImagePopup: () => {},
+    handleClose: () => {},
+    handleAddPostButton: () => {}
+})
 
 type ChildrenType = { children?: ReactElement | ReactElement[] }
 

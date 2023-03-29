@@ -1,9 +1,10 @@
 import Afeed from "./Afeed"
 import NoPosts from "./NoPosts"
+import { newPostsType } from "./Auser"
 
 type apostsprops = {
-    posts: any
-    name: any
+  posts: Array<newPostsType>,
+  name: string | undefined
 }
 
 const Aposts = ({ posts, name }: apostsprops) => {
