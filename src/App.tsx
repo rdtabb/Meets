@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile/Profile";
 import Usersearch from "./components/userlist/Usersearch";
@@ -18,11 +18,11 @@ import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/error/ErrorBoundary";
 import { newPostsType } from "./components/anotheruserpage/Auser";
+import GeneralContext from "./context/GeneralContext";
 
 export const cookies = new Cookies();
 
 const App = () => {
-  const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
   const [users, setUsers] = useState([]);
   const [newPostTitle, setNewPostTitle] = useState("");
   const [newPostImage, setNewPostImage] = useState("");
@@ -31,15 +31,17 @@ const App = () => {
   const [status, setStatus] = useState("Add status to profile");
   const [posts, setPosts] = useState<Array<newPostsType>>([]);
 
+  const { isAuth } = useContext(GeneralContext)
+
   const getPosts = useCallback(async () => {
     try {
       const userdoc = doc(db, "users", uid);
       const dataSnap = getDoc(userdoc);
       const dataset: any = (await dataSnap).data();
-      const posts: any = await dataset.newPosts;
-      return posts.reverse()
+      const posts: newPostsType[] = await dataset.newPosts;
+      return posts
     } catch (err) {
-      console.log(err);
+      throw `${err} in the App in the getPosts()`
     }
   }, [isAuth])
 
@@ -86,23 +88,11 @@ const App = () => {
       post.id == id ? { ...post, liked: !post.liked } : post
     );
     const newpostsdb = {
-      newPosts: newPosts.reverse(),
+      newPosts: newPosts
     };
     const userdoc = doc(db, "users", `${uid}`);
     await updateDoc(userdoc, newpostsdb);
     getPosts().then(setPosts)
-  };
-
-  const handlePopup = () => {
-    const popup = document.querySelector(".popup");
-    const visibility = popup?.getAttribute("data-visible");
-    if (visibility == "false") {
-      popup?.classList.add("popup_opened");
-      popup?.setAttribute("data-visible", "true");
-    } else {
-      popup?.classList.remove("popup_opened");
-      popup?.setAttribute("data-visible", "false");
-    }
   };
 
   const usersDataRef = collection(db, "users");
@@ -117,14 +107,14 @@ const App = () => {
     const dataset: any = (await dataSnap).data();
     const nposts = await dataset.newPosts;
 
-    const id = nposts.length ? nposts[nposts.length - 1].id + 1 : 1;
+    const id = nposts.length ? nposts[0].id + 1 : 1;
     const newPost = {
       city: `${newPostTitle}`,
       id,
       imgsrc: `${newPostImage}`,
       liked: false,
     };
-    const newPosts: Array<newPostsType> = [...posts, newPost];
+    const newPosts: Array<newPostsType> = [newPost, ...posts];
 
     const addPostPopup = document.querySelector(".popup-add-post");
     addPostPopup?.setAttribute("data-visible", "false");
@@ -143,7 +133,7 @@ const App = () => {
   const handleDelete = async (id: number) => {
     const newPosts = posts.filter((post) => post.id != id);
     const newpostsdb = {
-      newPosts: newPosts.reverse(),
+      newPosts: newPosts,
     };
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newpostsdb);
@@ -164,7 +154,6 @@ const App = () => {
         <Auth
           setPosts={setPosts}
           setStatus={setStatus}
-          setIsAuth={setIsAuth}
           setUsername={setUsername}
           setUserPicture={setUserPicture}
         />
@@ -186,7 +175,6 @@ const App = () => {
                 username={username}
                 userPicture={userPicture}
                 posts={posts}
-                handlePopup={handlePopup}
                 setUsername={setUsername}
                 setNewPostTitle={setNewPostTitle}
                 setNewPostImage={setNewPostImage}
@@ -194,14 +182,12 @@ const App = () => {
                 newPostTitle={newPostTitle}
                 handleNewPost={handleNewPost}
                 handleDelete={handleDelete}
-                setIsAuth={setIsAuth}
               />
             }
           />
           <Route path="/usersearch" element={<Usersearch users={users} />} />
           <Route path="/user/:id" element={<Auser/>} />
           <Route path="/likedposts" element={<LikedPosts 
-            setIsAuth={setIsAuth}
             userPicture={userPicture}
             username={username}
             status={status}

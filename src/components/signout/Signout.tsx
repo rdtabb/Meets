@@ -1,12 +1,12 @@
 import { auth } from "../../firebase-config"
 import { signOut } from "firebase/auth"
 import { cookies } from "../../App"
+import { useContext } from "react"
+import GeneralContext from "../../context/GeneralContext"
 
-type PropsType = {
-    setIsAuth: React.Dispatch<any>
-}
+const Signout = () => {
+    const { setIsAuth } = useContext(GeneralContext)
 
-const Signout = ({ setIsAuth }: PropsType) => {
     const signout = async () => {
         await signOut(auth)
         cookies.remove("auth-token")

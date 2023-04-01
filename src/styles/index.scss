@@ -662,6 +662,9 @@ body {
   &--image__container {
     width: fit-content;
     margin-inline: auto;
+    background-color: hsl(var(--clr-primary-900));
+    border-radius: 10px;
+    padding-bottom: .5rem;
   }
 
   &__container--image {
@@ -675,13 +678,14 @@ body {
     object-fit: cover;
     object-position: center;
     max-height: 600px;
-    border-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     margin-inline: auto;
   }
 
   &__caption {
     text-transform: uppercase;
-    color: hsl(var(--clr-primary-900));
+    color: hsl(var(--clr-primary-100));
     font-weight: var(--fw-700);
     padding-top: .5rem;
     padding-left: 2rem;

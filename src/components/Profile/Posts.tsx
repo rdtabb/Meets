@@ -7,8 +7,8 @@ const Feed = React.lazy(() => import('./Feed'))
 
 type postsprops = {
   posts: Array<newPostsType>;
-  handleLike: any;
-  handleDelete: any
+  handleLike: (id: number) => Promise<void>;
+  handleDelete: (id: number) => Promise<void>
 };
 
 const Posts = ({ posts, handleLike, handleDelete }: postsprops) => {

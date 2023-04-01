@@ -1,5 +1,5 @@
 type PropsType = {
-    userPicture: string
+  userPicture: string
 }
 
 const AvatarImage = ({userPicture}: PropsType) => {

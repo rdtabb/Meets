@@ -4,19 +4,20 @@ import Cookies from "universal-cookie"
 import { setDoc, doc, getDoc, DocumentReference, DocumentData, DocumentSnapshot } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import LikedContext from "../context/LikedContext"
+import GeneralContext from "../context/GeneralContext"
 import { useContext } from "react"
 
 type AuthProps = {
-    setIsAuth: React.Dispatch<any>,
     setUsername: React.Dispatch<React.SetStateAction<string>>,
     setUserPicture: React.Dispatch<React.SetStateAction<string>>
     setPosts: React.Dispatch<any>
     setStatus: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const Auth = ({setIsAuth, setUsername, setPosts, setStatus, setUserPicture}: AuthProps) => {
+export const Auth = ({setUsername, setPosts, setStatus, setUserPicture}: AuthProps) => {
     const cookies = new Cookies()
     const { setLikedPosts } = useContext(LikedContext)
+    const { setIsAuth } = useContext(GeneralContext)
     
     const signin = async () => {
         try {

@@ -10,13 +10,12 @@ const Heading = React.lazy(() => import("./Heading"))
 type DescProps = {
   username: string
   userPicture: string
-  handlePopup: any
-  status: any
+  status: string
 }
 
-const Desc = ({username, userPicture, handlePopup, status}: DescProps) => {
+const Desc = ({username, userPicture, status}: DescProps) => {
 
-  const { handleAddPostButton } = useContext(GeneralContext)
+  const { handleAddPostButton, handlePopup } = useContext(GeneralContext)
 
   return (
     <section className="profile">

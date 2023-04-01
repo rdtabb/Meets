@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom"
 import Signout from "../signout/Signout"
 
-type PropsType = {
-  setIsAuth: React.Dispatch<any>
-}
 
-const Header = ({ setIsAuth }: PropsType) => {
+const Header = () => {
+
   return (
     <header className="header header-profile">
         <img src="src/assets/meets-logo.svg" alt="Meets-logo" className="header__logo"></img>
@@ -16,10 +14,10 @@ const Header = ({ setIsAuth }: PropsType) => {
           <Link className="header__liked" to='/likedposts'>
             <img className="header__liked-icon header__icon" src="src/assets/likew.svg" alt="" />
           </Link>
-          <Signout setIsAuth={setIsAuth} />
+          <Signout/>
         </div>
     </header>
-  )
+  ) 
 }
 
 export default Header

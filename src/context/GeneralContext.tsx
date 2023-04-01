@@ -1,20 +1,33 @@
-import { createContext, ReactElement } from "react";
+import { createContext, ReactElement, useState } from "react";
+import { cookies } from "../App";
 
 export type GeneralContextType = {
     openImagePopup: (imgsrc: string, city: string) => void,
     handleClose: () => void,
-    handleAddPostButton: () => void
+    handleAddPostButton: () => void,
+    isAuth: any,
+    setIsAuth: React.Dispatch<any>,
+    handlePopup: () => void
 }
 
-const GeneralContext = createContext<GeneralContextType>({
+const initstate = {
     openImagePopup: () => {},
     handleClose: () => {},
-    handleAddPostButton: () => {}
-})
+    handleAddPostButton: () => {},
+    setIsAuth: () => {},
+    handlePopup: () => {},
+    isAuth: false
+}
+
+const GeneralContext = createContext<GeneralContextType>(initstate)
 
 type ChildrenType = { children?: ReactElement | ReactElement[] }
 
 export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
+    // const [userPicture, setUserPicture] = useState("");
+    const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
+    const uid = localStorage.getItem("uid")!;
+
     const openImagePopup = (imgsrc: string, city: string) => {
         const popupImageCont = document.querySelector('.popup--image')
             popupImageCont?.setAttribute('data-visible', 'true')
@@ -42,8 +55,20 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         addPost?.setAttribute("data-visible", "true");
     }
 
+    const handlePopup = () => {
+        const popup = document.querySelector(".popup");
+        const visibility = popup?.getAttribute("data-visible");
+        if (visibility == "false") {
+            popup?.classList.add("popup_opened");
+            popup?.setAttribute("data-visible", "true");
+        } else {
+            popup?.classList.remove("popup_opened");
+            popup?.setAttribute("data-visible", "false");
+        }
+    };
+
     return (
-        <GeneralContext.Provider value={{ openImagePopup, handleAddPostButton, handleClose }}>
+        <GeneralContext.Provider value={{ openImagePopup, handleAddPostButton, handleClose, isAuth, setIsAuth, handlePopup }}>
             {children}
         </GeneralContext.Provider>
     )

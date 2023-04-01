@@ -13,20 +13,18 @@ const Posts = React.lazy(() => import("./Posts"))
 
 type ProfileProps = {
   username: string;
-  setUsername: any;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
   userPicture: string;
   posts: Array<newPostsType>;
-  handleLike: any;
-  handlePopup: any;
-  status: any;
-  setStatus: any;
+  handleLike: (id: number) => Promise<void>;
+  status: string;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
   setNewPostTitle: React.Dispatch<React.SetStateAction<string>>;
   setNewPostImage: React.Dispatch<React.SetStateAction<string>>;
-  newPostImage: any;
-  newPostTitle: any;
-  handleNewPost: any;
-  handleDelete: any;
-  setIsAuth: React.Dispatch<any>
+  newPostImage: string;
+  newPostTitle: string;
+  handleNewPost: () => Promise<void>;
+  handleDelete: (id: number) => Promise<void>;
 };
 
 const Profile = ({
@@ -34,7 +32,6 @@ const Profile = ({
   userPicture,
   posts,
   handleLike,
-  handlePopup,
   status,
   setNewPostImage,
   setNewPostTitle,
@@ -42,17 +39,15 @@ const Profile = ({
   newPostTitle,
   handleNewPost,
   handleDelete,
-  setIsAuth
 }: ProfileProps) => {
   return (
     <div className="container">
       <ErrorBoundary>
-        <Header setIsAuth={setIsAuth} />
+        <Header />
       </ErrorBoundary>
       <main className="main">
         <Desc
           status={status}
-          handlePopup={handlePopup}
           username={username}
           userPicture={userPicture}
         />

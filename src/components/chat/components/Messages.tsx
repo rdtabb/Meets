@@ -27,7 +27,6 @@ const Messages = () => {
         ) : (
           <p className="chat__empty">You have no messages with that user!</p>
         )}
-        
       </ul>
     </ErrorBoundary>
   )

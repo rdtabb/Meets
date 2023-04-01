@@ -1,11 +1,8 @@
 import { Link } from "react-router-dom";
 import Signout from "../signout/Signout";
 
-type PropsType ={
-  setIsAuth: React.Dispatch<any>
-}
+const LikedHeader = () => {
 
-const LikedHeader = ({setIsAuth}: PropsType) => {
   return (
     <header className="header header-profile">
       <img
@@ -28,7 +25,7 @@ const LikedHeader = ({setIsAuth}: PropsType) => {
             alt=""
           />
         </Link>
-        <Signout setIsAuth={setIsAuth} />
+        <Signout />
       </div>
     </header>
   );

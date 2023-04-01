@@ -4,9 +4,9 @@ import { useContext } from "react";
 type addpostprops = {
   setNewPostTitle: React.Dispatch<React.SetStateAction<string>>;
   setNewPostImage: React.Dispatch<React.SetStateAction<string>>;
-  newPostImage: any;
-  newPostTitle: any;
-  handleNewPost: any;
+  newPostImage: string;
+  newPostTitle: string;
+  handleNewPost: () => Promise<void>;
 };
 
 const AddPost = ({
