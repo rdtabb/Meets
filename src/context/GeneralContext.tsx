@@ -1,15 +1,18 @@
 import { createContext, ReactElement, useState } from "react";
 import { cookies } from "../App";
-import { doc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
+import format from "date-fns/format";
 
 export type GeneralContextType = {
-    openImagePopup: (imgsrc: string, city: string) => void,
+    openImagePopup: (imgsrc: string, city: string, id: number) => void,
     handleClose: () => void,
     handleAddPostButton: () => void,
     isAuth: any,
     setIsAuth: React.Dispatch<any>,
-    handlePopup: () => void
+    handlePopup: () => void,
+    postId: number,
+    handleComment: (e: any, message: string) => Promise<void>
 }
 
 const initstate = {
@@ -18,7 +21,9 @@ const initstate = {
     handleAddPostButton: () => {},
     setIsAuth: () => {},
     handlePopup: () => {},
-    isAuth: false
+    isAuth: false,
+    postId: 0,
+    handleComment: async () => {}
 }
 
 export type newPostsType = {
@@ -29,6 +34,13 @@ export type newPostsType = {
     comments: CommentType[]
 }
 
+export type UserLikedType = {
+    city: string,
+    creator: string,
+    id: number, 
+    imgsrc: string
+}
+
 export type CommentType = {
     creator: string,
     message: string,
@@ -37,17 +49,61 @@ export type CommentType = {
     img: string
 }
 
+export type UserDocType = {
+    id: string,
+    imgurl: string,
+    liked: UserLikedType[],
+    name: string,
+    newPosts: newPostsType[],
+    newStatus: string
+}
+
 const GeneralContext = createContext<GeneralContextType>(initstate)
 
 type ChildrenType = { children?: ReactElement | ReactElement[] }
 
-export const uid = localStorage.getItem("uid")!;
-
 export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
-    const [comments, setComments] = useState<CommentType[]>([])
+    const [postId, setPostId] = useState<number>(0)
+    const uid: string = localStorage.getItem("uid")!;
 
-    const openImagePopup = (imgsrc: string, city: string) => {
+    const handleComment = async (e: any, message: string) => {
+        e.preventDefault()
+        const userdoc = doc(db, "users", uid);
+        const dataSnap = await getDoc(userdoc);
+        const dataset: any = dataSnap.data();
+        const posts: newPostsType[] = await dataset.newPosts
+        const creator: string = await dataset.name
+        const img: string = await dataset.imgsrc
+        const createdAt: string = `${format(new Date(), 'MMMM dd, yyyy pp')}`
+
+        console.log(posts)
+        const post = posts.find(post => 
+            post.id == postId
+        )!
+        console.log(post)
+        const comments: CommentType[] = post?.comments
+
+        const id: number = comments.length ? comments[comments.length - 1].id + 1 : 1
+        const newcomment: CommentType = {
+            creator,
+            message, 
+            createdAt, 
+            id,
+            img
+        }
+        const newComments = [...comments, newcomment]
+
+        const updatedPosts = posts.map((post) => (
+            post.id == postId ? {...post, comments: newComments} : post
+        ))
+        const newpostsdb = {
+        newPosts: updatedPosts
+        }
+        await updateDoc(userdoc, newpostsdb);
+    }
+
+    const openImagePopup = (imgsrc: string, city: string, id: number) => {
         const popupImageCont = document.querySelector('.popup--image')
             popupImageCont?.setAttribute('data-visible', 'true')
             popupImageCont?.classList.add('popup_opened')
@@ -56,6 +112,7 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
             popupImage?.setAttribute('alt', `${city}`)
         const caption: Element = document.querySelector('.popup__caption')!
             caption.innerHTML = `${city}`
+        setPostId(id)
     }
 
     const handleClose = () => {
@@ -86,21 +143,8 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         }
     };
 
-    const handleComment = (creator: string, createdAt: string, message: string, img: string) => {
-        const userdoc = doc(db, "users", uid)
-
-        const id: number = 5
-        const newComment: CommentType = {
-            creator,
-            message,
-            createdAt,
-            id,
-            img
-        }
-    }
-
     return (
-        <GeneralContext.Provider value={{ openImagePopup, handleAddPostButton, handleClose, isAuth, setIsAuth, handlePopup }}>
+        <GeneralContext.Provider value={{ handleComment, openImagePopup, handleAddPostButton, handleClose, isAuth, setIsAuth, handlePopup, postId }}>
             {children}
         </GeneralContext.Provider>
     )

@@ -29,7 +29,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [userPicture, setUserPicture] = useState("");
   const [status, setStatus] = useState("Add status to profile");
-  const [posts, setPosts] = useState<Array<newPostsType>>([]);
+  const [posts, setPosts] = useState<newPostsType[]>([]);
 
   const { isAuth } = useContext(GeneralContext)
 

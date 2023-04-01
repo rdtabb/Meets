@@ -1,6 +1,6 @@
 import Afeed from "./Afeed"
 import NoPosts from "./NoPosts"
-import { newPostsType } from "./Auser"
+import { newPostsType } from "../../context/GeneralContext"
 
 type apostsprops = {
   posts: Array<newPostsType>,

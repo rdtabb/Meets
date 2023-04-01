@@ -17,7 +17,7 @@ const Afeed = ({posts, username}: afeedprops) => {
     {posts.map((post: newPostsType) => (
       <article key={post.id} className="card">
         <div className="card__imgwrapper">
-          <img onClick={() => openImagePopup(post.imgsrc, post.city)} src={post.imgsrc} alt={post.city} className="card__image"></img>
+          <img onClick={() => openImagePopup(post.imgsrc, post.city, post.id)} src={post.imgsrc} alt={post.city} className="card__image"></img>
         </div>
         <div className="card__action">
           <h2 className="card__description">{post.city}</h2>

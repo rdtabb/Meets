@@ -669,7 +669,6 @@ body {
 
   &__container--image {
     width: min(1000px, 100% - 10px);
-    max-height: 600px;
     padding: 0;
     background: none;
   }
@@ -684,14 +683,18 @@ body {
     width: 100%;
     border: 0;
     color: hsl(var(--clr-primary-100));
-    border-bottom: 2px solid hsl(var(--clr-primary-100), .6);
+    border-bottom: 2px solid hsl(var(--clr-primary-100), .3);
     padding: .25rem;
-    transition: all var(--timing-function-primary) 100ms;
+    transition: all var(--timing-function-primary) var(--transition-time-primary);
+
+    &:hover {
+      border-bottom: 2px solid hsl(var(--clr-primary-100), .6);
+    }
 
     &:focus,
     &:focus-visible {
       outline: none;
-      border-bottom: 3px solid hsl(var(--clr-primary-100), 1);
+      border-bottom: 2px solid hsl(var(--clr-primary-100), 1);
     }
 
     &::selection {
