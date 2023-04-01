@@ -11,7 +11,7 @@ type PropsType = {
 }
 
 const Chat = ({username}: PropsType) => {
-  const { messages }: any = useContext(ChatContext)
+  const { messages } = useContext(ChatContext)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

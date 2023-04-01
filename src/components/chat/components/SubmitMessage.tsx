@@ -9,7 +9,7 @@ type PropsType = {
 }
 
 const SubmitMessage = ({ username }: PropsType) => {
-  const { setNewMessage, newMessage, handleSubmit, messages }: any = useContext(ChatContext)
+  const { setNewMessage, newMessage, handleSubmit } = useContext(ChatContext)
 
   const image: string | null | undefined = auth.currentUser?.photoURL
   const { state } = useLocation()

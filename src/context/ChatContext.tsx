@@ -1,26 +1,60 @@
 import { createContext, ReactElement, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase-config";
-import { addDoc, collection, getDocs, onSnapshot, query, where, orderBy, doc, deleteDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where, orderBy, doc, deleteDoc, FieldValue } from "firebase/firestore";
 import { format } from "date-fns";
 
-export const ChatContext = createContext({})
+type ChatContextType = {
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>, creator: string, image: string | null | undefined, message: string, timestamp: any, userpair: string) => Promise<void>,
+    handleDelete: (id: string) => Promise<void>,
+    messages: SnapType[],
+    newMessage: string,
+    setNewMessage: React.Dispatch<React.SetStateAction<string>>,
+    userpair: string | null,
+    setUserpair: React.Dispatch<React.SetStateAction<string | null>>,
+    reversed: string | null,
+    setReversed: React.Dispatch<React.SetStateAction<string | null>>
+}
+
+const initstate = {
+    handleSubmit: async () => {},
+    handleDelete: async () => {},
+    messages: [],
+    newMessage: "",
+    setNewMessage: () => {},
+    userpair: "",
+    setUserpair: () => {},
+    reversed: "",
+    setReversed: () => {}
+}
+
+export const ChatContext = createContext<ChatContextType>(initstate)
 
 type ChildrenType = {
     children?: ReactElement | ReactElement[]
 }
 
+type SnapType = {
+    creator: string,
+    displayDate: string,
+    image: string,
+    message: string,
+    timestamp: object,
+    userpair: string,
+    id: string
+}
+
 export const ChatProvider = ({children}: ChildrenType) => {
-    const [messages, setMessages] = useState<any>([])
+    const [messages, setMessages] = useState<Array<SnapType>>([])
     const [newMessage, setNewMessage] = useState("")
     const [userpair, setUserpair] = useState<string | null>(localStorage.getItem("userpair") || "")
     const [reversed, setReversed] = useState<string | null>(localStorage.getItem("reversed") || "")
 
-    const getMessages = useCallback(async () => {
+    const getMessages = useCallback(async (): Promise<SnapType[]> => {
             try {
                 const messagedoc = collection(db, "messages")
                 const querymessages = query(messagedoc, where("userpair", "in", [`${userpair}`, `${reversed}`]), orderBy("timestamp"))
                 const snaps = await getDocs(querymessages)
-                let messagesarr: Array<any> = []
+                let messagesarr: SnapType[] = []
                 let idarr: string[] = []
                 snaps.forEach((snap: any) => {
                     messagesarr.push(snap.data())
@@ -31,14 +65,21 @@ export const ChatProvider = ({children}: ChildrenType) => {
                 }
                 return messagesarr
             } catch (err) {
-                console.error(`Error in ChatContext in getMessages(): ${err}`)
+                throw `${err} in the ChatContext in getMessages()`
             }
     }, [])
 
-    const handleSubmit = async (e: any, creator: any, image: any, message: any, timestamp: any, userpair: any) => {
+    const handleSubmit = async (
+            e: React.FormEvent<HTMLFormElement>, 
+            creator: string, 
+            image: string | null | undefined, 
+            message: string, 
+            timestamp: FieldValue, 
+            userpair: string
+        ) => {
         e.preventDefault()
         try {
-            const docref: any = collection(db, "messages")
+            const docref = collection(db, "messages")
             const displayDate: string = `${format(new Date(), 'MMMM dd, yyyy pp')}`
             await addDoc(docref, {
                 creator,
@@ -46,7 +87,8 @@ export const ChatProvider = ({children}: ChildrenType) => {
                 message,
                 timestamp,
                 userpair,
-                displayDate
+                displayDate,
+                id: ""
             })
             setNewMessage("")
             getMessages().then(setMessages)

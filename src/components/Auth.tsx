@@ -1,7 +1,7 @@
 import { auth, provider } from "../firebase-config"
 import { signInWithPopup, getAdditionalUserInfo, AdditionalUserInfo } from "firebase/auth"
 import Cookies from "universal-cookie"
-import { collection, setDoc, doc, getDoc, DocumentReference, DocumentData, DocumentSnapshot } from 'firebase/firestore'
+import { setDoc, doc, getDoc, DocumentReference, DocumentData, DocumentSnapshot } from 'firebase/firestore'
 import { db } from '../firebase-config'
 import LikedContext from "../context/LikedContext"
 import { useContext } from "react"

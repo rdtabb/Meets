@@ -3,13 +3,13 @@ import { useContext } from "react"
 import { ChatContext } from "../../../context/ChatContext"
 
 const Messages = () => {
-  const { messages, handleDelete }: any = useContext(ChatContext)
+  const { messages, handleDelete } = useContext(ChatContext)
 
   return (
     <ErrorBoundary>
       <ul className="chat__meslist">
         {messages.length ? (
-          messages.map((mes: any) => (
+          messages.map((mes) => (
             <li key={mes.id} className="item">
               <div className="item__wrapper">
                 <img src={mes.image} alt="" className="item__icon" />
