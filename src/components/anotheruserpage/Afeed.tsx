@@ -1,10 +1,10 @@
 import { useContext } from "react"
 import LikedContext from "../../context/LikedContext"
 import GeneralContext from "../../context/GeneralContext"
-import { newPostsType } from "./Auser"
+import { newPostsType } from "../../context/GeneralContext"
 
 type afeedprops = {
-  posts: Array<newPostsType>,
+  posts: newPostsType[],
   username: string | undefined
 }
 

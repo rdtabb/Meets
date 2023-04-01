@@ -674,6 +674,32 @@ body {
     background: none;
   }
 
+  .textarea {
+    display: grid;
+    gap: 1rem;
+    padding: 2rem;
+  }
+
+  &__comment {
+    width: 100%;
+    border: 0;
+    color: hsl(var(--clr-primary-100));
+    border-bottom: 2px solid hsl(var(--clr-primary-100), .6);
+    padding: .25rem;
+    transition: all var(--timing-function-primary) 100ms;
+
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      border-bottom: 3px solid hsl(var(--clr-primary-100), 1);
+    }
+
+    &::selection {
+      background-color: hsl(var(--clr-primary-100));
+      color: hsl(var(--clr-primary-900));
+    }
+  }
+
   &__image {
     object-fit: cover;
     object-position: center;
@@ -687,8 +713,6 @@ body {
     text-transform: uppercase;
     color: hsl(var(--clr-primary-100));
     font-weight: var(--fw-700);
-    padding-top: .5rem;
-    padding-left: 2rem;
   }
 
   &__form {

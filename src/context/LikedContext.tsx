@@ -10,11 +10,9 @@ import { updateDoc, doc, getDoc } from "firebase/firestore";
 import { likedType } from "../components/anotheruserpage/Auser";
 
 type LikedContextType = {
-  handleLike: (
-    e: { target: HTMLElement; }, 
-    name: string, src: string, 
-    username: string
-  ) => Promise<void>,
+  handleLike: (e: {
+    target: HTMLButtonElement;
+  }, name: string, src: string, username: string) => Promise<void>
   setLikedPosts: React.Dispatch<any>,
   likedPosts: Array<likedType>,
   handleDelete: (id: string) => Promise<void>
@@ -49,19 +47,19 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     getLikedPosts().then(setLikedPosts);
   }, [getLikedPosts]);
 
-  const handleLike = async (e: {target: HTMLElement}, name: string, src: string, username: string) => {
+  const handleLike = async (e: {target: HTMLButtonElement}, name: string, src: string, username: string) => {
     e.target.classList.remove('explosive')
     e.target.classList.add('explosive')
     const id: string = likedPosts.length
-      ? likedPosts[likedPosts.length - 1].id + 1
+      ? likedPosts[0].id + 1
       : 1;
-    const likedpost: object = {
+    const likedpost = {
       id,
       city: name,
       imgsrc: src,
       creator: username,
     };
-    const newPosts = [...likedPosts, likedpost];
+    const newPosts = [likedpost, ...likedPosts];
     const updateLiked = {
       liked: newPosts,
     };

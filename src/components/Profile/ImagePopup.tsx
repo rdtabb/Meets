@@ -9,7 +9,10 @@ const ImagePopup = () => {
             <div className="popup__container popup__container--image">
                 <div className="popup--image__container">
                     <img src="" alt="" className="popup__image" />
-                    <p className="popup__caption"></p>
+                    <div className="textarea">
+                        <p className="popup__caption"></p>
+                        <input placeholder="Leave your comment..." type="text" className="popup__comment" />
+                    </div>
                 </div>
                 <button onClick={handleClose} type="button" className="popup__close popup__close--image"></button>
             </div>
