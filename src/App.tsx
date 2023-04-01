@@ -17,7 +17,7 @@ import {
 import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/error/ErrorBoundary";
-import { newPostsType } from "./components/anotheruserpage/Auser";
+import { newPostsType } from "./context/GeneralContext";
 import GeneralContext from "./context/GeneralContext";
 
 export const cookies = new Cookies();
@@ -113,6 +113,7 @@ const App = () => {
       id,
       imgsrc: `${newPostImage}`,
       liked: false,
+      comments: []
     };
     const newPosts: Array<newPostsType> = [newPost, ...posts];
 

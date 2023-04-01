@@ -1,5 +1,7 @@
 import { createContext, ReactElement, useState } from "react";
 import { cookies } from "../App";
+import { doc } from "firebase/firestore";
+import { db } from "../firebase-config";
 
 export type GeneralContextType = {
     openImagePopup: (imgsrc: string, city: string) => void,
@@ -19,14 +21,31 @@ const initstate = {
     isAuth: false
 }
 
+export type newPostsType = {
+    city: string,
+    id: number,
+    imgsrc: string,
+    liked: boolean,
+    comments: CommentType[]
+}
+
+export type CommentType = {
+    creator: string,
+    message: string,
+    createdAt: string,
+    id: number,
+    img: string
+}
+
 const GeneralContext = createContext<GeneralContextType>(initstate)
 
 type ChildrenType = { children?: ReactElement | ReactElement[] }
 
+export const uid = localStorage.getItem("uid")!;
+
 export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
-    // const [userPicture, setUserPicture] = useState("");
     const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
-    const uid = localStorage.getItem("uid")!;
+    const [comments, setComments] = useState<CommentType[]>([])
 
     const openImagePopup = (imgsrc: string, city: string) => {
         const popupImageCont = document.querySelector('.popup--image')
@@ -66,6 +85,19 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
             popup?.setAttribute("data-visible", "false");
         }
     };
+
+    const handleComment = (creator: string, createdAt: string, message: string, img: string) => {
+        const userdoc = doc(db, "users", uid)
+
+        const id: number = 5
+        const newComment: CommentType = {
+            creator,
+            message,
+            createdAt,
+            id,
+            img
+        }
+    }
 
     return (
         <GeneralContext.Provider value={{ openImagePopup, handleAddPostButton, handleClose, isAuth, setIsAuth, handlePopup }}>

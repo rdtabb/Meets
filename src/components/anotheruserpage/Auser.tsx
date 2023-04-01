@@ -8,19 +8,13 @@ import { useEffect, useState } from "react";
 import { db } from "../../firebase-config";
 import { doc, getDoc } from "firebase/firestore";
 import { Params } from "react-router-dom";
+import { newPostsType } from "../../context/GeneralContext";
 
 export type likedType = {
   city: string,
   creator: string,
   id: number,
   imgsrc: string
-}
-
-export type newPostsType = {
-  city: string,
-  id: number,
-  imgsrc: string,
-  liked: boolean
 }
 
 type Usertype = {
