@@ -1,7 +1,12 @@
 import GeneralContext from "../../context/GeneralContext";
 import { useContext, useState } from "react"
+import { Params } from "react-router-dom";
 
-const Auserpopup = () => {
+type PropsType = {
+    id: string | undefined
+}
+
+const Auserpopup = ({id}: PropsType) => {
     const { handleClose, handleComment, comments, cuid } = useContext(GeneralContext)
     const [currAMessage, setCurrAMessage] = useState<string>("")
     
@@ -26,7 +31,7 @@ const Auserpopup = () => {
                                 </li>
                             ))}
                         </ul>
-                        <form onSubmit={(e) => handleComment(e, currAMessage, cuid, setCurrAMessage)}>
+                        <form onSubmit={(e) => handleComment(e, currAMessage, id, setCurrAMessage)}>
                             <input 
                                 value={currAMessage} 
                                 onChange={(e) => setCurrAMessage(e.target.value)} 
