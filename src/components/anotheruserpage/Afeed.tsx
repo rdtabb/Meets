@@ -14,10 +14,10 @@ const Afeed = ({posts, username}: afeedprops) => {
 
   return (
     <section className="cards">
-    {posts.map((post: newPostsType) => (
+    {posts.map((post) => (
       <article key={post.id} className="card">
         <div className="card__imgwrapper">
-          <img onClick={() => openImagePopup(post.imgsrc, post.city, post.id)} src={post.imgsrc} alt={post.city} className="card__image"></img>
+          <img onClick={() => openImagePopup(post.imgsrc, post.city, post.id, post.comments)} src={post.imgsrc} alt={post.city} className="card__image"></img>
         </div>
         <div className="card__action">
           <h2 className="card__description">{post.city}</h2>

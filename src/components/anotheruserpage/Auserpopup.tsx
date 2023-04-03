@@ -1,9 +1,9 @@
-import GeneralContext from "../../context/GeneralContext"
+import GeneralContext from "../../context/GeneralContext";
 import { useContext, useState } from "react"
 
-const ImagePopup = () => {
+const Auserpopup = () => {
     const { handleClose, handleComment, comments, cuid } = useContext(GeneralContext)
-    const [currMessage, setCurrMessage] = useState<string>("")
+    const [currAMessage, setCurrAMessage] = useState<string>("")
     
     return (
         <div data-visible="false" className="popup popup--image">
@@ -26,10 +26,10 @@ const ImagePopup = () => {
                                 </li>
                             ))}
                         </ul>
-                        <form onSubmit={(e) => handleComment(e, currMessage, cuid, setCurrMessage)}>
+                        <form onSubmit={(e) => handleComment(e, currAMessage, cuid, setCurrAMessage)}>
                             <input 
-                                value={currMessage} 
-                                onChange={(e) => setCurrMessage(e.target.value)} 
+                                value={currAMessage} 
+                                onChange={(e) => setCurrAMessage(e.target.value)} 
                                 placeholder="Leave your comment..." 
                                 type="text" 
                                 className="popup__comment" 
@@ -43,4 +43,4 @@ const ImagePopup = () => {
     )
 }
 
-export default ImagePopup
+export default Auserpopup

@@ -675,7 +675,7 @@ body {
 
   .textarea {
     display: grid;
-    gap: 1rem;
+    gap: .2rem;
     padding: 2rem;
   }
 
@@ -716,6 +716,7 @@ body {
     text-transform: uppercase;
     color: hsl(var(--clr-primary-100));
     font-weight: var(--fw-700);
+    font-size: var(--fs-600);
   }
 
   &__form {
@@ -745,6 +746,7 @@ body {
   &_opened {
     display: grid;
     transition: all var(--transition-time-primary) var(--timing-function-primary);
+    overflow-y: scroll;
   }
 
   &__header {
@@ -788,6 +790,44 @@ body {
     line-height: 17px;
 
     padding: 0 0 13px;
+  }
+}
+
+.comments {
+  display: grid;
+  gap: .5rem;
+  list-style: none;
+  max-height: 160px;
+  overflow-x: scroll;
+  scroll-snap-type: proximity;
+
+  &::-webkit-scrollbar {
+    width: .25rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--clr-primary-100), .6);
+    border-radius: 100vmax;
+  }
+}
+
+.comment {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &__icon {
+    --sizing: 3.5rem;
+
+    width: var(--sizing);
+    height: var(--sizing);
+    border-radius: 50%;
+  }
+
+  &__info {
+    display: flex;
+    gap: 1rem;
+    font-weight: var(--fw-600);
   }
 }
 

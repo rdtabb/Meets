@@ -4,7 +4,7 @@ type PropsType = {
 
 const AvatarImage = ({userPicture}: PropsType) => {
   return (
-    <img src={userPicture} alt="Avatar" className="profile__image" />
+    <img src={userPicture} alt="Avatar" className="profile__avatar" />
   )
 }
 
