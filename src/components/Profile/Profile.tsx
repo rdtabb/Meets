@@ -7,7 +7,7 @@ import ImagePopup from "./ImagePopup";
 import Loading from "../loading/Loading";
 import React, { Suspense } from "react";
 import ErrorBoundary from "../error/ErrorBoundary";
-import { newPostsType } from "../anotheruserpage/Auser";
+import { newPostsType } from "../../context/GeneralContext";
 
 const Posts = React.lazy(() => import("./Posts"))
 

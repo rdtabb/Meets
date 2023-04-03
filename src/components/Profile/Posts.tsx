@@ -1,6 +1,6 @@
 import ErrorBoundary from "../error/ErrorBoundary";
 import React, { Suspense } from "react";
-import { newPostsType } from "../anotheruserpage/Auser";
+import { newPostsType } from "../../context/GeneralContext";
 import Loading from "../loading/Loading";
 
 const Feed = React.lazy(() => import('./Feed'))
