@@ -710,6 +710,7 @@ body {
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     margin-inline: auto;
+    width: 100%;
   }
 
   &__caption {
@@ -817,7 +818,7 @@ body {
   gap: 1rem;
 
   &__icon {
-    --sizing: 3.5rem;
+    --sizing: clamp(2.5rem, 3vw, 3.5rem);
 
     width: var(--sizing);
     height: var(--sizing);
@@ -828,6 +829,12 @@ body {
     display: flex;
     gap: 1rem;
     font-weight: var(--fw-600);
+  }
+
+  &__creator,
+  &__date,
+  &__message {
+    font-size: clamp(var(--fs-200), 3vw, var(--fs-400));
   }
 }
 
@@ -851,7 +858,7 @@ body {
 
 @media (max-width: 1200px) {
   .popup__close--image {
-    --positioning: -35px;
+    --positioning: -25px;
 
     width: 20px;
     right: 0px;
@@ -861,7 +868,7 @@ body {
 
 @media (max-width: 550px) {
   .popup__close {
-    --positioning: -35px;
+    --positioning: -15px;
 
     width: 20px;
     right: 0px;

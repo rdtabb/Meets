@@ -1,6 +1,6 @@
 import { createContext, ReactElement, useState } from "react";
 import { cookies } from "../App";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, DocumentData } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import format from "date-fns/format";
 
@@ -72,13 +72,24 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     const [comments, setComments] = useState<CommentType[]>([])
     const cuid: any = localStorage.getItem("uid");
 
+    const getUserDataset = async (id: string) => {
+        const userdoc = doc(db, "users", id)
+        const dataSnap = await getDoc(userdoc)
+        const dataset: any = dataSnap.data()
+        const name = await dataset.name
+        return name
+    }
+
     const handleComment = async (e: any, message: string, uid: any, setCurrMessage: React.Dispatch<React.SetStateAction<string>>) => {
         e.preventDefault()
         const userdoc = doc(db, "users", uid);
         const dataSnap = await getDoc(userdoc);
         const dataset: any = dataSnap.data();
         const posts: newPostsType[] = await dataset.newPosts
-        const creator: string = await dataset.name
+        const creator: any = await getUserDataset(cuid)
+        console.log(creator)
+
+        // const creator: string = await dataset.name
         const img: any = auth.currentUser?.photoURL
         const createdAt: string = `${format(new Date(), 'MMMM dd, yyyy pp')}`
 

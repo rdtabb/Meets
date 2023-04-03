@@ -1,6 +1,5 @@
 import GeneralContext from "../../context/GeneralContext";
 import { useContext, useState } from "react"
-import { Params } from "react-router-dom";
 
 type PropsType = {
     id: string | undefined
