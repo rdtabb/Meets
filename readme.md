@@ -2,7 +2,7 @@
 https://user-images.githubusercontent.com/121361578/229558565-caece232-a742-4869-9765-05f9f2396b78.mp4
 
 ## Description
-Meets is the social network where after signin in with Google account you can edit your profile name and status, add posts with photos and titles, view other users profiles and text them
+Meets is the social network where after authenticating with Google account you can edit your profile name and status, add posts with photos and titles, view other users profiles and text them
 
 ## Tech stack
  - React (with react-router-v6)

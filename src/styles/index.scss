@@ -261,11 +261,19 @@ body {
   }
 
   &__avatar {
+    position: relative;
     display: block;
     width: 120px;
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: 100vmax;
+    border: 3px solid hsl(var(--clr-primary-900), 0);
+    transition: all calc(var(--transition-time-primary) * 2) var(--timing-function-primary);
+
+    &:hover {
+      cursor: pointer;
+      border: 3px solid hsl(var(--clr-primary-900));
+    }
   }
 
   &__avatar--empty {

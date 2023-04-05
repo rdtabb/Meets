@@ -11,10 +11,14 @@ export type GeneralContextType = {
     isAuth: any,
     setIsAuth: React.Dispatch<any>,
     handlePopup: () => void,
+    handleIconPopup: () => void,
     postId: number,
     handleComment: (e: any, message: string, uid: any, setCurrMessage: React.Dispatch<React.SetStateAction<string>>) => Promise<void>,
     comments: CommentType[],
-    cuid: any
+    cuid: any,
+    handleProfileIcon: () => Promise<void>,
+    icon: string,
+    setIcon: React.Dispatch<React.SetStateAction<string>>
 }
 
 const initstate = {
@@ -27,7 +31,11 @@ const initstate = {
     postId: 0,
     handleComment: async () => {},
     comments: [],
-    cuid: ""
+    cuid: "",
+    handleProfileIcon: async () => {},
+    icon: "",
+    setIcon: () => {},
+    handleIconPopup: () => {},
 }
 
 export type newPostsType = {
@@ -70,6 +78,7 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
     const [postId, setPostId] = useState<number>(0)
     const [comments, setComments] = useState<CommentType[]>([])
+    const [icon, setIcon] = useState<string>("")
     const cuid: any = localStorage.getItem("uid");
 
     const getUserDataset = async (id: string) => {
@@ -80,6 +89,15 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         return name
     }
 
+    const handleProfileIcon = async () => {
+        const userdoc = doc(db, "users", cuid);
+        const updatedImage = {
+            imgsrc: icon
+        }
+        setIcon('')
+        await updateDoc(userdoc, updatedImage)
+    }
+
     const handleComment = async (e: any, message: string, uid: any, setCurrMessage: React.Dispatch<React.SetStateAction<string>>) => {
         e.preventDefault()
         const userdoc = doc(db, "users", uid);
@@ -87,9 +105,7 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         const dataset: any = dataSnap.data();
         const posts: newPostsType[] = await dataset.newPosts
         const creator: any = await getUserDataset(cuid)
-        console.log(creator)
 
-        // const creator: string = await dataset.name
         const img: any = auth.currentUser?.photoURL
         const createdAt: string = `${format(new Date(), 'MMMM dd, yyyy pp')}`
 
@@ -160,8 +176,35 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         }
     };
 
+    const handleIconPopup = () => {
+        const popup = document.querySelector(".popup--icon");
+        const visibility = popup?.getAttribute("data-visible");
+        if (visibility == "false") {
+            popup?.classList.add("popup_opened");
+            popup?.setAttribute("data-visible", "true");
+        } else {
+            popup?.classList.remove("popup_opened");
+            popup?.setAttribute("data-visible", "false");
+        }
+    }
+
     return (
-        <GeneralContext.Provider value={{ cuid, handleComment, openImagePopup, handleAddPostButton, handleClose, isAuth, setIsAuth, handlePopup, postId, comments }}>
+        <GeneralContext.Provider value={{ 
+            handleProfileIcon, 
+            cuid, 
+            handleComment, 
+            openImagePopup, 
+            handleAddPostButton, 
+            handleClose, 
+            isAuth, 
+            setIsAuth, 
+            handlePopup, 
+            postId, 
+            comments,
+            icon,
+            setIcon,
+            handleIconPopup
+        }}>
             {children}
         </GeneralContext.Provider>
     )

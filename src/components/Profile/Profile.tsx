@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import Popup from "./Popup";
 import AddPost from "./AddPost";
 import ImagePopup from "./ImagePopup";
+import IconPopup from "./IconPopup";
 import Loading from "../loading/Loading";
 import React, { Suspense } from "react";
 import ErrorBoundary from "../error/ErrorBoundary";
@@ -67,6 +68,7 @@ const Profile = ({
         handleNewPost={handleNewPost}
       />
       <ImagePopup />
+      <IconPopup />
     </div>
   );
 };
