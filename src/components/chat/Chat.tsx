@@ -3,8 +3,9 @@ import ChatHeader from "./components/ChatHeader"
 import ErrorBoundary from "../error/ErrorBoundary"
 import { ChatContext } from "../../context/ChatContext"
 import React, { Suspense, useRef, useEffect, useContext } from "react"
-
+import LoadingMessages from "../loading/LoadingMessages"
 const Messages = React.lazy(() => import("./components/Messages"))
+
 
 type PropsType = {
   username: string
@@ -25,7 +26,7 @@ const Chat = ({username}: PropsType) => {
       <ChatHeader />
       <main className="chat">
           <ErrorBoundary>
-              <Suspense fallback={<p>Loading...</p>}>
+              <Suspense fallback={<LoadingMessages />}>
                   <Messages />
               </Suspense>
           </ErrorBoundary>
