@@ -9,7 +9,7 @@ const AvatarImage = ({userPicture}: PropsType) => {
   const { handleIconPopup } = useContext(GeneralContext)
 
   return (
-    <img onClick={handleIconPopup} src={userPicture} alt="Avatar" className="profile__avatar" />
+    <img aria-controls="popup--icon" onClick={handleIconPopup} src={userPicture} alt="Avatar" className="profile__avatar" />
   )
 }
 

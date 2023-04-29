@@ -11,7 +11,7 @@ export type GeneralContextType = {
     isAuth: any,
     setIsAuth: React.Dispatch<any>,
     handlePopup: () => void,
-    handleIconPopup: () => void,
+    handleIconPopup: (e: any) => void,
     postId: number,
     handleComment: (e: any, message: string, uid: any, setCurrMessage: React.Dispatch<React.SetStateAction<string>>) => Promise<void>,
     comments: CommentType[],
@@ -92,7 +92,7 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     const handleProfileIcon = async () => {
         const userdoc = doc(db, "users", cuid);
         const updatedImage = {
-            imgsrc: icon
+            imgurl: icon
         }
         setIcon('')
         await updateDoc(userdoc, updatedImage)
@@ -176,7 +176,7 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         }
     };
 
-    const handleIconPopup = () => {
+    const handleIconPopup = (e: any) => {
         const popup = document.querySelector(".popup--icon");
         const visibility = popup?.getAttribute("data-visible");
         if (visibility == "false") {

@@ -5,7 +5,7 @@ const IconPopup = () => {
     const { handleClose, handleProfileIcon, icon, setIcon } = useContext(GeneralContext)
 
     return (
-        <div data-visible="false" className="popup popup--icon">
+        <div data-visible="false" id="popup--icon" className="popup popup--icon">
             <div className="popup__container">
                 <form
                 onSubmit={(e) => e.preventDefault()}
