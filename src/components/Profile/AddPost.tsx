@@ -1,53 +1,89 @@
-import GeneralContext from "../../context/GeneralContext";
-import { useContext } from "react";
+import useGeneralContext from "../../hooks/useGeneralContext";
+import { z, ZodType } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { HandleNewPostData } from "../../App";
 
 type addpostprops = {
-  setNewPostTitle: React.Dispatch<React.SetStateAction<string>>;
-  setNewPostImage: React.Dispatch<React.SetStateAction<string>>;
-  newPostImage: string;
-  newPostTitle: string;
-  handleNewPost: () => Promise<void>;
+  handleNewPost: (variables: HandleNewPostData) => Promise<void>;
 };
 
-const AddPost = ({
-  setNewPostImage,
-  setNewPostTitle,
-  newPostImage,
-  newPostTitle,
-  handleNewPost
-}: addpostprops) => {
-  const { handleClose } = useContext(GeneralContext)
+type AddPostData = {
+  url: string;
+  place: string;
+};
+
+const AddPost = ({ handleNewPost }: addpostprops) => {
+  const { handleClose } = useGeneralContext();
+
+  const addPostSchema: ZodType<AddPostData> = z.object({
+    url: z.string().trim().url({
+      message: "Enter url",
+    }),
+    place: z
+      .string()
+      .trim()
+      .min(2, {
+        message: "Post title must be at least 2 characters long",
+      })
+      .max(30),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddPostData>({
+    resolver: zodResolver(addPostSchema),
+  });
 
   return (
     <div data-visible="false" className="popup popup-add-post">
       <div className="popup__container">
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubmit(handleNewPost)}
           name="popupForm"
           className="popup__form"
+          noValidate
         >
           <h2 className="popup__header">Add new post</h2>
           <div className="popup__inputs">
-            <input
-              placeholder="Enter picture url"
-              type="text"
-              className="popup__input"
-              value={newPostImage}
-              onChange={(e) => setNewPostImage(e.target.value)}
-            ></input>
-            <input
-              placeholder="Add post title"
-              type="text"
-              className="popup__input"
-              value={newPostTitle}
-              onChange={(e) => setNewPostTitle(e.target.value)}
-            ></input>
+            <fieldset className="popup__set">
+              <input
+                {...register("url")}
+                placeholder="Enter picture url..."
+                type="url"
+                className="popup__input"
+              ></input>
+              {errors.url && (
+                <p className="popup__error">{errors.url.message}</p>
+              )}
+            </fieldset>
+            <fieldset className="popup__set">
+              <input
+                {...register("place")}
+                placeholder="Enter post title..."
+                type="text"
+                className="popup__input"
+              ></input>
+              {errors.place && (
+                <p className="popup__error">{errors.place.message}</p>
+              )}
+            </fieldset>
           </div>
-          <button onClick={handleNewPost} type="submit" className="popup__submit">
+          <button
+            disabled={errors.place || errors.url ? true : false}
+            type="submit"
+            className="popup__submit"
+          >
             Save
           </button>
         </form>
-        <button onClick={handleClose} type="button" className="popup__close"></button>
+        <button
+          onClick={handleClose}
+          type="button"
+          className="popup__close"
+        ></button>
       </div>
     </div>
   );

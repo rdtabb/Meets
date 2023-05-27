@@ -9,6 +9,7 @@ import Loading from "../loading/Loading";
 import React, { Suspense } from "react";
 import ErrorBoundary from "../error/ErrorBoundary";
 import { newPostsType } from "../../context/GeneralContext";
+import type { HandleNewPostData } from "../../App";
 
 const Posts = React.lazy(() => import("./Posts"))
 
@@ -20,11 +21,7 @@ type ProfileProps = {
   handleLike: (id: number) => Promise<void>;
   status: string;
   setStatus: React.Dispatch<React.SetStateAction<string>>;
-  setNewPostTitle: React.Dispatch<React.SetStateAction<string>>;
-  setNewPostImage: React.Dispatch<React.SetStateAction<string>>;
-  newPostImage: string;
-  newPostTitle: string;
-  handleNewPost: () => Promise<void>;
+  handleNewPost: (variables: HandleNewPostData) => Promise<void>
   handleDelete: (id: number) => Promise<void>;
 };
 
@@ -34,10 +31,6 @@ const Profile = ({
   posts,
   handleLike,
   status,
-  setNewPostImage,
-  setNewPostTitle,
-  newPostImage,
-  newPostTitle,
   handleNewPost,
   handleDelete,
 }: ProfileProps) => {
@@ -61,10 +54,6 @@ const Profile = ({
       <Footer />
       <Popup />
       <AddPost
-        setNewPostImage={setNewPostImage}
-        setNewPostTitle={setNewPostTitle}
-        newPostTitle={newPostTitle}
-        newPostImage={newPostImage}
         handleNewPost={handleNewPost}
       />
       <ImagePopup />

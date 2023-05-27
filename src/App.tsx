@@ -22,10 +22,13 @@ import GeneralContext from "./context/GeneralContext";
 
 export const cookies = new Cookies();
 
+export type HandleNewPostData = {
+  url: string,
+  place: string
+}
+
 const App = () => {
   const [users, setUsers] = useState([]);
-  const [newPostTitle, setNewPostTitle] = useState("");
-  const [newPostImage, setNewPostImage] = useState("");
   const [username, setUsername] = useState("");
   const [userPicture, setUserPicture] = useState("");
   const [status, setStatus] = useState("Add status to profile");
@@ -97,11 +100,7 @@ const App = () => {
 
   const usersDataRef = collection(db, "users");
 
-  const handleNewPost = async () => {
-    if (newPostTitle == "" && newPostImage == "") {
-      return;
-    }
-
+  const handleNewPost = async (variables: HandleNewPostData) => {
     const usedoc = doc(db, "users", uid);
     const dataSnap = getDoc(usedoc);
     const dataset: any = (await dataSnap).data();
@@ -109,9 +108,9 @@ const App = () => {
 
     const id = nposts.length ? nposts[0].id + 1 : 1;
     const newPost = {
-      city: `${newPostTitle}`,
+      city: variables.place,
       id,
-      imgsrc: `${newPostImage}`,
+      imgsrc: variables.url,
       liked: false,
       comments: []
     };
@@ -120,8 +119,6 @@ const App = () => {
     const addPostPopup = document.querySelector(".popup-add-post");
     addPostPopup?.setAttribute("data-visible", "false");
     addPostPopup?.classList.remove("popup_opened");
-    setNewPostImage("");
-    setNewPostTitle("");
 
     const newpostsdb = {
       newPosts: newPosts,
@@ -177,10 +174,6 @@ const App = () => {
                 userPicture={userPicture}
                 posts={posts}
                 setUsername={setUsername}
-                setNewPostTitle={setNewPostTitle}
-                setNewPostImage={setNewPostImage}
-                newPostImage={newPostImage}
-                newPostTitle={newPostTitle}
                 handleNewPost={handleNewPost}
                 handleDelete={handleDelete}
               />
