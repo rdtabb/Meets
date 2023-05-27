@@ -1,6 +1,6 @@
 import { createContext, ReactElement, useState } from "react";
 import { cookies } from "../App";
-import { doc, getDoc, updateDoc, DocumentData } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import format from "date-fns/format";
 
@@ -71,6 +71,7 @@ export type UserDocType = {
 }
 
 const GeneralContext = createContext<GeneralContextType>(initstate)
+
 
 type ChildrenType = { children?: ReactElement | ReactElement[] }
 

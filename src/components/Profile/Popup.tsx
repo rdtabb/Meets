@@ -1,69 +1,112 @@
-import { useState, useContext } from "react";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase-config";
-import GeneralContext from "../../context/GeneralContext";
+import { ZodType, z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import useGeneralContext from "../../hooks/useGeneralContext";
+
+type EditProfilePopupData = {
+  username: string;
+  status: string;
+};
 
 const Popup = () => {
-  const [newName, setNewName] = useState("");
-  const [newStatus, setNewStatus] = useState("");
+  const { handleClose } = useGeneralContext();
+  const formSchema: ZodType<EditProfilePopupData> = z.object({
+    username: z
+      .string()
+      .trim()
+      .min(2, {
+        message: "Username must be at least 2 characters long",
+      })
+      .max(30),
+    status: z
+      .string()
+      .trim()
+      .min(2, {
+        message: "Status must be at least 2 characters long",
+      })
+      .max(70),
+  });
 
-  const { handleClose } = useContext(GeneralContext)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EditProfilePopupData>({
+    resolver: zodResolver(formSchema),
+  });
 
-  const handleSubmit = async () => {
+  const handleEditProfile = async (variables: EditProfilePopupData) => {
     const popup = document.querySelector(".popup");
     popup?.classList.remove("popup_opened");
     popup?.setAttribute("data-visible", "false");
-    if (newName == "" && newStatus == "") {
-      return;
-    }
-    setNewName("");
-    setNewStatus("");
-
-    const uid: any = localStorage.getItem("uid")
+    const uid: any = localStorage.getItem("uid");
     const newstatusdb = {
-      name: newName,
-      newStatus: newStatus
-    }
-    const userdoc = doc(db, "users", uid)
-    await updateDoc(userdoc, newstatusdb)
+      name: variables.username,
+      newStatus: variables.status,
+    };
+    const userdoc = doc(db, "users", uid);
+    await updateDoc(userdoc, newstatusdb);
   };
 
   return (
     <div data-visible="false" className="popup popup--edit">
       <div className="popup__container">
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubmit(handleEditProfile)}
           name="popupForm"
           className="popup__form"
+          noValidate
         >
           <h2 className="popup__header">Edit your profile</h2>
           <div className="popup__inputs">
-            <input
-              onChange={(e) => setNewName(e.target.value)}
-              placeholder="Enter name"
-              name="name-input"
-              value={newName}
-              type="text"
-              className="popup__input popup__input--name"
-            ></input>
-            <input
-              onChange={(e) => setNewStatus(e.target.value)}
-              placeholder="Edit status"
-              name="status-input"
-              value={newStatus}
-              type="text"
-              className="popup__input popup__input--description"
-            ></input>
+            <fieldset className="popup__set">
+              <input
+                {...register("username")}
+                placeholder="Edit name..."
+                name="name"
+                id="name"
+                type="text"
+                className="popup__input"
+                minLength={2}
+                maxLength={30}
+                required
+              ></input>
+              {errors.username && (
+                <p className="popup__error">{errors.username.message}</p>
+              )}
+            </fieldset>
+            <fieldset className="popup__set">
+              <input
+                {...register("status")}
+                placeholder="Edit status..."
+                name="status"
+                id="status"
+                type="text"
+                className="popup__input"
+                minLength={2}
+                maxLength={70}
+                required
+              ></input>
+              {errors.status && (
+                <p className="popup__error">{errors.status.message}</p>
+              )}
+            </fieldset>
           </div>
           <button
-            onClick={handleSubmit}
             type="submit"
             className="popup__submit"
+            disabled={errors.status || errors.username ? true : false}
           >
             Save
           </button>
         </form>
-        <button onClick={handleClose} type="button" className="popup__close"></button>
+        <button
+          onClick={handleClose}
+          type="button"
+          className="popup__close"
+        ></button>
       </div>
     </div>
   );
