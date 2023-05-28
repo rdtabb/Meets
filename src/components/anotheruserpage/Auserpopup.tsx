@@ -1,12 +1,12 @@
-import GeneralContext from "../../context/GeneralContext";
-import { useContext, useState } from "react"
+import { useState } from "react"
+import useGeneralContext from "../../hooks/useGeneralContext";
 
 type PropsType = {
     id: string | undefined
 }
 
 const Auserpopup = ({id}: PropsType) => {
-    const { handleClose, handleComment, comments, cuid } = useContext(GeneralContext)
+    const { handleClose, handleComment, comments } = useGeneralContext()
     const [currAMessage, setCurrAMessage] = useState<string>("")
     
     return (

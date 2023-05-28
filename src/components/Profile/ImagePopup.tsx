@@ -1,8 +1,8 @@
-import GeneralContext from "../../context/GeneralContext"
-import { useContext, useState } from "react"
+import { useState } from "react"
+import useGeneralContext from "../../hooks/useGeneralContext"
 
 const ImagePopup = () => {
-    const { handleClose, handleComment, comments, cuid } = useContext(GeneralContext)
+    const { handleClose, handleComment, comments, cuid } = useGeneralContext()
     const [currMessage, setCurrMessage] = useState<string>("")
     
     return (

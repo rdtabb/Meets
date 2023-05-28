@@ -1,21 +1,22 @@
-import { auth } from "../../firebase-config"
-import { signOut } from "firebase/auth"
-import { cookies } from "../../App"
-import { useContext } from "react"
-import GeneralContext from "../../context/GeneralContext"
+import { auth } from "../../firebase-config";
+import { signOut } from "firebase/auth";
+import { cookies } from "../../App";
+import useGeneralContext from "../../hooks/useGeneralContext";
 
 const Signout = () => {
-    const { setIsAuth } = useContext(GeneralContext)
+  const { setIsAuth } = useGeneralContext();
 
-    const signout = async () => {
-        await signOut(auth)
-        cookies.remove("auth-token")
-        setIsAuth(false)
-    }
+  const signout = async () => {
+    await signOut(auth);
+    cookies.remove("auth-token");
+    setIsAuth(false);
+  };
 
-    return (
-        <button onClick={signout} className='signout'>Sign Out</button>
-    )
-}
+  return (
+    <button onClick={signout} className="signout">
+      Sign Out
+    </button>
+  );
+};
 
-export default Signout
+export default Signout;

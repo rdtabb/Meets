@@ -1,16 +1,24 @@
-import { useContext } from "react"
-import GeneralContext from "../../context/GeneralContext"
+import useGeneralContext from "../../hooks/useGeneralContext";
 
 type PropsType = {
-  userPicture: string
-}
+  userPicture: string;
+};
 
-const AvatarImage = ({userPicture}: PropsType) => {
-  const { handleIconPopup } = useContext(GeneralContext)
+const AvatarImage = ({ userPicture }: PropsType) => {
+  const { handleIconPopup } = useGeneralContext()
 
   return (
-    <img aria-controls="popup--icon" onClick={handleIconPopup} src={userPicture} alt="Avatar" className="profile__avatar" />
-  )
-}
+    <div className="avatar-wrapper">
+      <img
+        aria-controls="popup--icon"
+        onClick={handleIconPopup}
+        src={userPicture}
+        alt="Avatar"
+        className="profile__avatar"
+      />
+      <img className="avatar-wrapper__icon" src="src/assets/editPopupIcon.svg" alt="edit profile icon" />
+    </div>
+  );
+};
 
-export default AvatarImage
+export default AvatarImage;

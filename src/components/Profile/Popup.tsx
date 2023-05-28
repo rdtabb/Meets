@@ -13,13 +13,7 @@ type EditProfilePopupData = {
 const Popup = () => {
   const { handleClose } = useGeneralContext();
   const formSchema: ZodType<EditProfilePopupData> = z.object({
-    username: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "Username must be at least 2 characters long",
-      })
-      .max(30),
+    username: z.string().trim().min(2).max(30),
     status: z
       .string()
       .trim()
@@ -68,10 +62,11 @@ const Popup = () => {
                 name="name"
                 id="name"
                 type="text"
-                className="popup__input"
-                minLength={2}
-                maxLength={30}
-                required
+                className={
+                  errors.username
+                    ? "popup__input popup__input_type_error"
+                    : "popup__input"
+                }
               ></input>
               {errors.username && (
                 <p className="popup__error">{errors.username.message}</p>
@@ -84,9 +79,11 @@ const Popup = () => {
                 name="status"
                 id="status"
                 type="text"
-                className="popup__input"
-                minLength={2}
-                maxLength={70}
+                className={
+                  errors.status
+                    ? "popup__input popup__input_type_error"
+                    : "popup__input"
+                }
                 required
               ></input>
               {errors.status && (
@@ -97,7 +94,7 @@ const Popup = () => {
           <button
             type="submit"
             className="popup__submit"
-            disabled={errors.status || errors.username ? true : false}
+            disabled={errors.username || errors.status ? true : false}
           >
             Save
           </button>

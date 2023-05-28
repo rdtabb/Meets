@@ -1,6 +1,5 @@
-import GeneralContext from "../../context/GeneralContext";
-import { useContext } from "react";
 import { newPostsType } from "../../context/GeneralContext";
+import useGeneralContext from "../../hooks/useGeneralContext";
 
 type feedprops = {
   posts: Array<newPostsType>;
@@ -9,7 +8,7 @@ type feedprops = {
 };
 
 const Feed = ({ posts, handleLike, handleDelete }: feedprops) => {
-  const { openImagePopup } = useContext(GeneralContext)
+  const { openImagePopup } = useGeneralContext()
 
   return (
     <section className="cards">

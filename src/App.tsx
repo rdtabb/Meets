@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile/Profile";
 import Usersearch from "./components/userlist/Usersearch";
@@ -18,7 +18,7 @@ import { db } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/error/ErrorBoundary";
 import { newPostsType } from "./context/GeneralContext";
-import GeneralContext from "./context/GeneralContext";
+import useGeneralContext from "./hooks/useGeneralContext";
 
 export const cookies = new Cookies();
 
@@ -34,7 +34,7 @@ const App = () => {
   const [status, setStatus] = useState("Add status to profile");
   const [posts, setPosts] = useState<newPostsType[]>([]);
 
-  const { isAuth } = useContext(GeneralContext)
+  const { isAuth } = useGeneralContext()
 
   const getPosts = useCallback(async () => {
     try {

@@ -18,7 +18,7 @@ const AddPost = ({ handleNewPost }: addpostprops) => {
 
   const addPostSchema: ZodType<AddPostData> = z.object({
     url: z.string().trim().url({
-      message: "Enter url",
+      message: "Invalid url",
     }),
     place: z
       .string()
@@ -53,7 +53,11 @@ const AddPost = ({ handleNewPost }: addpostprops) => {
                 {...register("url")}
                 placeholder="Enter picture url..."
                 type="url"
-                className="popup__input"
+                className={
+                  errors.url
+                    ? "popup__input popup__input_type_error"
+                    : "popup__input"
+                }
               ></input>
               {errors.url && (
                 <p className="popup__error">{errors.url.message}</p>
@@ -64,7 +68,12 @@ const AddPost = ({ handleNewPost }: addpostprops) => {
                 {...register("place")}
                 placeholder="Enter post title..."
                 type="text"
-                className="popup__input"
+                className={
+                  errors.place
+                    ? "popup__input popup__input_type_error"
+                    : "popup__input"
+                }
+                required
               ></input>
               {errors.place && (
                 <p className="popup__error">{errors.place.message}</p>

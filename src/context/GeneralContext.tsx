@@ -16,9 +16,7 @@ export type GeneralContextType = {
     handleComment: (e: any, message: string, uid: any, setCurrMessage: React.Dispatch<React.SetStateAction<string>>) => Promise<void>,
     comments: CommentType[],
     cuid: any,
-    handleProfileIcon: () => Promise<void>,
-    icon: string,
-    setIcon: React.Dispatch<React.SetStateAction<string>>
+    handleProfileIcon: (variables: HandleProfileIconType) => Promise<void>
 }
 
 const initstate = {
@@ -33,9 +31,7 @@ const initstate = {
     comments: [],
     cuid: "",
     handleProfileIcon: async () => {},
-    icon: "",
-    setIcon: () => {},
-    handleIconPopup: () => {},
+    handleIconPopup: () => {}
 }
 
 export type newPostsType = {
@@ -72,6 +68,9 @@ export type UserDocType = {
 
 const GeneralContext = createContext<GeneralContextType>(initstate)
 
+type HandleProfileIconType = {
+    url: string
+}
 
 type ChildrenType = { children?: ReactElement | ReactElement[] }
 
@@ -79,7 +78,6 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
     const [postId, setPostId] = useState<number>(0)
     const [comments, setComments] = useState<CommentType[]>([])
-    const [icon, setIcon] = useState<string>("")
     const cuid: any = localStorage.getItem("uid");
 
     const getUserDataset = async (id: string) => {
@@ -90,12 +88,11 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         return name
     }
 
-    const handleProfileIcon = async () => {
+    const handleProfileIcon = async (variables: HandleProfileIconType) => {
         const userdoc = doc(db, "users", cuid);
         const updatedImage = {
-            imgurl: icon
+            imgurl: variables.url
         }
-        setIcon('')
         await updateDoc(userdoc, updatedImage)
     }
 
@@ -202,8 +199,6 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
             handlePopup, 
             postId, 
             comments,
-            icon,
-            setIcon,
             handleIconPopup
         }}>
             {children}
