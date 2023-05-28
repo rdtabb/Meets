@@ -10,29 +10,24 @@ import React, { Suspense } from "react";
 import ErrorBoundary from "../error/ErrorBoundary";
 import { newPostsType } from "../../context/GeneralContext";
 import type { HandleNewPostData } from "../../App";
-
-const Posts = React.lazy(() => import("./Posts"))
+import Posts from "./Posts";
 
 type ProfileProps = {
   username: string;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   userPicture: string;
   posts: Array<newPostsType>;
-  handleLike: (id: number) => Promise<void>;
   status: string;
   setStatus: React.Dispatch<React.SetStateAction<string>>;
-  handleNewPost: (variables: HandleNewPostData) => Promise<void>
-  handleDelete: (id: number) => Promise<void>;
+  handleNewPost: (variables: HandleNewPostData) => Promise<void>;
 };
 
 const Profile = ({
   username,
   userPicture,
   posts,
-  handleLike,
   status,
   handleNewPost,
-  handleDelete,
 }: ProfileProps) => {
   return (
     <div className="container">
@@ -40,22 +35,14 @@ const Profile = ({
         <Header />
       </ErrorBoundary>
       <main className="main">
-        <Desc
-          status={status}
-          username={username}
-          userPicture={userPicture}
-        />
+        <Desc status={status} username={username} userPicture={userPicture} />
         <ErrorBoundary>
-          <Suspense fallback={<Loading />}>
-            <Posts handleLike={handleLike} posts={posts} handleDelete={handleDelete} />
-          </Suspense>
+          <Posts />
         </ErrorBoundary>
       </main>
       <Footer />
       <Popup />
-      <AddPost
-        handleNewPost={handleNewPost}
-      />
+      <AddPost handleNewPost={handleNewPost} />
       <ImagePopup />
       <IconPopup />
     </div>

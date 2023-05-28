@@ -1,14 +1,54 @@
 import { newPostsType } from "../../context/GeneralContext";
 import useGeneralContext from "../../hooks/useGeneralContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase-config";
 
 type feedprops = {
   posts: Array<newPostsType>;
-  handleLike: any;
-  handleDelete: any;
 };
 
-const Feed = ({ posts, handleLike, handleDelete }: feedprops) => {
+type MutationFnType = {
+  id: number
+}
+
+
+const Feed = ({ posts }: feedprops) => {
+  const uid: any = localStorage.getItem("uid")
+  const newHandleLike = async (variables: MutationFnType) => {
+    const newPosts: Array<newPostsType> = posts.map((post) =>
+      post.id == variables.id ? { ...post, liked: !post.liked } : post
+    );
+    const newpostsdb = {
+      newPosts: newPosts
+    };
+    const userdoc = doc(db, "users", `${uid}`);
+    await updateDoc(userdoc, newpostsdb);
+  };
+
+  const newHandleDelete = async (variables: MutationFnType) => {
+    const newPosts = posts.filter((post) => post.id != variables.id);
+    const newpostsdb = {
+      newPosts: newPosts,
+    };
+    const userdoc = doc(db, "users", uid);
+    await updateDoc(userdoc, newpostsdb);
+  };
+
   const { openImagePopup } = useGeneralContext()
+  const queryClient = useQueryClient()
+  const likeMutation = useMutation({
+    mutationFn: newHandleLike,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["postsdata"])
+    }
+  })
+  const deleteMutation = useMutation({
+    mutationFn: newHandleDelete,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["postsdata"])
+    }
+  })
 
   return (
     <section className="cards">
@@ -21,7 +61,9 @@ const Feed = ({ posts, handleLike, handleDelete }: feedprops) => {
           <div className="card__action">
             <h2 className="card__description">{post.city}</h2>
             <button
-              onClick={() => handleLike(post.id)}
+              onClick={() => likeMutation.mutate({
+                id: post.id
+              })}
               type="button"
               style={
                 post.liked
@@ -36,7 +78,9 @@ const Feed = ({ posts, handleLike, handleDelete }: feedprops) => {
             ></button>
           </div>
           <button
-            onClick={() => handleDelete(post.id)}
+            onClick={() => deleteMutation.mutate({
+              id: post.id
+            })}
             className="card__delete"
           ></button>
         </article>

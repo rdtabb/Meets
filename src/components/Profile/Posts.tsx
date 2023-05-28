@@ -1,38 +1,51 @@
 import ErrorBoundary from "../error/ErrorBoundary";
-import React, { Suspense } from "react";
 import { newPostsType } from "../../context/GeneralContext";
+import Feed from "./Feed";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase-config";
+import { useQuery } from "@tanstack/react-query";
 import Loading from "../loading/Loading";
 
-const Feed = React.lazy(() => import('./Feed'))
-
-type postsprops = {
-  posts: Array<newPostsType>;
-  handleLike: (id: number) => Promise<void>;
-  handleDelete: (id: number) => Promise<void>
+const uid: any = localStorage.getItem("uid");
+const getPosts = async () => {
+  const userdoc = doc(db, "users", uid);
+  const dataSnap = await getDoc(userdoc);
+  const dataset = dataSnap.data();
+  const posts: newPostsType[] = await dataset?.newPosts;
+  return posts;
 };
 
-const Posts = ({ posts, handleLike, handleDelete }: postsprops) => {
+const Posts = () => {
+  const postsQuery = useQuery({
+    queryKey: ["postsdata"],
+    queryFn: getPosts,
+  });
+
+  if (postsQuery.isLoading) return <Loading />;
+
   return (
     <>
-      {posts.length ? (
+      {postsQuery.data?.length ? (
         <ErrorBoundary>
-          <Suspense fallback={<Loading />}>
-            <Feed 
-              posts={posts}
-              handleDelete={handleDelete}
-              handleLike={handleLike}
-            />
-          </Suspense>
+          <Feed
+            posts={postsQuery.data}
+          />
         </ErrorBoundary>
       ) : (
         <section className="cards cards--empty">
           <div className="cards--empty__wrapper">
-            <img src="src/assets/box.svg" alt="" className="cards--empty__img" />
-            <h1 className="cards--empty__header">Whoopsies, your feed is empty! Click plus button to add post</h1>
+            <img
+              src="src/assets/box.svg"
+              alt=""
+              className="cards--empty__img"
+            />
+            <h1 className="cards--empty__header">
+              Whoopsies, your feed is empty! Click plus button to add post
+            </h1>
           </div>
         </section>
       )}
     </>
   );
-}
-export default Posts
+};
+export default Posts;

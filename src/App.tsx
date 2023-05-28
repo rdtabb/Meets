@@ -86,18 +86,6 @@ const App = () => {
     getUserPicture()
   })
 
-  const handleLike = async (id: number) => {
-    const newPosts: Array<newPostsType> = posts.map((post) =>
-      post.id == id ? { ...post, liked: !post.liked } : post
-    );
-    const newpostsdb = {
-      newPosts: newPosts
-    };
-    const userdoc = doc(db, "users", `${uid}`);
-    await updateDoc(userdoc, newpostsdb);
-    getPosts().then(setPosts)
-  };
-
   const usersDataRef = collection(db, "users");
 
   const handleNewPost = async (variables: HandleNewPostData) => {
@@ -120,16 +108,6 @@ const App = () => {
     addPostPopup?.setAttribute("data-visible", "false");
     addPostPopup?.classList.remove("popup_opened");
 
-    const newpostsdb = {
-      newPosts: newPosts,
-    };
-    const userdoc = doc(db, "users", uid);
-    await updateDoc(userdoc, newpostsdb);
-    getPosts().then(setPosts)
-  };
-
-  const handleDelete = async (id: number) => {
-    const newPosts = posts.filter((post) => post.id != id);
     const newpostsdb = {
       newPosts: newPosts,
     };
@@ -169,13 +147,11 @@ const App = () => {
               <Profile
                 setStatus={setStatus}
                 status={status}
-                handleLike={handleLike}
                 username={username}
                 userPicture={userPicture}
                 posts={posts}
                 setUsername={setUsername}
                 handleNewPost={handleNewPost}
-                handleDelete={handleDelete}
               />
             }
           />
