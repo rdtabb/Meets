@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import LikedContext from "../../context/LikedContext"
 import PostList from "./PostList"
-import ErrorBoundary from "../error/ErrorBoundary"
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary"
 import LikedHeader from "./LikedHeader"
 import LikedDesc from "./LikedDesc"
 import NoLiked from "./NoLiked"

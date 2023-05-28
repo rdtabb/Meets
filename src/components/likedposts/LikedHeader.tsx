@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Signout from "../signout/Signout";
+import Signout from "../Signout/Signout";
 
 const LikedHeader = () => {
 

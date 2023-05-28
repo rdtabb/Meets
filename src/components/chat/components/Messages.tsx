@@ -1,4 +1,4 @@
-import ErrorBoundary from "../../error/ErrorBoundary"
+import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary"
 import { useContext } from "react"
 import { ChatContext } from "../../../context/ChatContext"
 

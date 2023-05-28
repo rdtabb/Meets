@@ -1,14 +1,10 @@
 import Userlist from "./Userlist";
 import Footer from "../Profile/Footer";
 
-type searchprops = {
-  users: any;
-};
-
-const Usersearch = ({ users }: searchprops) => {
+const Usersearch = () => {
   return (
     <>
-      <Userlist users={users} />
+      <Userlist />
       <div className="container">
         <Footer />
       </div>

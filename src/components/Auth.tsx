@@ -19,13 +19,11 @@ import useLikedContext from "../hooks/useLikedContext";
 type AuthProps = {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   setUserPicture: React.Dispatch<React.SetStateAction<string>>;
-  setPosts: React.Dispatch<any>;
   setStatus: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const Auth = ({
   setUsername,
-  setPosts,
   setStatus,
   setUserPicture,
 }: AuthProps) => {
@@ -57,7 +55,6 @@ export const Auth = ({
           const name = dataset.name;
           const likedPosts = dataset.liked;
           const picture = dataset.imgurl;
-          setPosts(posts);
           setStatus(status);
           setUsername(name);
           setLikedPosts(likedPosts);

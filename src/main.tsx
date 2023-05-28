@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./styles/index.scss";
-import ErrorBoundary from "./components/error/ErrorBoundary";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { DataProvider } from "./context/LikedContext";
 import { ChatProvider } from "./context/ChatContext";
 import { GeneralProvider } from "./context/GeneralContext";

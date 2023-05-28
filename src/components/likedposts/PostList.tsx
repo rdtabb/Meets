@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import LikedContext from "../../context/LikedContext"
 import { Suspense } from "react"
-import ErrorBoundary from "../error/ErrorBoundary"
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary"
 
 const PostList = () => {
     const { likedPosts, handleDelete } = useContext(LikedContext)

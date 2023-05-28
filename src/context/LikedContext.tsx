@@ -7,14 +7,14 @@ import React, {
 } from "react";
 import { db } from "../firebase-config";
 import { updateDoc, doc, getDoc } from "firebase/firestore";
-import { likedType } from "../components/anotheruserpage/Auser";
+import { likedType } from "../components/AnotherUser/Auser";
 
 type LikedContextType = {
   handleLike: (e: {
     target: HTMLButtonElement;
   }, name: string, src: string, username: string) => Promise<void>
   setLikedPosts: React.Dispatch<any>,
-  likedPosts: Array<likedType>,
+  likedPosts: likedType[],
   handleDelete: (id: string) => Promise<void>
 }
 

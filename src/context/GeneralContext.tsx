@@ -3,6 +3,7 @@ import { cookies } from "../App";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import format from "date-fns/format";
+import { HandleNewPostData } from "../App";
 
 export type GeneralContextType = {
     openImagePopup: (imgsrc: string, city: string, id: number, comments: CommentType[]) => void,
@@ -16,7 +17,8 @@ export type GeneralContextType = {
     handleComment: (e: any, message: string, uid: any, setCurrMessage: React.Dispatch<React.SetStateAction<string>>) => Promise<void>,
     comments: CommentType[],
     cuid: any,
-    handleProfileIcon: (variables: HandleProfileIconType) => Promise<void>
+    handleProfileIcon: (variables: HandleProfileIconType) => Promise<void>,
+    handleNewPost: (variables: HandleNewPostData) => Promise<void>
 }
 
 const initstate = {
@@ -31,6 +33,7 @@ const initstate = {
     comments: [],
     cuid: "",
     handleProfileIcon: async () => {},
+    handleNewPost: async () => {},
     handleIconPopup: () => {}
 }
 
@@ -186,6 +189,35 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         }
     }
 
+    
+    const handleNewPost = async (variables: HandleNewPostData) => {
+        const uid = localStorage.getItem("uid")!
+        const usedoc = doc(db, "users", uid);
+        const dataSnap = await getDoc(usedoc);
+        const dataset = dataSnap.data();
+        const nposts = await dataset?.newPosts;
+    
+        const id = nposts.length ? nposts[0].id + 1 : 1;
+        const newPost = {
+          city: variables.place,
+          id,
+          imgsrc: variables.url,
+          liked: false,
+          comments: []
+        };
+        const newPosts = [newPost, ...nposts];
+    
+        const addPostPopup = document.querySelector(".popup-add-post");
+        addPostPopup?.setAttribute("data-visible", "false");
+        addPostPopup?.classList.remove("popup_opened");
+    
+        const newpostsdb = {
+          newPosts: newPosts,
+        };
+        const userdoc = doc(db, "users", uid);
+        await updateDoc(userdoc, newpostsdb);
+      };
+
     return (
         <GeneralContext.Provider value={{ 
             handleProfileIcon, 
@@ -199,7 +231,8 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
             handlePopup, 
             postId, 
             comments,
-            handleIconPopup
+            handleIconPopup,
+            handleNewPost,
         }}>
             {children}
         </GeneralContext.Provider>

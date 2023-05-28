@@ -3,19 +3,23 @@ import { z, ZodType } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { HandleNewPostData } from "../../App";
-
-type addpostprops = {
-  handleNewPost: (variables: HandleNewPostData) => Promise<void>;
-};
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 type AddPostData = {
   url: string;
   place: string;
 };
 
-const AddPost = ({ handleNewPost }: addpostprops) => {
-  const { handleClose } = useGeneralContext();
-
+const AddPost = () => {
+  const { handleClose, handleNewPost } = useGeneralContext();
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: (variables: HandleNewPostData) => handleNewPost(variables),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["postsdata"])
+    }
+  })
   const addPostSchema: ZodType<AddPostData> = z.object({
     url: z.string().trim().url({
       message: "Invalid url",
@@ -33,7 +37,7 @@ const AddPost = ({ handleNewPost }: addpostprops) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AddPostData>({
+  } = useForm<HandleNewPostData>({
     resolver: zodResolver(addPostSchema),
   });
 
@@ -41,7 +45,7 @@ const AddPost = ({ handleNewPost }: addpostprops) => {
     <div data-visible="false" className="popup popup-add-post">
       <div className="popup__container">
         <form
-          onSubmit={handleSubmit(handleNewPost)}
+          onSubmit={handleSubmit((variables) => mutate(variables))}
           name="popupForm"
           className="popup__form"
           noValidate

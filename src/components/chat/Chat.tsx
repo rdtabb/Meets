@@ -1,9 +1,9 @@
 import SubmitMessage from "./components/SubmitMessage"
 import ChatHeader from "./components/ChatHeader"
-import ErrorBoundary from "../error/ErrorBoundary"
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary"
 import { ChatContext } from "../../context/ChatContext"
 import React, { Suspense, useRef, useEffect, useContext } from "react"
-import LoadingMessages from "../loading/LoadingMessages"
+import LoadingMessages from "../LoadingStates/LoadingMessages"
 const Messages = React.lazy(() => import("./components/Messages"))
 
 

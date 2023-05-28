@@ -1,10 +1,10 @@
-import ErrorBoundary from "../error/ErrorBoundary";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import { newPostsType } from "../../context/GeneralContext";
 import Feed from "./Feed";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "../loading/Loading";
+import Loading from "../LoadingStates/Loading";
 
 const uid: any = localStorage.getItem("uid");
 const getPosts = async () => {
