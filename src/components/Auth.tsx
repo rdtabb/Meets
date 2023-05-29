@@ -13,8 +13,8 @@ import {
   DocumentData,
   DocumentSnapshot,
 } from "firebase/firestore";
-import useGeneralContext from "../hooks/useContext/useGeneralContext";
-import useLikedContext from "../hooks/useContext/useLikedContext";
+import useGeneralContext from "../hooks/useContextHooks/useGeneralContext";
+import useLikedContext from "../hooks/useContextHooks/useLikedContext";
 
 export const Auth = () => {
   const cookies = new Cookies();
@@ -24,10 +24,8 @@ export const Auth = () => {
   const signin = async () => {
     try {
       const response = await signInWithPopup(auth, provider);
-
       const info: AdditionalUserInfo | null = getAdditionalUserInfo(response);
       const isNew: boolean | undefined = info?.isNewUser;
-
       cookies.set("auth-token", response.user.refreshToken);
       const name: string | null = response.user.displayName;
       const imgurl: string | null = response.user.photoURL;
@@ -39,14 +37,13 @@ export const Auth = () => {
 
       if (!isNew) {
         try {
-          const dataset: any = docSnap.data();
-          const likedPosts = dataset.liked;
+          const dataset = docSnap.data();
+          const likedPosts = dataset?.liked;
           setLikedPosts(likedPosts);
+          setIsAuth(true);
         } catch (err) {
           console.log(err);
-        } finally {
-          setIsAuth(true);
-        }
+        } 
       }
 
       if (isNew) {
@@ -59,11 +56,10 @@ export const Auth = () => {
             liked: [],
             newStatus: "Add your status!",
           });
+          setIsAuth(true);
         } catch (err) {
           console.log(err);
-        } finally {
-          setIsAuth(true);
-        }
+        } 
       }
     } catch (err) {
       console.log(err);

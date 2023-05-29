@@ -4,7 +4,7 @@ import Feed from "./Feed";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "../LoadingStates/Loading";
+import Loading from "../LoadingStates/LoadingPosts";
 
 const uid: any = localStorage.getItem("uid");
 const getPosts = async () => {

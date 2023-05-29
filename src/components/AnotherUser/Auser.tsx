@@ -1,60 +1,64 @@
 import { useParams } from "react-router-dom";
 import Aheader from "./Aheader";
-import Adesc from "./Adesc";
 import Aposts from "./Aposts";
 import Footer from "../Profile/Footer";
 import Auserpopup from "./Auserpopup";
-import { useEffect, useState } from "react";
-import { db } from "../../firebase-config";
-import { doc, getDoc } from "firebase/firestore";
-import { Params } from "react-router-dom";
-import { newPostsType } from "../../context/GeneralContext";
+import Container from "../Container/Container";
+import useAuserData from "../../hooks/useQueryHooks/useAuserData";
+import LoadingImage from "../LoadingStates/LoadingImage";
+import Loading from "../LoadingStates/LoadingPosts";
 
 export type likedType = {
-  city: string,
-  creator: string,
-  id: number,
-  imgsrc: string
-}
-
-type Usertype = {
-  id: string,
-  imgurl: string,
-  liked: Array<likedType>,
-  name: string,
-  newPosts: Array<newPostsType>,
-  newStatus: string
-}
+  city: string;
+  creator: string;
+  id: number;
+  imgsrc: string;
+};
 
 const Auser = () => {
-  const [user, setUserData] = useState<Usertype>()
-  const [userPosts, setUserPosts] = useState([])
-  const { id }: Readonly<Params<string>> = useParams();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userdoc = doc(db, "users", id!);
-        const data: any = await getDoc(userdoc)
-        const docSnap = await data.data()!
-        setUserData(docSnap)
-        setUserPosts(docSnap.newPosts)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchUser()
-  }, [])
-
+  const { id } = useParams();
+  const auserData = useAuserData(id!);
 
   return (
-    <div className="container">
+    <Container>
       <Aheader />
-      <Adesc name={user?.name} status={user?.newStatus} url={user?.imgurl} />
-      <Aposts posts={userPosts} name={user?.name} />
+      <section className="profile">
+        <div className="profile__wrapper">
+          {auserData.isLoading ? (
+            <LoadingImage />
+          ) : (
+            <img
+              className="profile__avatar"
+              src={auserData.data?.imgurl}
+              alt="User avatar"
+            ></img>
+          )}
+          <div className="profile__info">
+            <div className="profile__info-wrapper">
+              {auserData.isLoading ? (
+                <h1 className="profile__header">Loading...</h1>
+              ) : (
+                <h1 className="profile__header">{auserData.data?.name}</h1>
+              )}
+            </div>
+            {auserData.isLoading ? (
+              <p className="profile__description">Loading...</p>
+            ) : (
+              <p className="profile__description">
+                {auserData.data?.newStatus}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+      {auserData.isLoading ? (
+        <Loading />
+      ) : (
+        <Aposts posts={auserData.data?.newPosts} name={auserData.data?.name} />
+      )}
       <Footer />
       <Auserpopup id={id} />
-    </div>
+    </Container>
   );
 };
 

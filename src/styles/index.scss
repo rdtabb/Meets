@@ -1049,6 +1049,14 @@ body {
   align-items: center;
   justify-content: space-between;
 
+  &--empty {
+    height: clamp(6rem, 14vw + 1rem, 8rem);
+    border-radius: 1rem;
+    background-color: hsl(var(--clr-accent), .3);
+    animation: opacious infinite 3s ease-in;
+    margin-bottom: .5rem;
+  }
+
   &__chat {
     width: 20px;
     height: 20px;

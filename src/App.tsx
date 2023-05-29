@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
-import useGeneralContext from "./hooks/useContext/useGeneralContext";
+import useGeneralContext from "./hooks/useContextHooks/useGeneralContext";
 import Cookies from "universal-cookie";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile/Profile";

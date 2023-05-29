@@ -7,10 +7,11 @@ import ImagePopup from "./ImagePopup";
 import IconPopup from "./IconPopup";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import Posts from "./Posts";
+import Container from "../Container/Container";
 
 const Profile = () => {
   return (
-    <div className="container">
+    <Container>
       <ErrorBoundary>
         <Header />
       </ErrorBoundary>
@@ -25,7 +26,7 @@ const Profile = () => {
       <AddPost />
       <ImagePopup />
       <IconPopup />
-    </div>
+    </Container>
   );
 };
 

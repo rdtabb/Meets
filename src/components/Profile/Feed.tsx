@@ -1,5 +1,5 @@
 import { newPostsType } from "../../context/GeneralContext";
-import useGeneralContext from "../../hooks/useContext/useGeneralContext";
+import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import useGeneralContext from "../../hooks/useContext/useGeneralContext";
+import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 
 type PropsType = {
     id: string | undefined

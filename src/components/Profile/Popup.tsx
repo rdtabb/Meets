@@ -3,20 +3,29 @@ import { db } from "../../firebase-config";
 import { ZodType, z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useGeneralContext from "../../hooks/useContext/useGeneralContext";
+import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 
 type EditProfilePopupData = {
-    username: string;
+  username: string;
   status: string;
 };
 
 const Popup = () => {
   const { handleClose } = useGeneralContext();
   const formSchema: ZodType<EditProfilePopupData> = z.object({
-    username: z.string().trim().min(2).max(30),
+    username: z
+      .string()
+      .trim()
+      .min(2, {
+        message: "Username must be at lest 2 characters long",
+      })
+      .max(70),
     status: z
       .string()
       .trim()
+      .min(2, {
+        message: "Status must be at lest 2 characters long",
+      })
       .max(70),
   });
 

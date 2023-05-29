@@ -5,7 +5,7 @@ import { ChatContext } from "../../context/ChatContext"
 import React, { Suspense, useRef, useEffect, useContext } from "react"
 import LoadingMessages from "../LoadingStates/LoadingMessages"
 import Container from "../Container/Container"
-import useUserData from "../../hooks/useQuery/useUserData"
+import useUserData from "../../hooks/useQueryHooks/useUserData"
 const Messages = React.lazy(() => import("./components/Messages"))
 
 const Chat = () => {

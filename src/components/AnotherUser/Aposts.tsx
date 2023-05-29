@@ -3,7 +3,7 @@ import NoPosts from "./NoPosts"
 import { newPostsType } from "../../context/GeneralContext"
 
 type apostsprops = {
-  posts: Array<newPostsType>,
+  posts: newPostsType[],
   name: string | undefined
 }
 

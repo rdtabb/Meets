@@ -6,7 +6,7 @@ import LikedHeader from "./LikedHeader"
 import LikedDesc from "./LikedDesc"
 import NoLiked from "./NoLiked"
 import Footer from "../Profile/Footer"
-import useUserData from "../../hooks/useQuery/useUserData"
+import useUserData from "../../hooks/useQueryHooks/useUserData"
 
 const LikedPosts = () => {
     const { likedPosts } = useContext(LikedContext)

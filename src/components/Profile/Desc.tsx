@@ -1,17 +1,11 @@
-import useGeneralContext from "../../hooks/useContext/useGeneralContext";
-import useUserData from "../../hooks/useQuery/useUserData";
+import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
+import useUserData from "../../hooks/useQueryHooks/useUserData";
 import AvatarImage from "./AvatarImage";
 import LoadingImage from "../LoadingStates/LoadingImage";
 
 const Desc = () => {
   const { handleAddPostButton, handlePopup } = useGeneralContext();
   const userSet = useUserData();
-
-  if (userSet.isLoading) {
-    console.log("loading");
-  } else {
-    console.log(userSet.data);
-  }
 
   return (
     <section className="profile">

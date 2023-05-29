@@ -1,13 +1,14 @@
 import Userlist from "./Userlist";
 import Footer from "../Profile/Footer";
+import Container from "../Container/Container";
 
 const Usersearch = () => {
   return (
     <>
       <Userlist />
-      <div className="container">
+      <Container>
         <Footer />
-      </div>
+      </Container>
     </>
   );
 };
