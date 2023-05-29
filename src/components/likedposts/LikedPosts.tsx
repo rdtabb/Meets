@@ -6,24 +6,26 @@ import LikedHeader from "./LikedHeader"
 import LikedDesc from "./LikedDesc"
 import NoLiked from "./NoLiked"
 import Footer from "../Profile/Footer"
+import useUserData from "../../hooks/useQuery/useUserData"
 
-type PropsType = {
-    username: string,
-    status: string,
-    userPicture: string
-}
-
-const LikedPosts = ({username, status, userPicture}: PropsType) => {
+const LikedPosts = () => {
     const { likedPosts } = useContext(LikedContext)
+    const userSet = useUserData()
+
+    if (userSet.isLoading) {
+        console.log("loading");
+      } else {
+        console.log(userSet.data)
+      }
 
     return (
         <ErrorBoundary>
             <div className="container">
                 <LikedHeader />
                 <LikedDesc 
-                    userPicture={userPicture} 
-                    username={username} 
-                    status={status}
+                    userPicture={userSet.data?.imgurl} 
+                    username={userSet.data?.name} 
+                    status={userSet.data?.newStatus}
                 />
                 {likedPosts.length ? (
                     <PostList />

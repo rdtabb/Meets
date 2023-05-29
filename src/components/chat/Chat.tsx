@@ -4,16 +4,14 @@ import ErrorBoundary from "../ErrorBoundary/ErrorBoundary"
 import { ChatContext } from "../../context/ChatContext"
 import React, { Suspense, useRef, useEffect, useContext } from "react"
 import LoadingMessages from "../LoadingStates/LoadingMessages"
+import Container from "../Container/Container"
+import useUserData from "../../hooks/useQuery/useUserData"
 const Messages = React.lazy(() => import("./components/Messages"))
 
-
-type PropsType = {
-  username: string
-}
-
-const Chat = ({username}: PropsType) => {
+const Chat = () => {
   const { messages } = useContext(ChatContext)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const userSet = useUserData()
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -22,7 +20,7 @@ const Chat = ({username}: PropsType) => {
   }, [messages])
 
   return (
-    <div className="container">
+    <Container>
       <ChatHeader />
       <main className="chat">
           <ErrorBoundary>
@@ -32,8 +30,8 @@ const Chat = ({username}: PropsType) => {
           </ErrorBoundary>
           <div ref={scrollRef} className="dummyscroll"></div>
       </main>
-      <SubmitMessage username={username} />
-    </div>
+      <SubmitMessage username={userSet.data?.name} />
+    </Container>
     
   )
 }

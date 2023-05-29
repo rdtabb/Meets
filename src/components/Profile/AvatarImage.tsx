@@ -1,4 +1,4 @@
-import useGeneralContext from "../../hooks/useGeneralContext";
+import useGeneralContext from "../../hooks/useContext/useGeneralContext";
 
 type PropsType = {
   userPicture: string;

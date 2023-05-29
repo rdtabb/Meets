@@ -13,20 +13,10 @@ import {
   DocumentData,
   DocumentSnapshot,
 } from "firebase/firestore";
-import useGeneralContext from "../hooks/useGeneralContext";
-import useLikedContext from "../hooks/useLikedContext";
+import useGeneralContext from "../hooks/useContext/useGeneralContext";
+import useLikedContext from "../hooks/useContext/useLikedContext";
 
-type AuthProps = {
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  setUserPicture: React.Dispatch<React.SetStateAction<string>>;
-  setStatus: React.Dispatch<React.SetStateAction<string>>;
-};
-
-export const Auth = ({
-  setUsername,
-  setStatus,
-  setUserPicture,
-}: AuthProps) => {
+export const Auth = () => {
   const cookies = new Cookies();
   const { setLikedPosts } = useLikedContext();
   const { setIsAuth } = useGeneralContext();
@@ -50,15 +40,8 @@ export const Auth = ({
       if (!isNew) {
         try {
           const dataset: any = docSnap.data();
-          const posts = dataset.newPosts;
-          const status = dataset.newStatus;
-          const name = dataset.name;
           const likedPosts = dataset.liked;
-          const picture = dataset.imgurl;
-          setStatus(status);
-          setUsername(name);
           setLikedPosts(likedPosts);
-          setUserPicture(picture);
         } catch (err) {
           console.log(err);
         } finally {

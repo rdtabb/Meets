@@ -3,10 +3,10 @@ import { db } from "../../firebase-config";
 import { ZodType, z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useGeneralContext from "../../hooks/useGeneralContext";
+import useGeneralContext from "../../hooks/useContext/useGeneralContext";
 
 type EditProfilePopupData = {
-  username: string;
+    username: string;
   status: string;
 };
 
@@ -17,9 +17,6 @@ const Popup = () => {
     status: z
       .string()
       .trim()
-      .min(2, {
-        message: "Status must be at least 2 characters long",
-      })
       .max(70),
   });
 

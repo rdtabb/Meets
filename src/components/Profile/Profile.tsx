@@ -8,24 +8,14 @@ import IconPopup from "./IconPopup";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import Posts from "./Posts";
 
-type ProfileProps = {
-  username: string;
-  userPicture: string;
-  status: string;
-};
-
-const Profile = ({
-  username,
-  userPicture,
-  status,
-}: ProfileProps) => {
+const Profile = () => {
   return (
     <div className="container">
       <ErrorBoundary>
         <Header />
       </ErrorBoundary>
       <main className="main">
-        <Desc status={status} username={username} userPicture={userPicture} />
+        <Desc />
         <ErrorBoundary>
           <Posts />
         </ErrorBoundary>

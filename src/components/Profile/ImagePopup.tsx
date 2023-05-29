@@ -1,5 +1,5 @@
 import { useState } from "react"
-import useGeneralContext from "../../hooks/useGeneralContext"
+import useGeneralContext from "../../hooks/useContext/useGeneralContext"
 
 const ImagePopup = () => {
     const { handleClose, handleComment, comments, cuid } = useGeneralContext()

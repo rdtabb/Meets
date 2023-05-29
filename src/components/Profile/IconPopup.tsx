@@ -1,4 +1,4 @@
-import useGeneralContext from "../../hooks/useGeneralContext";
+import useGeneralContext from "../../hooks/useContext/useGeneralContext";
 import { z, ZodType } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -1,7 +1,7 @@
 import { auth } from "../../firebase-config";
 import { signOut } from "firebase/auth";
 import { cookies } from "../../App";
-import useGeneralContext from "../../hooks/useGeneralContext";
+import useGeneralContext from "../../hooks/useContext/useGeneralContext";
 
 const Signout = () => {
   const { setIsAuth } = useGeneralContext();
