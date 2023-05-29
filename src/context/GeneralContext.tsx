@@ -4,9 +4,10 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import format from "date-fns/format";
 import { HandleNewPostData } from "../App";
+import type { ChildrenType, Comment, Post } from "../types/Types";
 
 export type GeneralContextType = {
-    openImagePopup: (imgsrc: string, city: string, id: number, comments: CommentType[]) => void,
+    openImagePopup: (imgsrc: string, city: string, id: number, comments: Comment[]) => void,
     handleClose: () => void,
     handleAddPostButton: () => void,
     isAuth: any,
@@ -15,8 +16,8 @@ export type GeneralContextType = {
     handleIconPopup: (e: any) => void,
     postId: number,
     handleComment: (e: any, message: string, uid: any, setCurrMessage: React.Dispatch<React.SetStateAction<string>>) => Promise<void>,
-    comments: CommentType[],
-    cuid: any,
+    comments: Comment[],
+    cuid: string,
     handleProfileIcon: (variables: HandleProfileIconType) => Promise<void>,
     handleNewPost: (variables: HandleNewPostData) => Promise<void>
 }
@@ -37,36 +38,11 @@ const initstate = {
     handleIconPopup: () => {}
 }
 
-export type newPostsType = {
-    city: string,
-    id: number,
-    imgsrc: string,
-    liked: boolean,
-    comments: CommentType[]
-}
-
 export type UserLikedType = {
     city: string,
     creator: string,
     id: number, 
     imgsrc: string
-}
-
-export type CommentType = {
-    creator: string,
-    message: string,
-    createdAt: string,
-    id: number,
-    img: string
-}
-
-export type UserDocType = {
-    id: string,
-    imgurl: string,
-    liked: UserLikedType[],
-    name: string,
-    newPosts: newPostsType[],
-    newStatus: string
 }
 
 const GeneralContext = createContext<GeneralContextType>(initstate)
@@ -75,21 +51,11 @@ type HandleProfileIconType = {
     url: string
 }
 
-type ChildrenType = { children?: ReactElement | ReactElement[] }
-
 export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
     const [postId, setPostId] = useState<number>(0)
-    const [comments, setComments] = useState<CommentType[]>([])
-    const cuid: any = localStorage.getItem("uid");
-
-    const getUserDataset = async (id: string) => {
-        const userdoc = doc(db, "users", id)
-        const dataSnap = await getDoc(userdoc)
-        const dataset: any = dataSnap.data()
-        const name = await dataset.name
-        return name
-    }
+    const [comments, setComments] = useState<Comment[]>([])
+    const cuid: string = localStorage.getItem("uid")!;
 
     const handleProfileIcon = async (variables: HandleProfileIconType) => {
         const userdoc = doc(db, "users", cuid);
@@ -103,20 +69,20 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         e.preventDefault()
         const userdoc = doc(db, "users", uid);
         const dataSnap = await getDoc(userdoc);
-        const dataset: any = dataSnap.data();
-        const posts: newPostsType[] = await dataset.newPosts
-        const creator: any = await getUserDataset(cuid)
+        const dataset = dataSnap.data();
+        const posts: Post[] = dataset?.newPosts
+        const creator = dataset?.name
 
-        const img: any = auth.currentUser?.photoURL
+        const img = auth.currentUser?.photoURL!
         const createdAt: string = `${format(new Date(), 'MMMM dd, yyyy pp')}`
 
         const post = posts.find(postf => 
             postf.id == postId
         )!
-        const comments: CommentType[] = post?.comments
+        const comments: Comment[] = post?.comments
 
         const id: number = comments.length ? comments[comments.length - 1].id + 1 : 1
-        const newcomment: CommentType = {
+        const newcomment: Comment = {
             creator,
             message, 
             createdAt, 
@@ -136,7 +102,7 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         await updateDoc(userdoc, newpostsdb);
     }
 
-    const openImagePopup = (imgsrc: string, city: string, id: number, comments: CommentType[]) => {
+    const openImagePopup = (imgsrc: string, city: string, id: number, comments: Comment[]) => {
         const popupImageCont = document.querySelector('.popup--image')
             popupImageCont?.setAttribute('data-visible', 'true')
             popupImageCont?.classList.add('popup_opened')
