@@ -1,6 +1,6 @@
 import type { Post, LikePostMutation } from "../../types/Types";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -11,31 +11,34 @@ type afeedprops = {
 
 const Afeed = ({ posts, username }: afeedprops) => {
   const { openImagePopup } = useGeneralContext();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const handleLikeQuery = async (props: LikePostMutation) => {
     const uid = localStorage.getItem("uid")!;
+    const userdoc = doc(db, "users", uid);
+    const dataSnap = await getDoc(userdoc);
+    const dataset = dataSnap.data();
+    const likedPosts = dataset?.liked;
     props.e.target.classList.remove("explosive");
     props.e.target.classList.add("explosive");
-    const id = posts.length ? posts[0].id + 1 : 1;
+    const id = likedPosts.length ? likedPosts[0].id + 1 : 1;
     const post = {
       id,
       city: props.name,
       imgsrc: props.src,
       creator: username,
     };
-    const newPosts = [post, ...posts];
+    const newPosts = [post, ...likedPosts];
     const updateLiked = { liked: newPosts };
-    const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, updateLiked);
   };
 
   const likePostMutation = useMutation({
     mutationFn: handleLikeQuery,
     onSuccess: () => {
-      queryClient.invalidateQueries(["userdataset"])
-    }
-  })
+      queryClient.invalidateQueries(["userdataset"]);
+    },
+  });
 
   return (
     <section className="cards">
@@ -65,7 +68,14 @@ const Afeed = ({ posts, username }: afeedprops) => {
                     }
               }
               className="card__like card__like--auser"
-              onClick={(e) => likePostMutation.mutate({e, name: post.city, src: post.imgsrc, username})}
+              onClick={(e) =>
+                likePostMutation.mutate({
+                  e,
+                  name: post.city,
+                  src: post.imgsrc,
+                  username,
+                })
+              }
             ></button>
           </div>
         </article>
