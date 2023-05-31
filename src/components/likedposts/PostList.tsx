@@ -25,7 +25,7 @@ const PostList = ({ posts }: { posts: LikedPost[] }) => {
   return (
     <section className="cards">
       <ErrorBoundary>
-        {posts.map((post: LikedPost) => (
+        {posts.map((post) => (
           <article key={post.id} className="card">
             <img className="card__image" src={post.imgsrc} alt={post.city} />
             <div className="card__action card__action--liked">

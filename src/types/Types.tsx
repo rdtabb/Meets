@@ -5,11 +5,11 @@ export type ChildrenType = {
 };
 
 export type LikedPost = {
-  city: string,
-  creator: string,
-  id: number,
-  imgsrc: string
-}
+  city: string;
+  creator: string;
+  id: number;
+  imgsrc: string;
+};
 
 export type Comment = {
   creator: string;
@@ -33,5 +33,12 @@ export type CommentsQuery = {
 };
 
 export type DeleteLikedMutation = {
-  id: number
-}
+  id: number;
+};
+
+export type LikePostMutation = {
+  e: any;
+  name: string;
+  src: string;
+  username: string | undefined;
+};

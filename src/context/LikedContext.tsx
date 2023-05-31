@@ -7,12 +7,10 @@ import React, {
 } from "react";
 import { db } from "../firebase-config";
 import { updateDoc, doc, getDoc } from "firebase/firestore";
-import type { LikedPost, DeleteLikedMutation } from "../types/Types";
+import type { LikedPost } from "../types/Types";
 
 type LikedContextType = {
-  handleLike: (e: {
-    target: HTMLButtonElement;
-  }, name: string, src: string, username: string) => Promise<void>
+  handleLike: (e: any, name: string, src: string, username: string | undefined) => Promise<void>
   setLikedPosts: React.Dispatch<any>,
   likedPosts: LikedPost[],
 }
@@ -25,27 +23,23 @@ const LikedContext = createContext<LikedContextType>({
 
 type ChildrenType = { children?: ReactElement | ReactElement[] };
 
-export const DataProvider = ({ children }: ChildrenType): ReactElement => {
+export const DataProvider = ({ children }: ChildrenType) => {
   const [likedPosts, setLikedPosts] = useState<LikedPost[]>([]);
   const uid = localStorage.getItem("uid")!;
 
   const getLikedPosts = useCallback(async () => {
     try {
-      const userdoc: any = doc(db, "users", uid);
-      const dataSnap: any = await getDoc(userdoc);
-      const dataset: any = await dataSnap.data();
-      const likedPosts = dataset.liked;
+      const userdoc = doc(db, "users", uid);
+      const dataSnap = await getDoc(userdoc);
+      const dataset = dataSnap.data();
+      const likedPosts = dataset?.liked;
       return likedPosts;
     } catch (err) {
       console.log(`error in LikedContext: ${err}`);
     }
   }, []);
 
-  useEffect(() => {
-    getLikedPosts().then(setLikedPosts);
-  }, [getLikedPosts]);
-
-  const handleLike = async (e: {target: HTMLButtonElement}, name: string, src: string, username: string) => {
+  const handleLike = async (e: any, name: string, src: string, username: string | undefined) => {
     e.target.classList.remove('explosive')
     e.target.classList.add('explosive')
     const id = likedPosts.length
@@ -63,7 +57,6 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     };
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, updateLiked);
-    getLikedPosts().then(setLikedPosts);
   };
 
   return (

@@ -8,19 +8,14 @@ import Cookies from "universal-cookie";
 import {
   setDoc,
   doc,
-  getDoc,
   DocumentReference,
   DocumentData,
-  DocumentSnapshot,
 } from "firebase/firestore";
 import useGeneralContext from "../hooks/useContextHooks/useGeneralContext";
-import useLikedContext from "../hooks/useContextHooks/useLikedContext";
 
 export const Auth = () => {
   const cookies = new Cookies();
-  const { setLikedPosts } = useLikedContext();
   const { setIsAuth } = useGeneralContext();
-
   const signin = async () => {
     try {
       const response = await signInWithPopup(auth, provider);
@@ -31,19 +26,14 @@ export const Auth = () => {
       const imgurl: string | null = response.user.photoURL;
       const id: string = response.user.uid;
       const docref: DocumentReference<DocumentData> = doc(db, "users", `${id}`);
-      const docSnap: DocumentSnapshot<DocumentData> = await getDoc(docref);
-
       localStorage.setItem("uid", `${id}`);
 
       if (!isNew) {
         try {
-          const dataset = docSnap.data();
-          const likedPosts = dataset?.liked;
-          setLikedPosts(likedPosts);
           setIsAuth(true);
         } catch (err) {
           console.log(err);
-        } 
+        }
       }
 
       if (isNew) {
@@ -59,7 +49,7 @@ export const Auth = () => {
           setIsAuth(true);
         } catch (err) {
           console.log(err);
-        } 
+        }
       }
     } catch (err) {
       console.log(err);
