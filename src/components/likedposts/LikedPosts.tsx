@@ -1,41 +1,37 @@
-import { useContext } from "react"
-import LikedContext from "../../context/LikedContext"
-import PostList from "./PostList"
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary"
-import LikedHeader from "./LikedHeader"
-import LikedDesc from "./LikedDesc"
-import NoLiked from "./NoLiked"
-import Footer from "../Profile/Footer"
-import useUserData from "../../hooks/useQueryHooks/useUserData"
+import PostList from "./PostList";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import LikedHeader from "./LikedHeader";
+import LikedDesc from "./LikedDesc";
+import NoLiked from "./NoLiked";
+import Footer from "../Profile/Footer";
+import useUserData from "../../hooks/useQueryHooks/useUserData";
+import Loading from "../LoadingStates/LoadingPosts";
+import Container from "../Container/Container";
 
 const LikedPosts = () => {
-    const { likedPosts } = useContext(LikedContext)
-    const userSet = useUserData()
+  const userSet = useUserData();
 
-    if (userSet.isLoading) {
-        console.log("loading");
-      } else {
-        console.log(userSet.data)
-      }
+  return (
+    <ErrorBoundary>
+      <Container>
+        <LikedHeader />
+        <LikedDesc
+          userPicture={userSet.data?.imgurl}
+          username={userSet.data?.name}
+          status={userSet.data?.newStatus}
+          loading={userSet.isLoading}
+        />
+        {userSet.isLoading ? (
+          <Loading />
+        ) : userSet.data?.liked.length ? (
+          <PostList posts={userSet.data?.liked} />
+        ) : (
+          <NoLiked />
+        )}
+        <Footer />
+      </Container>
+    </ErrorBoundary>
+  );
+};
 
-    return (
-        <ErrorBoundary>
-            <div className="container">
-                <LikedHeader />
-                <LikedDesc 
-                    userPicture={userSet.data?.imgurl} 
-                    username={userSet.data?.name} 
-                    status={userSet.data?.newStatus}
-                />
-                {likedPosts.length ? (
-                    <PostList />
-                ) : (
-                    <NoLiked />
-                )}
-                <Footer />
-            </div>
-        </ErrorBoundary>
-    )
-}
-
-export default LikedPosts
+export default LikedPosts;

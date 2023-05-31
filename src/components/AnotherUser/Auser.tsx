@@ -8,13 +8,6 @@ import useAuserData from "../../hooks/useQueryHooks/useAuserData";
 import LoadingImage from "../LoadingStates/LoadingImage";
 import Loading from "../LoadingStates/LoadingPosts";
 
-export type likedType = {
-  city: string;
-  creator: string;
-  id: number;
-  imgsrc: string;
-};
-
 const Auser = () => {
   const { id } = useParams();
   const auserData = useAuserData(id!);

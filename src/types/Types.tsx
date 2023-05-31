@@ -4,6 +4,13 @@ export type ChildrenType = {
   children: ReactElement | ReactElement[];
 };
 
+export type LikedPost = {
+  city: string,
+  creator: string,
+  id: number,
+  imgsrc: string
+}
+
 export type Comment = {
   creator: string;
   message: string;
@@ -24,3 +31,7 @@ export type CommentsQuery = {
   uid: string;
   postId: number;
 };
+
+export type DeleteLikedMutation = {
+  id: number
+}

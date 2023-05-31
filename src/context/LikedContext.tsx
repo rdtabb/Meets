@@ -7,20 +7,18 @@ import React, {
 } from "react";
 import { db } from "../firebase-config";
 import { updateDoc, doc, getDoc } from "firebase/firestore";
-import { likedType } from "../components/AnotherUser/Auser";
+import type { LikedPost, DeleteLikedMutation } from "../types/Types";
 
 type LikedContextType = {
   handleLike: (e: {
     target: HTMLButtonElement;
   }, name: string, src: string, username: string) => Promise<void>
   setLikedPosts: React.Dispatch<any>,
-  likedPosts: likedType[],
-  handleDelete: (id: string) => Promise<void>
+  likedPosts: LikedPost[],
 }
 
 const LikedContext = createContext<LikedContextType>({
   handleLike: async () => {},
-  handleDelete: async () => {},
   likedPosts: [],
   setLikedPosts: () => {}
 });
@@ -28,7 +26,7 @@ const LikedContext = createContext<LikedContextType>({
 type ChildrenType = { children?: ReactElement | ReactElement[] };
 
 export const DataProvider = ({ children }: ChildrenType): ReactElement => {
-  const [likedPosts, setLikedPosts] = useState<any>([]);
+  const [likedPosts, setLikedPosts] = useState<LikedPost[]>([]);
   const uid = localStorage.getItem("uid")!;
 
   const getLikedPosts = useCallback(async () => {
@@ -50,7 +48,7 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
   const handleLike = async (e: {target: HTMLButtonElement}, name: string, src: string, username: string) => {
     e.target.classList.remove('explosive')
     e.target.classList.add('explosive')
-    const id: string = likedPosts.length
+    const id = likedPosts.length
       ? likedPosts[0].id + 1
       : 1;
     const likedpost = {
@@ -68,20 +66,8 @@ export const DataProvider = ({ children }: ChildrenType): ReactElement => {
     getLikedPosts().then(setLikedPosts);
   };
 
-  const handleDelete = async (id: string) => {
-    const newPosts = likedPosts.filter((post: any) => 
-      post.id != id
-    )
-    const updateLiked = {
-      liked: newPosts
-    }
-    const userdoc = doc(db, "users", uid);
-    await updateDoc(userdoc, updateLiked);
-    getLikedPosts().then(setLikedPosts);
-  }
-
   return (
-    <LikedContext.Provider value={{handleLike, setLikedPosts, likedPosts, handleDelete}}>
+    <LikedContext.Provider value={{handleLike, setLikedPosts, likedPosts}}>
       {children}
     </LikedContext.Provider>
   );

@@ -10,30 +10,31 @@ const ImagePopup = () => {
     useGeneralContext();
   const [currMessage, setCurrMessage] = useState<string>("");
 
-  const queryComments = async (props: CommentsQuery) => {
-    const userdoc = doc(db, "users", props.uid);
-    const dataSnap = await getDoc(userdoc);
-    const dataset = dataSnap.data();
-    const posts: Post[] = dataset?.newPosts;
+  // const queryComments = async (props: CommentsQuery) => {
+  //   const userdoc = doc(db, "users", props.uid);
+  //   const dataSnap = await getDoc(userdoc);
+  //   const dataset = dataSnap.data();
+  //   const posts: Post[] = dataset?.newPosts;
 
-    const post = posts.find((postf) => postf.id == props.postId);
-    return post?.comments;
-  };
+  //   const post = posts.find((postf) => postf.id == props.postId);
+  //   return post?.comments;
+  // };
+  const commentsLoading = false
+  // const { isLoading: commentsLoading, data: commentsSet } = useQuery({
+  //   queryKey: ["comments"],
+  //   queryFn: () =>
+  //     queryComments({
+  //       uid: cuid,
+  //       postId,
+  //     }),
+  //   enabled: false
+  // });
 
-  const { isLoading: commentsLoading, data: commentsSet } = useQuery({
-    queryKey: ["comments"],
-    queryFn: () =>
-      queryComments({
-        uid: cuid,
-        postId,
-      }),
-  });
-
-  if (commentsLoading) {
-    console.log("loading");
-  } else {
-    console.log(commentsSet);
-  }
+  // if (commentsLoading) {
+  //   console.log("loading");
+  // } else {
+  //   console.log(commentsSet);
+  // }
 
   return (
     <div data-visible="false" className="popup popup--image">
@@ -46,7 +47,7 @@ const ImagePopup = () => {
               {commentsLoading ? (
                 <p>Loading...</p>
               ) : (
-                commentsSet?.map((comment) => (
+                comments.map((comment) => (
                   <li key={comment.id} className="comment">
                     <img className="comment__icon" src={comment.img} alt="" />
                     <article>
