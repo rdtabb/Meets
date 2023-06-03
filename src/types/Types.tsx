@@ -28,7 +28,7 @@ export type Post = {
 };
 
 export type CommentsQuery = {
-  uid: string;
+  cuid: string;
   postId: number;
 };
 
