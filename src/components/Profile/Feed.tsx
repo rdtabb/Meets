@@ -1,11 +1,11 @@
-import { newPostsType } from "../../context/GeneralContext";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
+import type { Post } from "../../types/Types";
 
 type feedprops = {
-  posts: Array<newPostsType>;
+  posts: Post[];
 };
 
 type MutationFnType = {
@@ -16,7 +16,7 @@ type MutationFnType = {
 const Feed = ({ posts }: feedprops) => {
   const uid: any = localStorage.getItem("uid")
   const newHandleLike = async (variables: MutationFnType) => {
-    const newPosts: Array<newPostsType> = posts.map((post) =>
+    const newPosts: Post[] = posts.map((post) =>
       post.id == variables.id ? { ...post, liked: !post.liked } : post
     );
     const newpostsdb = {
@@ -52,7 +52,7 @@ const Feed = ({ posts }: feedprops) => {
 
   return (
     <section className="cards">
-      {posts.map((post: newPostsType) => (
+      {posts.map((post: Post) => (
         <article key={post.id} className="card">
           <div className="card__imgwrapper">
             <img onClick={() => openImagePopup(post.imgsrc, post.city, post.id, post.comments)} loading="eager" src={post.imgsrc} alt={post.city} className="card__image"></img>

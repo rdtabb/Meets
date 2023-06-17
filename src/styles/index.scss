@@ -708,7 +708,8 @@ body {
     max-width: 75vw;
     width: auto;
     margin-inline: auto;
-    background-color: hsl(var(--clr-primary-900));
+    background-color: hsl(var(--clr-primary-100), .05);
+    backdrop-filter: blur(3rem);
     border-radius: 10px;
     padding-bottom: 0.5rem;
   }
@@ -723,29 +724,30 @@ body {
   .textarea {
     display: grid;
     gap: .2rem;
-    padding: clamp(1rem, 3vw, 2rem);
+    padding: 1rem clamp(1rem, 3vw, 2rem);
   }
 
   &__comment {
     width: 100%;
     border: 0;
-    color: hsl(var(--clr-primary-100));
-    border-bottom: 2px solid hsl(var(--clr-primary-100), .3);
+    color: hsl(var(--clr-primary-900));
+    border-bottom: 2px solid hsl(var(--clr-primary-900), .4);
+    background: transparent;
     padding: .25rem;
     transition: all var(--timing-function-primary) var(--transition-time-primary);
 
     &:hover {
-      border-bottom: 2px solid hsl(var(--clr-primary-100), .6);
+      border-bottom: 2px solid hsl(var(--clr-primary-900), .6);
     }
 
     &:focus,
     &:focus-visible {
       outline: none;
-      border-bottom: 2px solid hsl(var(--clr-primary-100), 1);
+      border-bottom: 2px solid hsl(var(--clr-primary-900), 1);
     }
 
     &::selection {
-      background-color: hsl(var(--clr-primary-100));
+      background-color: hsl(var(--clr-primary-900));
       color: hsl(var(--clr-primary-900));
     }
   }
@@ -762,7 +764,7 @@ body {
 
   &__caption {
     text-transform: uppercase;
-    color: hsl(var(--clr-primary-100));
+    color: hsl(var(--clr-primary-900));
     font-weight: var(--fw-700);
     font-size: clamp(var(--fs-400), 5vw, var(--fs-600));
   }
@@ -918,6 +920,7 @@ body {
   &__date,
   &__message {
     font-size: clamp(var(--fs-200), 3vw, var(--fs-400));
+    color: hsl(var(--clr-primary-900));
   }
 }
 
@@ -1050,10 +1053,11 @@ body {
   justify-content: space-between;
 
   &--empty {
-    height: clamp(6rem, 14vw + 1rem, 8rem);
+    height: 125px;
     border-radius: 1rem;
     background-color: hsl(var(--clr-accent), .3);
     animation: opacious infinite 3s ease-in;
+    border: none;
     margin-bottom: .5rem;
   }
 

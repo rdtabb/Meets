@@ -1,5 +1,5 @@
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import { newPostsType } from "../../context/GeneralContext";
+import type { Post } from "../../types/Types";
 import Feed from "./Feed";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
@@ -11,7 +11,7 @@ const getPosts = async () => {
   const userdoc = doc(db, "users", uid);
   const dataSnap = await getDoc(userdoc);
   const dataset = dataSnap.data();
-  const posts: newPostsType[] = await dataset?.newPosts;
+  const posts: Post[] = await dataset?.newPosts;
   return posts;
 };
 
