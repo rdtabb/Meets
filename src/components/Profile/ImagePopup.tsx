@@ -1,12 +1,10 @@
 import { useState } from "react";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
-import useComments from "../../hooks/useQueryHooks/useComments";
 import type { Comment } from "../../types/Types";
 
 const ImagePopup = () => {
   const { handleClose, handleComment, comments, cuid, postId } = useGeneralContext();
   const [currMessage, setCurrMessage] = useState<string>("");
-  const { isLoading: commentsLoading } = useComments(cuid, postId);
 
   return (
     <div data-visible="false" className="popup popup--image">
@@ -17,7 +15,6 @@ const ImagePopup = () => {
             <p className="popup__caption"></p>
             <ul className="comments">
               <CommentsSection
-                isLoading={commentsLoading}
                 comments={comments}
               />
             </ul>
@@ -47,17 +44,13 @@ const ImagePopup = () => {
 };
 
 type CommentsSectionProps = {
-  isLoading: boolean;
   comments: Comment[] | undefined;
 };
 
-const CommentsSection = ({ isLoading, comments }: CommentsSectionProps) => {
+const CommentsSection = ({ comments }: CommentsSectionProps) => {
   return (
     <>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        comments?.map((comment) => (
+        {comments?.map((comment) => (
           <li key={comment.id} className="comment">
             <img className="comment__icon" src={comment.img} alt="" />
             <article>
@@ -68,8 +61,7 @@ const CommentsSection = ({ isLoading, comments }: CommentsSectionProps) => {
               <p className="comment__message">{comment.message}</p>
             </article>
           </li>
-        ))
-      )}
+        ))}
     </>
   );
 };

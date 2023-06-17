@@ -1,19 +1,11 @@
-import { auth } from "../../firebase-config";
-import { signOut } from "firebase/auth";
-import { cookies } from "../../App";
-import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
-
 const Signout = () => {
-  const { setIsAuth } = useGeneralContext();
-
-  const signout = async () => {
-    await signOut(auth);
-    cookies.remove("auth-token");
-    setIsAuth(false);
-  };
+  const openConfirm = () => {
+    document.querySelector('.popup--confirm')?.classList.add('popup_opened')
+    document.querySelector('.popup--confirm')?.setAttribute('data-visible', 'true')
+  }  
 
   return (
-    <button onClick={signout} className="signout">
+    <button onClick={openConfirm} className="signout">
       Sign Out
     </button>
   );

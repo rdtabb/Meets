@@ -8,6 +8,7 @@ import IconPopup from "./IconPopup";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import Posts from "./Posts";
 import Container from "../Container/Container";
+import SignoutConfirm from "../Signout/SignoutConfirm";
 
 const Profile = () => {
   return (
@@ -26,6 +27,7 @@ const Profile = () => {
       <AddPost />
       <ImagePopup />
       <IconPopup />
+      <SignoutConfirm />
     </Container>
   );
 };
