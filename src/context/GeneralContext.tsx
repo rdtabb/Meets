@@ -143,7 +143,7 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         }
     };
 
-    const handleIconPopup = (e: any) => {
+    const handleIconPopup = () => {
         const popup = document.querySelector(".popup--icon");
         const visibility = popup?.getAttribute("data-visible");
         if (visibility == "false") {

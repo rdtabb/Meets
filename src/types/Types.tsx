@@ -42,3 +42,13 @@ export type LikePostMutation = {
   src: string;
   username: string | undefined;
 };
+
+export type SnapType = {
+  creator: string;
+  displayDate: string;
+  image: string;
+  message: string;
+  timestamp: object;
+  userpair: string;
+  id: string;
+};

@@ -1,35 +1,48 @@
-import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary"
-import { useContext } from "react"
-import { ChatContext } from "../../../context/ChatContext"
+import { collection, where, orderBy, query, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase-config";
+import useChatContext from "../../../hooks/useContextHooks/useChatContext";
+import { useQuery } from "@tanstack/react-query";
+import type { SnapType } from "../../../types/Types";
+import LoadingMessages from "../../LoadingStates/LoadingMessages";
+import Message from "./Message/Message";
 
 const Messages = () => {
-  const { messages, handleDelete } = useContext(ChatContext)
+  const { userpair, reversed } = useChatContext();
+
+  const getMessages = async () => {
+    const messagedoc = collection(db, "messages");
+    const querymessages = query(
+      messagedoc,
+      where("userpair", "in", [`${userpair}`, `${reversed}`]),
+      orderBy("timestamp")
+    );
+    const snaps = await getDocs(querymessages);
+    let messagesarr: SnapType[] = [];
+    let idarr: string[] = [];
+    snaps.forEach((snap: any) => {
+      messagesarr.push(snap.data());
+      idarr.push(snap.id);
+    });
+    for (let i = 0; i < messagesarr.length; i++) {
+      messagesarr[i].id = idarr[i];
+    }
+    return messagesarr;
+  };
+
+  const messagesQuery = useQuery({
+    queryKey: ["messages"],
+    queryFn: getMessages,
+  });
 
   return (
-    <ErrorBoundary>
-      <ul className="chat__meslist">
-        {messages.length ? (
-          messages.map((mes) => (
-            <li key={mes.id} className="item">
-              <div className="item__wrapper">
-                <img src={mes.image} alt="" className="item__icon" />
-                <article className="item__info-wrapper">
-                  <div className="item__row-one">
-                    <p className="item__creator">{mes.creator}</p>
-                    <p className="item__time">{mes.displayDate}</p>
-                  </div>
-                  <p className="item__message">{mes.message}</p>
-                </article>
-              </div>
-              <button className="item__delete" onClick={() => handleDelete(mes.id)}></button>
-            </li>
-          ))
-        ) : (
-          <p className="chat__empty">You have no messages with that user!</p>
-        )}
-      </ul>
-    </ErrorBoundary>
-  )
-}
+    <ul className="chat__meslist">
+      {messagesQuery.isLoading ? (
+        <LoadingMessages />
+      ) : (
+        <Message messages={messagesQuery.data} />
+      )}
+    </ul>
+  );
+};
 
-export default Messages
+export default Messages;
