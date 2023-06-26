@@ -45,6 +45,7 @@ const SubmitMessage = ({ username }: PropsType) => {
 
   const submitMessage = async (variables: SubmitMutation) => {
     const { username, newMessage, normaluserpair, e } = variables;
+    console.log(variables)
     e.preventDefault();
     const docref = collection(db, "messages");
     const displayDate = `${format(new Date(), "MMMM dd, yyyy pp")}`;
@@ -66,6 +67,12 @@ const SubmitMessage = ({ username }: PropsType) => {
       queryClient.invalidateQueries(["messages"]);
     },
   });
+
+  if (submitMutation.isLoading) {
+    console.log('submitting message...')
+  } else if (submitMutation.isError) {
+    console.log(submitMutation.error)
+  }
 
   return (
     <section className="chat__form">

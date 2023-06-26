@@ -21,6 +21,12 @@ const Message = ({ messages }: MessageProps) => {
     },
   });
 
+  if (deleteMessage.isLoading) {
+    console.log('deleting....')
+  } else if (deleteMessage.isError) {
+    console.log(deleteMessage.error)
+  } 
+
   return (
     <>
       {messages?.length ? (
