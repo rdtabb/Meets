@@ -1,4 +1,4 @@
-import Userlist from "./Userlist";
+import Userlist from "../userlist/Userlist";
 import Footer from "../Profile/Footer";
 import Container from "../Container/Container";
 

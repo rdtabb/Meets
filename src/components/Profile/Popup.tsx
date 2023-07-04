@@ -1,28 +1,22 @@
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase-config";
-import { ZodType, z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-type EditProfilePopupData = {
-  username: string;
-  status: string;
-};
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { EditProfilePopupData } from "../../types/Types";
+import { formSchema } from "../../schemas/formSchema";
 
 const Popup = () => {
   const handleEditProfile = async (variables: EditProfilePopupData) => {
     const popup = document.querySelector(".popup");
     popup?.classList.remove("popup_opened");
     popup?.setAttribute("data-visible", "false");
-    console.log(variables);
     const uid: any = localStorage.getItem("uid");
     const newstatusdb = {
       name: variables.username,
       newStatus: variables.status,
     };
-    console.log(newstatusdb);
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newstatusdb);
   };
@@ -35,16 +29,6 @@ const Popup = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["userdataset"]);
     },
-  });
-  const formSchema: ZodType<EditProfilePopupData> = z.object({
-    username: z.string().trim().max(70),
-    status: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "Status must be at lest 2 characters long",
-      })
-      .max(70),
   });
 
   const {

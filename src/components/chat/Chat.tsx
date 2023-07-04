@@ -2,7 +2,6 @@ import SubmitMessage from "./components/SubmitMessage";
 import ChatHeader from "./components/ChatHeader";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import { useRef, useEffect } from "react";
-import LoadingMessages from "../LoadingStates/LoadingMessages";
 import Container from "../Container/Container";
 import useUserData from "../../hooks/useQueryHooks/useUserData";
 import Messages from "./components/Messages";

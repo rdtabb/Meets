@@ -1,35 +1,18 @@
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
-import { z, ZodType } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { HandleNewPostData } from "../../App";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-type AddPostData = {
-  url: string;
-  place: string;
-};
+import { addPostSchema } from "../../schemas/addPostSchema";
 
 const AddPost = () => {
   const { handleClose, handleNewPost } = useGeneralContext();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: (variables: HandleNewPostData) => handleNewPost(variables),
     onSuccess: () => {
-      queryClient.invalidateQueries(["postsdata"])
-    }
-  })
-  const addPostSchema: ZodType<AddPostData> = z.object({
-    url: z.string().trim().url({
-      message: "Invalid url",
-    }),
-    place: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "Post title must be at least 2 characters long",
-      })
-      .max(30),
+      queryClient.invalidateQueries(["postsdata"]);
+    },
   });
 
   const {

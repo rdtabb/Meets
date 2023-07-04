@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import Signout from "../Signout/Signout"
+import Signout from "../signout/Signout"
 
 
 const Header = () => {

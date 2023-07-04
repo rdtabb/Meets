@@ -1,7 +1,17 @@
 import { ReactElement } from "react";
 
+export type AddPostData = {
+  url: string;
+  place: string;
+};
+
 export type ChildrenType = {
   children: ReactElement | ReactElement[];
+};
+
+export type EditProfilePopupData = {
+  username: string;
+  status: string;
 };
 
 export type LikedPost = {
