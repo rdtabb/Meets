@@ -7,6 +7,8 @@ const Desc = () => {
   const { handleAddPostButton, handlePopup } = useGeneralContext();
   const userSet = useUserData();
 
+  if (userSet.isError) console.log(userSet.error);
+
   return (
     <section className="profile">
       <div className="profile__wrapper">
