@@ -4,6 +4,7 @@ import { ZodType, z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 type EditProfilePopupData = {
   username: string;
@@ -11,7 +12,28 @@ type EditProfilePopupData = {
 };
 
 const Popup = () => {
+  const handleEditProfile = async (variables: EditProfilePopupData) => {
+    const popup = document.querySelector(".popup");
+    popup?.classList.remove("popup_opened");
+    popup?.setAttribute("data-visible", "false");
+    const uid: any = localStorage.getItem("uid");
+    const newstatusdb = {
+      name: variables.username,
+      newStatus: variables.status,
+    };
+    const userdoc = doc(db, "users", uid);
+    await updateDoc(userdoc, newstatusdb);
+  };
+   
   const { handleClose } = useGeneralContext();
+  const queryClient = useQueryClient() 
+  const { mutate } = useMutation({
+    mutationFn: (variables: EditProfilePopupData) => handleEditProfile(variables), 
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userdataset"])  
+    },  
+  })
+
   const formSchema: ZodType<EditProfilePopupData> = z.object({
     username: z
       .string()
@@ -33,28 +55,15 @@ const Popup = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<EditProfilePopupData>({
+  } = useForm<EditProfilePopupData>({ 
     resolver: zodResolver(formSchema),
   });
-
-  const handleEditProfile = async (variables: EditProfilePopupData) => {
-    const popup = document.querySelector(".popup");
-    popup?.classList.remove("popup_opened");
-    popup?.setAttribute("data-visible", "false");
-    const uid: any = localStorage.getItem("uid");
-    const newstatusdb = {
-      name: variables.username,
-      newStatus: variables.status,
-    };
-    const userdoc = doc(db, "users", uid);
-    await updateDoc(userdoc, newstatusdb);
-  };
 
   return (
     <div data-visible="false" className="popup popup--edit">
       <div className="popup__container">
         <form
-          onSubmit={handleSubmit(handleEditProfile)}
+          onSubmit={handleSubmit((variables) => mutate(variables))}
           name="popupForm"
           className="popup__form"
           noValidate
