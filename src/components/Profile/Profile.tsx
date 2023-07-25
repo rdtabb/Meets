@@ -8,7 +8,7 @@ import IconPopup from "./IconPopup";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import Posts from "./Posts";
 import Container from "../Container/Container";
-import SignoutConfirm from "../signout/SignoutConfirm";
+import SignoutConfirm from "../Signout/SignoutConfirm";
 
 const Profile = () => {
   return (

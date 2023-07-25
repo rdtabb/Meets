@@ -3,7 +3,7 @@
 /* ---------------------------------------- */
 
 @import url(./reset.scss);
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap");
 
 /* ---------------------------------------- */
 /* variables, selection, scrollbar          */
@@ -16,14 +16,14 @@
 
   --clr-accent: 0, 0%, 33%;
 
-  --ff-primary: 'Montserrat', 'Inter', sans-serif;
+  --ff-primary: "Montserrat", "Inter", sans-serif;
 
   --fw-300: 300;
   --fw-400: 400;
   --fw-600: 600;
   --fw-700: 700;
 
-  --fs-200: .75rem;
+  --fs-200: 0.75rem;
   --fs-300: 1rem;
   --fs-400: 1.125rem;
   --fs-500: 1.25rem;
@@ -33,7 +33,7 @@
   --fs-800: 3rem;
   --fs-900: 3.5rem;
 
-  --size-s: .25rem;
+  --size-s: 0.25rem;
 
   --timing-function-primary: ease-in;
   --transition-time-primary: 200ms;
@@ -49,7 +49,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--clr-primary-900), .5);
+  background-color: hsl(var(--clr-primary-900), 0.5);
   border-radius: 100vmax;
 }
 
@@ -95,7 +95,7 @@ body {
   text-align: center;
   place-self: center;
 
-  background-color: hsl(var(--clr-primary-200), .4);
+  background-color: hsl(var(--clr-primary-200), 0.4);
 
   .img-container {
     display: flex;
@@ -115,8 +115,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: .5rem;
-    padding: .75rem 2rem;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
 
     background-color: hsl(var(--clr-primary-100));
     color: hsl(var(--clr-primary-900));
@@ -125,7 +125,8 @@ body {
     border-radius: 100vmax;
     border: 1px solid hsl(var(--clr-primary-900));
 
-    transition: all var(--transition-time-primary) var(--timing-function-primary);
+    transition: all var(--transition-time-primary)
+      var(--timing-function-primary);
     cursor: pointer;
   }
 
@@ -146,11 +147,11 @@ body {
 .signout {
   background-color: hsl(var(--clr-primary-100));
   border: 1px solid hsl(var(--clr-primary-900));
-  border-radius: .125rem;
+  border-radius: 0.125rem;
   color: hsl(var(--clr-primary-900));
-  padding: .25rem .75rem;
+  padding: 0.25rem 0.75rem;
   transition: all var(--transition-time-primary) var(--timing-function-primary);
-  opacity: .5;
+  opacity: 0.5;
   cursor: pointer;
   font-size: clamp(var(--fs-200), 3vw, var(--fs-400));
 
@@ -170,7 +171,7 @@ body {
   margin: 0 0 40px;
   padding: 0 0 41px;
 
-  border-bottom: 1px solid hsl(var(--clr-accent), .7);
+  border-bottom: 1px solid hsl(var(--clr-accent), 0.7);
 
   &__logo {
     max-width: 142px;
@@ -181,9 +182,10 @@ body {
     color: inherit;
     font-weight: var(--fw-600);
     display: flex;
-    gap: .5rem;
-    opacity: .5;
-    transition: all var(--transition-time-primary) var(--timing-function-primary);
+    gap: 0.5rem;
+    opacity: 0.5;
+    transition: all var(--transition-time-primary)
+      var(--timing-function-primary);
 
     &:hover {
       opacity: 1;
@@ -196,8 +198,9 @@ body {
     width: var(--icon-sizing);
     height: var(--icon-sizing);
     object-fit: cover;
-    transition: all var(--transition-time-primary) var(--timing-function-primary);
-    opacity: .6;
+    transition: all var(--transition-time-primary)
+      var(--timing-function-primary);
+    opacity: 0.6;
 
     &:hover {
       opacity: 1;
@@ -206,12 +209,12 @@ body {
 
   &__liked-icon {
     object-fit: contain;
-    opacity: .3;
+    opacity: 0.3;
   }
 
   &__routes {
     display: flex;
-    gap: clamp(.3rem, 2vw, 1rem);
+    gap: clamp(0.3rem, 2vw, 1rem);
     justify-content: space-between;
     align-items: center;
   }
@@ -220,10 +223,11 @@ body {
 .header-profile__link {
   width: 40px;
   aspect-ratio: 1;
-  transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+  transition: opacity var(--transition-time-primary)
+    var(--timing-function-primary);
 
   &:hover {
-    opacity: .6;
+    opacity: 0.6;
   }
 }
 
@@ -266,16 +270,17 @@ body {
 
     &::before {
       position: absolute;
-      content: '';
+      content: "";
       inset: 0;
       border-radius: 100vmax;
       background-color: hsl(var(--clr-primary-100), 0);
-      transition: background-color calc(var(--transition-time-primary) * 1.3) var(--timing-function-primary);
+      transition: background-color calc(var(--transition-time-primary) * 1.3)
+        var(--timing-function-primary);
       pointer-events: none;
     }
 
     &:hover::before {
-      background-color: hsl(var(--clr-primary-100), .8);
+      background-color: hsl(var(--clr-primary-100), 0.8);
     }
 
     &__icon {
@@ -284,7 +289,8 @@ body {
       inset: 0;
       margin: auto;
       opacity: 0;
-      transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+      transition: opacity var(--transition-time-primary)
+        var(--timing-function-primary);
       pointer-events: none;
     }
   }
@@ -322,11 +328,12 @@ body {
     background: transparent url(../assets/pluss.svg) no-repeat center;
     border: 2px solid hsl(var(--clr-primary-900));
     border-radius: 2px;
-    transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+    transition: opacity var(--transition-time-primary)
+      var(--timing-function-primary);
     cursor: pointer;
 
     &:hover {
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 
@@ -364,7 +371,8 @@ body {
     border: none;
     width: 24px;
     aspect-ratio: 1;
-    transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+    transition: opacity var(--transition-time-primary)
+      var(--timing-function-primary);
     cursor: pointer;
 
     margin: 0;
@@ -373,7 +381,7 @@ body {
   }
 
   .profile__edit-button:hover {
-    opacity: .6;
+    opacity: 0.6;
   }
 }
 
@@ -429,7 +437,7 @@ body {
     background-image: url(../assets/like.svg);
   }
   25% {
-    scale: .7;
+    scale: 0.7;
   }
   50% {
     scale: 1.3;
@@ -446,7 +454,7 @@ body {
 /* ---------------------------------------- */
 
 .cards {
-  display: grid;    
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   text-overflow: ellipsis;
   column-gap: 17px;
@@ -521,11 +529,12 @@ body {
     pointer-events: none;
     opacity: 0;
 
-    transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+    transition: opacity var(--transition-time-primary)
+      var(--timing-function-primary);
   }
 
   &__imgwrapper:hover::after {
-    opacity: .3;
+    opacity: 0.3;
   }
 
   &__delete {
@@ -540,11 +549,12 @@ body {
     aspect-ratio: 1;
     opacity: 0;
     cursor: pointer;
-    transition: all var(--transition-time-primary) var(--timing-function-primary);
+    transition: all var(--transition-time-primary)
+      var(--timing-function-primary);
   }
 
   &:hover &__delete {
-    opacity: .8;
+    opacity: 0.8;
   }
 
   &:hover &__delete:hover {
@@ -560,11 +570,12 @@ body {
     border: none;
     background: transparent no-repeat center;
     background-size: contain;
-    transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+    transition: opacity var(--transition-time-primary)
+      var(--timing-function-primary);
     cursor: pointer;
 
     &:hover {
-      opacity: .5;
+      opacity: 0.5;
     }
   }
 
@@ -606,13 +617,13 @@ body {
     opacity: 1;
   }
   25% {
-    opacity: .7;
+    opacity: 0.7;
   }
   50% {
     opacity: 1;
   }
   75% {
-    opacity: .7;
+    opacity: 0.7;
   }
   100% {
     opacity: 1;
@@ -668,21 +679,21 @@ body {
   inset: 0;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: hsl(var(--clr-primary-100), .5);
+    background: hsl(var(--clr-primary-100), 0.5);
     z-index: var(--z-300);
   }
 
   &--image::before {
-    background: hsl(var(--clr-primary-100), .9);
+    background: hsl(var(--clr-primary-100), 0.9);
   }
 
   &__set {
     border: none;
     position: relative;
-    padding-bottom: .3rem;
+    padding-bottom: 0.3rem;
   }
 
   &__error {
@@ -706,9 +717,10 @@ body {
 
   &--image__container {
     max-width: 75vw;
+    outline: 0.5px solid white;
     width: auto;
     margin-inline: auto;
-    background-color: hsl(var(--clr-primary-100), .05);
+    background-color: hsl(var(--clr-primary-100), 0.05);
     backdrop-filter: blur(3rem);
     border-radius: 10px;
     padding-bottom: 0.5rem;
@@ -723,7 +735,7 @@ body {
 
   .textarea {
     display: grid;
-    gap: .2rem;
+    gap: 0.2rem;
     padding: 1rem clamp(1rem, 3vw, 2rem);
   }
 
@@ -731,13 +743,14 @@ body {
     width: 100%;
     border: 0;
     color: hsl(var(--clr-primary-900));
-    border-bottom: 2px solid hsl(var(--clr-primary-900), .4);
+    border-bottom: 2px solid hsl(var(--clr-primary-900), 0.4);
     background: transparent;
-    padding: .25rem;
-    transition: all var(--timing-function-primary) var(--transition-time-primary);
+    padding: 0.25rem;
+    transition: all var(--timing-function-primary)
+      var(--transition-time-primary);
 
     &:hover {
-      border-bottom: 2px solid hsl(var(--clr-primary-900), .6);
+      border-bottom: 2px solid hsl(var(--clr-primary-900), 0.6);
     }
 
     &:focus,
@@ -786,16 +799,18 @@ body {
     aspect-ratio: 1;
 
     cursor: pointer;
-    transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+    transition: opacity var(--transition-time-primary)
+      var(--timing-function-primary);
 
     &:hover {
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 
   &_opened {
     display: grid;
-    transition: all var(--transition-time-primary) var(--timing-function-primary);
+    transition: all var(--transition-time-primary)
+      var(--timing-function-primary);
     overflow-y: scroll;
   }
 
@@ -819,22 +834,24 @@ body {
 
     padding: 12px 0 16px;
 
-    transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+    transition: opacity var(--transition-time-primary)
+      var(--timing-function-primary);
     cursor: pointer;
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
 
     &:disabled {
-      opacity: .2;
+      opacity: 0.2;
       background-color: transparent;
       color: hsl(var(--clr-primary-100));
-      transition: all var(--transition-time-primary) var(--timing-function-primary);
+      transition: all var(--transition-time-primary)
+        var(--timing-function-primary);
       cursor: initial;
 
       &:hover {
-        opacity: .2;
+        opacity: 0.2;
         background-color: transparent;
       }
     }
@@ -849,7 +866,7 @@ body {
   &__input {
     background: transparent;
     border: none;
-    border-bottom: 1px solid hsl(var(--clr-primary-100), .2);
+    border-bottom: 1px solid hsl(var(--clr-primary-100), 0.2);
     font-size: 14px;
     line-height: 17px;
     padding: 0 0 13px;
@@ -857,7 +874,7 @@ body {
     width: 100%;
 
     &:hover {
-      border-bottom: 1px solid hsl(var(--clr-primary-100), .5);
+      border-bottom: 1px solid hsl(var(--clr-primary-100), 0.5);
     }
 
     &:focus,
@@ -888,11 +905,11 @@ body {
   overflow-x: scroll;
 
   &::-webkit-scrollbar {
-    width: .25rem;
+    width: 0.25rem;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: hsl(var(--clr-primary-100), .6);
+    background-color: hsl(var(--clr-primary-100), 0.6);
     border-radius: 100vmax;
   }
 }
@@ -959,7 +976,7 @@ body {
     background-size: contain;
 
     &--image {
-      --positioning: -25px; 
+      --positioning: -25px;
     }
   }
 }
@@ -1032,7 +1049,7 @@ body {
     transition: all 200ms ease-in;
 
     &:hover {
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 }
@@ -1046,7 +1063,7 @@ body {
 /* ---------------------------------------- */
 
 .user {
-  border-bottom: 1px solid hsl(var(--clr-primary-900), .2);
+  border-bottom: 1px solid hsl(var(--clr-primary-900), 0.2);
   padding: 2rem 1rem;
   display: flex;
   align-items: center;
@@ -1055,10 +1072,10 @@ body {
   &--empty {
     height: 125px;
     border-radius: 1rem;
-    background-color: hsl(var(--clr-accent), .3);
+    background-color: hsl(var(--clr-accent), 0.3);
     animation: opacious infinite 3s ease-in;
     border: none;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 
   &__chat {
@@ -1069,7 +1086,7 @@ body {
     transition: all 200ms ease-in;
 
     &:hover {
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 
@@ -1101,7 +1118,7 @@ body {
   }
 
   &__status {
-    font-size: clamp(.75rem, 2vw, var(--fs-300));
+    font-size: clamp(0.75rem, 2vw, var(--fs-300));
     font-weight: var(--fw-300);
   }
 
@@ -1112,7 +1129,7 @@ body {
     transition: all 200ms ease-in;
 
     &:hover {
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 }
@@ -1228,8 +1245,8 @@ body {
 
   height: fit-content;
   padding: 1rem;
-  background-color: hsl(var(--clr-accent), .3);
-  border-radius: .5rem;
+  background-color: hsl(var(--clr-accent), 0.3);
+  border-radius: 0.5rem;
 
   &--empty {
     min-height: 7rem;
@@ -1246,7 +1263,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: .5rem;
+    gap: 0.5rem;
   }
 
   &__row-one {
@@ -1256,7 +1273,7 @@ body {
 
   &__creator,
   &__time {
-    opacity: .8;
+    opacity: 0.8;
     font-size: clamp(var(--fs-300), 4vw, var(--fs-400));
   }
 
@@ -1282,7 +1299,8 @@ body {
     background-size: contain;
     opacity: 0;
     cursor: pointer;
-    transition: opacity var(--transition-time-primary) var(--timing-function-primary);
+    transition: opacity var(--transition-time-primary)
+      var(--timing-function-primary);
   }
 
   &:hover &__delete {
@@ -1302,7 +1320,7 @@ body {
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  opacity: .6;
+  opacity: 0.6;
 
   &:hover {
     opacity: 1;
@@ -1322,12 +1340,13 @@ body {
 
   input {
     width: 100%;
-    padding: .75rem 2rem;
+    padding: 0.75rem 2rem;
     border-radius: 100vmax;
     border: 1px solid hsl(var(--clr-primary-900));
     background-color: hsl(var(--clr-primary-100));
     color: hsl(var(--clr-primary-900));
-    transition: all var(--transition-time-primary) var(--timing-function-primary);
+    transition: all var(--transition-time-primary)
+      var(--timing-function-primary);
 
     &:focus {
       outline: none;
@@ -1345,6 +1364,6 @@ body {
   .item__delete {
     --sizing: 1rem;
 
-    opacity: .7;
+    opacity: 0.7;
   }
 }

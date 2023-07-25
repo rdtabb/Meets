@@ -2,7 +2,13 @@ import { z, ZodType } from "zod";
 import type { EditProfilePopupData } from "../types/Types";
 
 export const formSchema: ZodType<EditProfilePopupData> = z.object({
-  username: z.string().trim().max(70),
+  username: z
+    .string()
+    .regex(/^[A-Za-z0-9\s]+$/, {
+      message: "Username can contain only letters and numbers",
+    })
+    .trim()
+    .max(70),
   status: z
     .string()
     .trim()

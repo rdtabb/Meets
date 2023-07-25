@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactElement,
-  useState,
-  useCallback,
-  useEffect,
-} from "react";
+import { createContext, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase-config";
 import {
   addDoc,
@@ -27,7 +21,7 @@ type ChatContextType = {
     image: string | null | undefined,
     message: string,
     timestamp: any,
-    userpair: string
+    userpair: string,
   ) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
   messages: SnapType[];
@@ -57,10 +51,10 @@ export const ChatProvider = ({ children }: ChildrenType) => {
   const [messages, setMessages] = useState<Array<SnapType>>([]);
   const [newMessage, setNewMessage] = useState("");
   const [userpair, setUserpair] = useState<string | null>(
-    localStorage.getItem("userpair") || ""
+    localStorage.getItem("userpair") || "",
   );
   const [reversed, setReversed] = useState<string | null>(
-    localStorage.getItem("reversed") || ""
+    localStorage.getItem("reversed") || "",
   );
 
   const getMessages = useCallback(async (): Promise<SnapType[]> => {
@@ -69,7 +63,7 @@ export const ChatProvider = ({ children }: ChildrenType) => {
       const querymessages = query(
         messagedoc,
         where("userpair", "in", [`${userpair}`, `${reversed}`]),
-        orderBy("timestamp")
+        orderBy("timestamp"),
       );
       const snaps = await getDocs(querymessages);
       let messagesarr: SnapType[] = [];
@@ -93,7 +87,7 @@ export const ChatProvider = ({ children }: ChildrenType) => {
     image: string | null | undefined,
     message: string,
     timestamp: FieldValue,
-    userpair: string
+    userpair: string,
   ) => {
     e.preventDefault();
     try {

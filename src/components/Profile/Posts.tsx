@@ -1,19 +1,19 @@
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import type { Post } from "../../types/Types";
 import Feed from "./Feed";
+import Loading from "../LoadingStates/LoadingPosts";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "../LoadingStates/LoadingPosts";
 
 const uid: any = localStorage.getItem("uid");
-const getPosts = async () => {
+async function getPosts() {
   const userdoc = doc(db, "users", uid);
   const dataSnap = await getDoc(userdoc);
   const dataset = dataSnap.data();
   const posts: Post[] = await dataset?.newPosts;
   return posts;
-};
+}
 
 const Posts = () => {
   const postsQuery = useQuery({
@@ -27,9 +27,7 @@ const Posts = () => {
     <>
       {postsQuery.data?.length ? (
         <ErrorBoundary>
-          <Feed
-            posts={postsQuery.data}
-          />
+          <Feed posts={postsQuery.data} />
         </ErrorBoundary>
       ) : (
         <section className="cards cards--empty">

@@ -19,7 +19,7 @@ const Feed = ({ posts }: feedprops) => {
 
   const newHandleLike = async (variables: MutationFnType) => {
     const newPosts: Post[] = posts.map((post) =>
-      post.id == variables.id ? { ...post, liked: !post.liked } : post
+      post.id == variables.id ? { ...post, liked: !post.liked } : post,
     );
     const newpostsdb = {
       newPosts: newPosts,
@@ -35,7 +35,7 @@ const Feed = ({ posts }: feedprops) => {
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newpostsdb);
   };
-  
+
   const likeMutation = useMutation({
     mutationFn: newHandleLike,
     onSuccess: () => {

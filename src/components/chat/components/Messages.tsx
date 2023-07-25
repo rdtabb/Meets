@@ -8,29 +8,20 @@ import Message from "./Message/Message";
 
 const Messages = () => {
   const { userpair, reversed } = useChatContext();
+  const messagedoc = collection(db, "messages");
 
-  const getMessages = async (): Promise<SnapType[]> => {
-    try {
-      const messagedoc = collection(db, "messages");
-      const querymessages = query(
-        messagedoc,
-        where("userpair", "in", [`${userpair}`, `${reversed}`]),
-        orderBy("timestamp")
-      );
-      const snaps = await getDocs(querymessages);
-      let messagesarr: SnapType[] = [];
-      let idarr: string[] = [];
-      snaps.forEach((snap: any) => {
-        messagesarr.push(snap.data());
-        idarr.push(snap.id);
-      });
-      for (let i = 0; i < messagesarr.length; i++) {
-        messagesarr[i].id = idarr[i];
-      }
-      return messagesarr;
-    } catch (err) {
-      throw `${err} in the ChatContext in getMessages()`;
-    }
+  async function getMessages(): Promise<SnapType[]> {
+    const querymessages = query(
+      messagedoc,
+      where("userpair", "in", [userpair, reversed]),
+      orderBy("timestamp"),
+    );
+    const snaps = await getDocs(querymessages);
+    const messagesarr: SnapType[] = [];
+    snaps.forEach((snap: any) => {
+      messagesarr.push(snap.data());
+    });
+    return messagesarr;
   }
 
   const messagesQuery = useQuery({

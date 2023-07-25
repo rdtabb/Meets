@@ -4,10 +4,10 @@ import useGeneralContext from "./hooks/useContextHooks/useGeneralContext";
 import Cookies from "universal-cookie";
 import { Auth } from "./components/Auth";
 import Profile from "./components/Profile/Profile";
-import Usersearch from "./components/userlist/Usersearch";
+import Usersearch from "./components/Userlist/Usersearch";
 import Auser from "./components/AnotherUser/Auser";
-import LikedPosts from "./components/likedposts/LikedPosts";
-import Chat from "./components/chat/Chat";
+import LikedPosts from "./components/LikedPosts/LikedPosts";
+import Chat from "./components/Chat/Chat";
 
 export const cookies = new Cookies();
 
