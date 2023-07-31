@@ -12,7 +12,7 @@ const useAuserData = (id: string) => {
 
   return useQuery({
     queryKey: ["auserdata", id],
-    queryFn: () => userQueryFn(id)
+    queryFn: () => userQueryFn(id),
   });
 };
 

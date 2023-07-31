@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import useChatContext from "../../../hooks/useContextHooks/useChatContext";
 import { auth, db } from "../../../firebase-config";
 import { useLocation } from "react-router-dom";
@@ -9,8 +9,8 @@ import {
   addDoc,
 } from "firebase/firestore";
 import format from "date-fns/format";
-import { useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { IHandleSubmitMessageParams } from "../../../types/Types";
 
 type PropsType = {
   username: string;
@@ -43,35 +43,43 @@ const SubmitMessage = ({ username }: PropsType) => {
     localStorage.setItem("reversed", reverseduserpair);
   });
 
-  const submitMessage = async (variables: SubmitMutation) => {
-    const { username, newMessage, normaluserpair, e } = variables;
-    console.log(variables)
-    e.preventDefault();
-    const docref = collection(db, "messages");
-    const displayDate = `${format(new Date(), "MMMM dd, yyyy pp")}`;
-    await addDoc(docref, {
-      username,
-      image,
-      newMessage,
-      timestamp,
-      normaluserpair,
-      displayDate,
-      id: "",
-    });
-    setNewMessage("");
-  };
+  async function submitMessage(variables: SubmitMutation) {
+    try {
+      const { username, newMessage, normaluserpair, e } = variables;
+      e.preventDefault();
+      const docref = collection(db, "messages");
+      console.log(docref);
+      const displayDate = `${format(new Date(), "MMMM dd, yyyy pp")}`;
+      await addDoc(docref, {
+        username,
+        image,
+        newMessage,
+        timestamp,
+        normaluserpair,
+        displayDate,
+        id: "",
+      });
+    } catch (err) {
+      console.log(
+        "Error. path: components/SubmitMessage.tsx:62/submitMessage",
+        err,
+      );
+    }
+  }
 
   const submitMutation = useMutation({
-    mutationFn: (variables: SubmitMutation) => submitMessage(variables),
+    mutationFn: (variables: IHandleSubmitMessageParams) =>
+      handleSubmit(variables),
     onSuccess: () => {
       queryClient.invalidateQueries(["messages"]);
     },
   });
-
   if (submitMutation.isLoading) {
-    console.log('submitting message...')
+    console.log("submitting message...");
   } else if (submitMutation.isError) {
-    console.log(submitMutation.error)
+    console.log(submitMutation.error);
+  } else {
+    console.log(submitMutation.data);
   }
 
   return (
@@ -80,11 +88,11 @@ const SubmitMessage = ({ username }: PropsType) => {
         onSubmit={(e) =>
           submitMutation.mutate({
             e,
-            username,
+            creator: username,
             image,
-            newMessage,
+            message: newMessage,
             timestamp,
-            normaluserpair,
+            userpair: normaluserpair,
           })
         }
       >

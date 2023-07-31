@@ -7,10 +7,10 @@ import LoadingMessages from "../../LoadingStates/LoadingMessages";
 import Message from "./Message/Message";
 
 const Messages = () => {
-  const { userpair, reversed } = useChatContext();
+  const { userpair, reversed, getMessages } = useChatContext();
   const messagedoc = collection(db, "messages");
 
-  async function getMessages(): Promise<SnapType[]> {
+  async function whatever(): Promise<SnapType[]> {
     const querymessages = query(
       messagedoc,
       where("userpair", "in", [userpair, reversed]),

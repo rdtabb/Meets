@@ -9,20 +9,23 @@ import {
   orderBy,
   doc,
   deleteDoc,
-  FieldValue,
 } from "firebase/firestore";
 import { format } from "date-fns";
-import type { SnapType, ChildrenType } from "../types/Types";
+import type {
+  SnapType,
+  ChildrenType,
+  IHandleSubmitMessageParams,
+} from "../types/Types";
 
 type ChatContextType = {
-  handleSubmit: (
-    e: React.FormEvent<HTMLFormElement>,
-    creator: string,
-    image: string | null | undefined,
-    message: string,
-    timestamp: any,
-    userpair: string,
-  ) => Promise<void>;
+  handleSubmit: ({
+    e,
+    creator,
+    image,
+    message,
+    timestamp,
+    userpair,
+  }: IHandleSubmitMessageParams) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
   messages: SnapType[];
   newMessage: string;
@@ -31,9 +34,10 @@ type ChatContextType = {
   setUserpair: React.Dispatch<React.SetStateAction<string | null>>;
   reversed: string | null;
   setReversed: React.Dispatch<React.SetStateAction<string | null>>;
+  getMessages: () => Promise<any>;
 };
 
-const initstate = {
+const initstate: ChatContextType = {
   handleSubmit: async () => {},
   handleDelete: async () => {},
   messages: [],
@@ -43,12 +47,13 @@ const initstate = {
   setUserpair: () => {},
   reversed: "",
   setReversed: () => {},
+  getMessages: async () => {},
 };
 
 export const ChatContext = createContext<ChatContextType>(initstate);
 
 export const ChatProvider = ({ children }: ChildrenType) => {
-  const [messages, setMessages] = useState<Array<SnapType>>([]);
+  const [messages, setMessages] = useState<SnapType[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [userpair, setUserpair] = useState<string | null>(
     localStorage.getItem("userpair") || "",
@@ -81,14 +86,14 @@ export const ChatProvider = ({ children }: ChildrenType) => {
     }
   }, []);
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-    creator: string,
-    image: string | null | undefined,
-    message: string,
-    timestamp: FieldValue,
-    userpair: string,
-  ) => {
+  const handleSubmit = async ({
+    e,
+    creator,
+    image,
+    message,
+    timestamp,
+    userpair,
+  }: IHandleSubmitMessageParams) => {
     e.preventDefault();
     try {
       const docref = collection(db, "messages");
@@ -134,6 +139,7 @@ export const ChatProvider = ({ children }: ChildrenType) => {
         reversed,
         userpair,
         handleDelete,
+        getMessages,
       }}
     >
       {children}
