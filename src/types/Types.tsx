@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { FieldValue } from "firebase/firestore";
 
 export type AddPostData = {
   url: string;
@@ -20,6 +21,15 @@ export type LikedPost = {
   id: number;
   imgsrc: string;
 };
+
+export interface IHandleSubmitMessageParams {
+  e: React.FormEvent<HTMLFormElement>;
+  creator: string;
+  image: string | null | undefined;
+  message: string;
+  timestamp: FieldValue;
+  userpair: string;
+}
 
 export type Comment = {
   creator: string;
