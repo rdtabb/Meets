@@ -2,6 +2,7 @@ import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import useUserData from "../../hooks/useQueryHooks/useUserData";
 import AvatarImage from "./AvatarImage";
 import LoadingImage from "../LoadingStates/LoadingImage";
+import { Link } from "react-router-dom";
 
 const Desc = () => {
   const { handleAddPostButton, handlePopup } = useGeneralContext();
@@ -22,7 +23,9 @@ const Desc = () => {
             {userSet.isLoading ? (
               <h1 className="profile__header">Loading...</h1>
             ) : (
-              <h1 className="profile__header">{userSet.data?.name}</h1>
+              <Link to={"/vaulttest"}>
+                <h1 className="profile__header">{userSet.data?.name}</h1>
+              </Link>
             )}
             <button
               onClick={handlePopup}

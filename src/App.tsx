@@ -8,6 +8,7 @@ import Usersearch from "./components/Userlist/Usersearch";
 import Auser from "./components/AnotherUser/Auser";
 import LikedPosts from "./components/LikedPosts/LikedPosts";
 import Chat from "./components/Chat/Chat";
+import Vault from "./components/Vault/Vault";
 
 export const cookies = new Cookies();
 
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/user/:id" element={<Auser />} />
           <Route path="/likedposts" element={<LikedPosts />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/vaulttest" element={<Vault />} />
         </Routes>
       </Router>
     </ErrorBoundary>

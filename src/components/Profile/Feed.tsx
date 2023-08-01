@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import type { Post } from "../../types/Types";
+import { Drawer } from "vaul";
 
 type feedprops = {
   posts: Post[];
@@ -58,7 +59,6 @@ const Feed = ({ posts }: feedprops) => {
               onClick={() =>
                 openImagePopup(post.imgsrc, post.city, post.id, post.comments)
               }
-              loading="eager"
               src={post.imgsrc}
               alt={post.city}
               className="card__image"
