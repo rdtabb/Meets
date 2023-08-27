@@ -2,6 +2,7 @@ import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import { z, ZodType } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export type AvatarIconType = {
   url: string;
@@ -15,19 +16,30 @@ const IconPopup = () => {
     }),
   });
 
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation({
+    mutationFn: (variables: AvatarIconType) => handleProfileIcon(variables),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userdataset"]);
+    },
+  });
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<AvatarIconType>({
     resolver: zodResolver(iconSchema),
+    mode: "onChange",
   });
 
   return (
     <div data-visible="false" id="popup--icon" className="popup popup--icon">
       <div className="popup__container">
         <form
-          onSubmit={handleSubmit(handleProfileIcon)}
+          onSubmit={handleSubmit((variables: AvatarIconType) => {
+            mutate(variables);
+          })}
           name="popupForm"
           className="popup__form"
         >
@@ -35,10 +47,14 @@ const IconPopup = () => {
           <div className="popup__inputs">
             <fieldset className="popup__set">
               <input
-                {...register('url')}
+                {...register("url")}
                 placeholder="Enter icon url"
                 type="text"
-                className={errors.url ? "popup__input popup__input_type_error" : "popup__input"}
+                className={
+                  errors.url
+                    ? "popup__input popup__input_type_error"
+                    : "popup__input"
+                }
               ></input>
               {errors.url && (
                 <p className="popup__error">{errors.url.message}</p>
@@ -48,9 +64,9 @@ const IconPopup = () => {
           <button
             type="submit"
             className="popup__submit"
-            disabled={errors.url ? true : false}
+            disabled={!isValid || isLoading}
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </form>
         <button

@@ -9,21 +9,20 @@ import { formSchema } from "../../schemas/formSchema";
 
 const Popup = () => {
   const handleEditProfile = async (variables: EditProfilePopupData) => {
-    const popup = document.querySelector(".popup");
-    popup?.classList.remove("popup_opened");
-    popup?.setAttribute("data-visible", "false");
-    const uid: any = localStorage.getItem("uid");
+    const uid: string = localStorage.getItem("uid")!;
     const newstatusdb = {
       name: variables.username,
       newStatus: variables.status,
     };
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newstatusdb);
+    const popup = document.querySelector(".popup");
+    popup?.classList.remove("popup_opened");
+    popup?.setAttribute("data-visible", "false");
   };
 
-  const { handleClose } = useGeneralContext();
   const queryClient = useQueryClient();
-  const { mutate } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: (variables: EditProfilePopupData) =>
       handleEditProfile(variables),
     onSuccess: () => {
@@ -31,12 +30,20 @@ const Popup = () => {
     },
   });
 
+  const handleClose = (e: any) => {
+    e.target.closest(".popup").setAttribute("data-visible", "false");
+    setTimeout(() => {
+      e.target.closest(".popup").classList.remove("popup_opened");
+    }, 200);
+  };
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<EditProfilePopupData>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
   });
 
   return (
@@ -89,9 +96,9 @@ const Popup = () => {
           <button
             type="submit"
             className="popup__submit"
-            disabled={errors.username || errors.status ? true : false}
+            disabled={!isValid || isLoading}
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </form>
         <button

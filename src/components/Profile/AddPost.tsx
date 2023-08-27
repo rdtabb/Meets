@@ -8,7 +8,7 @@ import { addPostSchema } from "../../schemas/addPostSchema";
 const AddPost = () => {
   const { handleClose, handleNewPost } = useGeneralContext();
   const queryClient = useQueryClient();
-  const { mutate } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: (variables: HandleNewPostData) => handleNewPost(variables),
     onSuccess: () => {
       queryClient.invalidateQueries(["postsdata"]);
@@ -18,9 +18,10 @@ const AddPost = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<HandleNewPostData>({
     resolver: zodResolver(addPostSchema),
+    mode: "onChange",
   });
 
   return (
@@ -67,11 +68,11 @@ const AddPost = () => {
             </fieldset>
           </div>
           <button
-            disabled={errors.place || errors.url ? true : false}
+            disabled={!isValid || isLoading}
             type="submit"
             className="popup__submit"
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </form>
         <button

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import type { Post } from "../../types/Types";
+import { Link, useLocation } from "react-router-dom";
 
 type feedprops = {
   posts: Post[];
@@ -16,6 +17,7 @@ const Feed = ({ posts }: feedprops) => {
   const { openImagePopup } = useGeneralContext();
   const uid: any = localStorage.getItem("uid");
   const queryClient = useQueryClient();
+  const location = useLocation();
 
   const newHandleLike = async (variables: MutationFnType) => {
     const newPosts: Post[] = posts.map((post) =>
@@ -63,6 +65,12 @@ const Feed = ({ posts }: feedprops) => {
               alt={post.city}
               className="card__image"
             ></img>
+            <Link
+              to={`/image/${post.id}`}
+              state={{ previousLocation: location, post: post }}
+            >
+              new route
+            </Link>
           </div>
 
           <div className="card__action">

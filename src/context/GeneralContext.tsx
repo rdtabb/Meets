@@ -73,6 +73,12 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
       imgurl: variables.url,
     };
     await updateDoc(userdoc, updatedImage);
+
+    const popup = document.querySelector(".popup_opened");
+    popup?.setAttribute("data-visible", "false");
+    setTimeout(() => {
+      popup?.classList.remove("popup_opened");
+    }, 200);
   };
 
   const handleComment = async (
@@ -192,15 +198,15 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     };
     const newPosts = [newPost, ...nposts];
 
-    const addPostPopup = document.querySelector(".popup-add-post");
-    addPostPopup?.setAttribute("data-visible", "false");
-    addPostPopup?.classList.remove("popup_opened");
-
     const newpostsdb = {
       newPosts: newPosts,
     };
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newpostsdb);
+
+    const addPostPopup = document.querySelector(".popup-add-post");
+    addPostPopup?.setAttribute("data-visible", "false");
+    addPostPopup?.classList.remove("popup_opened");
   };
 
   return (
