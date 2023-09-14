@@ -1,28 +1,37 @@
-import { collection, where, orderBy, query, getDocs } from "firebase/firestore";
-import { db } from "../../../firebase-config";
-import useChatContext from "../../../hooks/useContextHooks/useChatContext";
+import { useCallback, useState } from "react";
+import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
-import type { SnapType } from "../../../types/Types";
 import LoadingMessages from "../../LoadingStates/LoadingMessages";
 import Message from "./Message/Message";
+import { SnapType } from "../../../types/Types";
+import { db } from "../../../firebase-config";
 
 const Messages = () => {
-  const { userpair, reversed, getMessages } = useChatContext();
-  const messagedoc = collection(db, "messages");
+  const [userpair] = useState<string | null>(
+    localStorage.getItem("userpair") || ""
+  );
+  const [reversed] = useState<string | null>(
+    localStorage.getItem("reversed") || ""
+  );
 
-  async function whatever(): Promise<SnapType[]> {
-    const querymessages = query(
-      messagedoc,
-      where("userpair", "in", [userpair, reversed]),
-      orderBy("timestamp"),
-    );
-    const snaps = await getDocs(querymessages);
-    const messagesarr: SnapType[] = [];
-    snaps.forEach((snap: any) => {
-      messagesarr.push(snap.data());
-    });
-    return messagesarr;
-  }
+  const getMessages = useCallback(async (): Promise<SnapType[]> => {
+    try {
+      const messagedoc = collection(db, "messages");
+      const querymessages = query(
+        messagedoc,
+        where("userpair", "in", [`${userpair}`, `${reversed}`]),
+        orderBy("timestamp")
+      );
+      const snaps = await getDocs(querymessages);
+      const messages: SnapType[] = [];
+      snaps.forEach((snap: any) => {
+        messages.push(snap.data());
+      });
+      return messages;
+    } catch (err) {
+      throw `${err} in the ChatContext in getMessages()`;
+    }
+  }, []);
 
   const messagesQuery = useQuery({
     queryKey: ["messages"],

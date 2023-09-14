@@ -919,6 +919,11 @@ body {
   align-items: center;
   gap: 1rem;
 
+  &--empty {
+    min-height: 1rem;
+    background-color: white;
+  }
+
   &__icon {
     --sizing: clamp(2.5rem, 3vw, 3.5rem);
 

@@ -21,17 +21,11 @@ const Message = ({ messages }: MessageProps) => {
     },
   });
 
-  if (deleteMessage.isLoading) {
-    console.log('deleting....')
-  } else if (deleteMessage.isError) {
-    console.log(deleteMessage.error)
-  } 
-
   return (
     <>
       {messages?.length ? (
-        messages.map((mes) => (
-          <li key={mes.id} className="item">
+        messages.map((mes, index) => (
+          <li key={index} className="item">
             <div className="item__wrapper">
               <img src={mes.image} alt="" className="item__icon" />
               <article className="item__info-wrapper">

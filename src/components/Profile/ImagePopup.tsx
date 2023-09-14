@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 
+import LoadingComments from "../LoadingStates/LoadingComments";
 import type { Comment, Post } from "../../types/Types";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase-config";
@@ -19,20 +20,20 @@ type FormValues = {
 };
 
 const ImagePopup = () => {
-  const { handleComment, cuid } = useGeneralContext();
-  const [currMessage, setCurrMessage] = useState<string>("");
+  const { cuid } = useGeneralContext();
   const navigate = useNavigate();
   const location = useLocation();
   const post: Post = location.state?.post;
+  const opened: boolean | undefined = location.state?.opened;
 
   const { register, handleSubmit } = useForm<FormValues>({ mode: "onChange" });
 
-  const fetchComments = async (): Promise<Comment[]> => {
+  const fetchComments = async (id: number | undefined): Promise<Comment[]> => {
     const userdoc = doc(db, "users", cuid);
     const dataSnap = await getDoc(userdoc);
     const dataset = dataSnap.data();
     const posts: Post[] = dataset?.newPosts;
-    const commentPost = posts.find((postf) => postf.id == post.id)!;
+    const commentPost = posts.find((postf) => postf.id == id)!;
     const comments: Comment[] = commentPost?.comments;
     return comments;
   };
@@ -74,51 +75,58 @@ const ImagePopup = () => {
   const queryClient = useQueryClient();
 
   const commentsQuery = useQuery({
-    queryKey: ["comments"],
-    queryFn: fetchComments,
+    queryKey: ["comments", post?.id],
+    queryFn: () => fetchComments(post?.id),
   });
 
   const commentsMutation = useMutation({
-    mutationFn: (data: AddCommentMutationProps) => addComment(data),
+    mutationFn: (data: FormValues) => addComment(data),
     onSuccess: () => {
       queryClient.invalidateQueries(["comments"]);
     },
   });
 
   const closeImagePopupRoute = (e: any): void => {
+    navigate("/");
     e.target.closest(".popup").setAttribute("data-visible", "false");
     setTimeout(() => {
       e.target.closest(".popup").classList.remove("popup_opened");
     }, 200);
-    setTimeout(() => {
-      navigate("/");
-    }, 400);
   };
 
   useEffect(() => {
-    commentsQuery.refetch();
+    console.log("mounting component with this post:");
+    console.log(post);
 
     return () => {
       commentsQuery.remove();
+      commentsMutation.reset();
     };
   }, []);
 
   return (
-    <div data-visible="true" className="popup popup--image popup_opened">
+    <div
+      data-visible={!!opened}
+      className={
+        !!opened ? "popup popup--image popup_opened" : "popup popup--image"
+      }
+    >
       <div className="popup__container popup__container--image">
         <div className="popup--image__container">
           <img src={post?.imgsrc} alt="" className="popup__image" />
           <div className="textarea">
             <p className="popup__caption">{post?.city}</p>
             <ul className="comments">
-              <CommentsSection comments={commentsQuery?.data} />
+              {commentsQuery.isLoading ? (
+                <LoadingComments />
+              ) : (
+                <CommentsSection comments={commentsQuery?.data} />
+              )}
             </ul>
             <form
-              onSubmit={() =>
-                handleSubmit((data: FormValues) =>
-                  commentsMutation.mutate(data),
-                )
-              }
+              onSubmit={handleSubmit((data: FormValues) =>
+                commentsMutation.mutate(data),
+              )}
             >
               <input
                 {...register("comment")}

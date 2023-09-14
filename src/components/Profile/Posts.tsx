@@ -1,3 +1,4 @@
+import React from "react";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import type { Post } from "../../types/Types";
 import Feed from "./Feed";
@@ -7,13 +8,13 @@ import { db } from "../../firebase-config";
 import { useQuery } from "@tanstack/react-query";
 
 const uid: any = localStorage.getItem("uid");
-async function getPosts() {
+const getPosts = async (): Promise<Post[]> => {
   const userdoc = doc(db, "users", uid);
   const dataSnap = await getDoc(userdoc);
   const dataset = dataSnap.data();
   const posts: Post[] = await dataset?.newPosts;
   return posts;
-}
+};
 
 const Posts = () => {
   const postsQuery = useQuery({
@@ -46,4 +47,4 @@ const Posts = () => {
     </>
   );
 };
-export default Posts;
+export default React.memo(Posts);

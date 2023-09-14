@@ -1,32 +1,17 @@
-import { useEffect, useRef } from "react";
-import useChatContext from "../../../hooks/useContextHooks/useChatContext";
+import { useEffect, useRef, useState } from "react";
 import { auth, db } from "../../../firebase-config";
 import { useLocation } from "react-router-dom";
-import {
-  FieldValue,
-  serverTimestamp,
-  collection,
-  addDoc,
-} from "firebase/firestore";
-import format from "date-fns/format";
+import { FieldValue, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IHandleSubmitMessageParams } from "../../../types/Types";
+import { format } from "date-fns";
 
-type PropsType = {
+type SubmitMessageProps = {
   username: string;
 };
 
-type SubmitMutation = {
-  e: React.FormEvent<HTMLFormElement>;
-  username: string;
-  image: string | null | undefined;
-  newMessage: string;
-  timestamp: FieldValue;
-  normaluserpair: string;
-};
-
-const SubmitMessage = ({ username }: PropsType) => {
-  const { setNewMessage, newMessage, handleSubmit } = useChatContext();
+const SubmitMessage = ({ username }: SubmitMessageProps) => {
+  const [newMessage, setNewMessage] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const queryClient = useQueryClient();
   const { state } = useLocation();
@@ -43,29 +28,32 @@ const SubmitMessage = ({ username }: PropsType) => {
     localStorage.setItem("reversed", reverseduserpair);
   });
 
-  async function submitMessage(variables: SubmitMutation) {
+  const handleSubmit = async ({
+    e,
+    creator,
+    image,
+    message,
+    timestamp,
+    userpair,
+  }: IHandleSubmitMessageParams) => {
+    e.preventDefault();
     try {
-      const { username, newMessage, normaluserpair, e } = variables;
-      e.preventDefault();
       const docref = collection(db, "messages");
-      console.log(docref);
-      const displayDate = `${format(new Date(), "MMMM dd, yyyy pp")}`;
+      const displayDate: string = `${format(new Date(), "MMMM dd, yyyy pp")}`;
       await addDoc(docref, {
-        username,
+        creator,
         image,
-        newMessage,
+        message,
         timestamp,
-        normaluserpair,
+        userpair,
         displayDate,
         id: "",
       });
+      setNewMessage("");
     } catch (err) {
-      console.log(
-        "Error. path: components/SubmitMessage.tsx:62/submitMessage",
-        err,
-      );
+      console.log(`Error in ChatContext in handleSubmit: ${err}`);
     }
-  }
+  };
 
   const submitMutation = useMutation({
     mutationFn: (variables: IHandleSubmitMessageParams) =>
@@ -74,13 +62,6 @@ const SubmitMessage = ({ username }: PropsType) => {
       queryClient.invalidateQueries(["messages"]);
     },
   });
-  if (submitMutation.isLoading) {
-    console.log("submitting message...");
-  } else if (submitMutation.isError) {
-    console.log(submitMutation.error);
-  } else {
-    console.log(submitMutation.data);
-  }
 
   return (
     <section className="chat__form">

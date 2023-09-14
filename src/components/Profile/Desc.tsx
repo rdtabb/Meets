@@ -1,3 +1,4 @@
+import React from "react";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import useUserData from "../../hooks/useQueryHooks/useUserData";
 import AvatarImage from "./AvatarImage";
@@ -46,4 +47,4 @@ const Desc = () => {
   );
 };
 
-export default Desc;
+export default React.memo(Desc);

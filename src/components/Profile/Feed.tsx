@@ -65,12 +65,12 @@ const Feed = ({ posts }: feedprops) => {
               alt={post.city}
               className="card__image"
             ></img>
-            <Link
-              to={`/image/${post.id}`}
-              state={{ previousLocation: location, post: post }}
-            >
-              new route
-            </Link>
+            {/* // <Link
+            //   to={`/image/${post.id}`}
+            //   state={{ previousLocation: location, post: post, opened: true }}
+            // >
+            //   new route
+            // </Link> */}
           </div>
 
           <div className="card__action">
