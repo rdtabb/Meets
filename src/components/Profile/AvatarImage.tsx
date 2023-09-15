@@ -1,11 +1,21 @@
-import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
+import React from "react";
 
-type PropsType = {
+type AvatarImageProps= {
   userPicture: string;
 };
 
-const AvatarImage = ({ userPicture }: PropsType) => {
-  const { handleIconPopup } = useGeneralContext()
+const AvatarImage = ({ userPicture }: AvatarImageProps) => {
+  const handleIconPopup = () => {
+    const popup = document.querySelector(".popup--icon");
+    const visibility = popup?.getAttribute("data-visible");
+    if (visibility == "false") {
+      popup?.classList.add("popup_opened");
+      popup?.setAttribute("data-visible", "true");
+    } else {
+      popup?.classList.remove("popup_opened");
+      popup?.setAttribute("data-visible", "false");
+    }
+  };
 
   return (
     <div className="avatar-wrapper">
@@ -21,4 +31,4 @@ const AvatarImage = ({ userPicture }: PropsType) => {
   );
 };
 
-export default AvatarImage;
+export default React.memo(AvatarImage);

@@ -13,9 +13,7 @@ import SignoutConfirm from "../Signout/SignoutConfirm";
 const Profile = () => {
   return (
     <Container>
-      <ErrorBoundary>
-        <Header />
-      </ErrorBoundary>
+      <Header />
       <main className="main">
         <Desc />
         <ErrorBoundary>

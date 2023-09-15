@@ -7,16 +7,18 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useQuery } from "@tanstack/react-query";
 
-const uid: any = localStorage.getItem("uid");
-const getPosts = async (): Promise<Post[]> => {
-  const userdoc = doc(db, "users", uid);
-  const dataSnap = await getDoc(userdoc);
-  const dataset = dataSnap.data();
-  const posts: Post[] = await dataset?.newPosts;
-  return posts;
-};
 
 const Posts = () => {
+  const uid = localStorage.getItem("uid")!;
+
+  const getPosts = async (): Promise<Post[]> => {
+    const userdoc = doc(db, "users", uid);
+    const dataSnap = await getDoc(userdoc);
+    const dataset = dataSnap.data();
+    const posts: Post[] = await dataset?.newPosts;
+    return posts;
+  };
+
   const postsQuery = useQuery({
     queryKey: ["postsdata"],
     queryFn: getPosts,

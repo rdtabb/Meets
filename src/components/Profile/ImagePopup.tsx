@@ -20,23 +20,13 @@ type FormValues = {
 };
 
 const ImagePopup = () => {
-  const { cuid } = useGeneralContext();
+  const { cuid, comments } = useGeneralContext();
   const navigate = useNavigate();
   const location = useLocation();
   const post: Post = location.state?.post;
   const opened: boolean | undefined = location.state?.opened;
 
   const { register, handleSubmit } = useForm<FormValues>({ mode: "onChange" });
-
-  const fetchComments = async (id: number | undefined): Promise<Comment[]> => {
-    const userdoc = doc(db, "users", cuid);
-    const dataSnap = await getDoc(userdoc);
-    const dataset = dataSnap.data();
-    const posts: Post[] = dataset?.newPosts;
-    const commentPost = posts.find((postf) => postf.id == id)!;
-    const comments: Comment[] = commentPost?.comments;
-    return comments;
-  };
 
   const addComment = async ({ comment: message }: AddCommentMutationProps) => {
     const userdoc = doc(db, "users", cuid);
@@ -72,37 +62,16 @@ const ImagePopup = () => {
     await updateDoc(userdoc, newpostsdb);
   };
 
-  const queryClient = useQueryClient();
-
-  const commentsQuery = useQuery({
-    queryKey: ["comments", post?.id],
-    queryFn: () => fetchComments(post?.id),
-  });
-
   const commentsMutation = useMutation({
     mutationFn: (data: FormValues) => addComment(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["comments"]);
-    },
   });
 
   const closeImagePopupRoute = (e: any): void => {
-    navigate("/");
     e.target.closest(".popup").setAttribute("data-visible", "false");
     setTimeout(() => {
       e.target.closest(".popup").classList.remove("popup_opened");
     }, 200);
   };
-
-  useEffect(() => {
-    console.log("mounting component with this post:");
-    console.log(post);
-
-    return () => {
-      commentsQuery.remove();
-      commentsMutation.reset();
-    };
-  }, []);
 
   return (
     <div
@@ -117,10 +86,10 @@ const ImagePopup = () => {
           <div className="textarea">
             <p className="popup__caption">{post?.city}</p>
             <ul className="comments">
-              {commentsQuery.isLoading ? (
+              {commentsMutation.isLoading ? (
                 <LoadingComments />
               ) : (
-                <CommentsSection comments={commentsQuery?.data} />
+                <CommentsSection comments={comments} />
               )}
             </ul>
             <form

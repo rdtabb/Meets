@@ -1,15 +1,16 @@
-import type { Post, LikePostMutation } from "../../types/Types";
+import { memo } from "react";
+import { Post, LikePostMutation } from "../../types/Types";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type afeedprops = {
+type AfeedProps = {
   posts: Post[];
   username: string | undefined;
 };
 
-const Afeed = ({ posts, username }: afeedprops) => {
+const Afeed = ({ posts, username }: AfeedProps) => {
   const { openImagePopup } = useGeneralContext();
   const queryClient = useQueryClient();
 
@@ -58,15 +59,6 @@ const Afeed = ({ posts, username }: afeedprops) => {
             <h2 className="card__description">{post.city}</h2>
             <button
               type="button"
-              style={
-                post.liked
-                  ? {
-                      backgroundImage: "url(../../../public/like-activep.svg)",
-                    }
-                  : {
-                      backgroundImage: "url(../../../public/likep.svg)",
-                    }
-              }
               className="card__like card__like--auser"
               onClick={(e) =>
                 likePostMutation.mutate({
@@ -84,4 +76,4 @@ const Afeed = ({ posts, username }: afeedprops) => {
   );
 };
 
-export default Afeed;
+export default memo(Afeed);

@@ -1,12 +1,28 @@
 import React from "react";
-import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import useUserData from "../../hooks/useQueryHooks/useUserData";
 import AvatarImage from "./AvatarImage";
 import LoadingImage from "../LoadingStates/LoadingImage";
 
 const Desc = () => {
-  const { handleAddPostButton, handlePopup } = useGeneralContext();
   const userSet = useUserData();
+
+  const handleAddPostButton = () => {
+    const addPost = document.querySelector(".popup-add-post");
+    addPost?.classList.add("popup_opened");
+    addPost?.setAttribute("data-visible", "true");
+  };
+
+  const handlePopup = () => {
+    const popup = document.querySelector(".popup");
+    const visibility = popup?.getAttribute("data-visible");
+    if (visibility == "false") {
+      popup?.classList.add("popup_opened");
+      popup?.setAttribute("data-visible", "true");
+    } else {
+      popup?.classList.remove("popup_opened");
+      popup?.setAttribute("data-visible", "false");
+    }
+  };
 
   if (userSet.isError) console.log(userSet.error);
 

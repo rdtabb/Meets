@@ -14,11 +14,8 @@ export type GeneralContextType = {
     comments: Comment[],
   ) => void;
   handleClose: () => void;
-  handleAddPostButton: () => void;
   isAuth: any;
   setIsAuth: React.Dispatch<any>;
-  handlePopup: () => void;
-  handleIconPopup: (e: any) => void;
   postId: number;
   handleComment: (
     e: any,
@@ -32,12 +29,10 @@ export type GeneralContextType = {
   handleNewPost: (variables: HandleNewPostData) => Promise<void>;
 };
 
-const initstate = {
+const initialState: GeneralContextType = {
   openImagePopup: () => {},
   handleClose: () => {},
-  handleAddPostButton: () => {},
   setIsAuth: () => {},
-  handlePopup: () => {},
   isAuth: false,
   postId: 0,
   handleComment: async () => {},
@@ -45,7 +40,6 @@ const initstate = {
   cuid: "",
   handleProfileIcon: async () => {},
   handleNewPost: async () => {},
-  handleIconPopup: () => {},
 };
 
 export type UserLikedType = {
@@ -55,7 +49,7 @@ export type UserLikedType = {
   imgsrc: string;
 };
 
-const GeneralContext = createContext<GeneralContextType>(initstate);
+const GeneralContext = createContext<GeneralContextType>(initialState);
 
 type HandleProfileIconType = {
   url: string;
@@ -151,36 +145,6 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
     });
   };
 
-  const handleAddPostButton = () => {
-    const addPost = document.querySelector(".popup-add-post");
-    addPost?.classList.add("popup_opened");
-    addPost?.setAttribute("data-visible", "true");
-  };
-
-  const handlePopup = () => {
-    const popup = document.querySelector(".popup");
-    const visibility = popup?.getAttribute("data-visible");
-    if (visibility == "false") {
-      popup?.classList.add("popup_opened");
-      popup?.setAttribute("data-visible", "true");
-    } else {
-      popup?.classList.remove("popup_opened");
-      popup?.setAttribute("data-visible", "false");
-    }
-  };
-
-  const handleIconPopup = () => {
-    const popup = document.querySelector(".popup--icon");
-    const visibility = popup?.getAttribute("data-visible");
-    if (visibility == "false") {
-      popup?.classList.add("popup_opened");
-      popup?.setAttribute("data-visible", "true");
-    } else {
-      popup?.classList.remove("popup_opened");
-      popup?.setAttribute("data-visible", "false");
-    }
-  };
-
   const handleNewPost = async (variables: HandleNewPostData) => {
     const uid = localStorage.getItem("uid")!;
     const usedoc = doc(db, "users", uid);
@@ -216,14 +180,11 @@ export const GeneralProvider = ({ children }: ChildrenType): ReactElement => {
         cuid,
         handleComment,
         openImagePopup,
-        handleAddPostButton,
         handleClose,
         isAuth,
         setIsAuth,
-        handlePopup,
         postId,
         comments,
-        handleIconPopup,
         handleNewPost,
       }}
     >

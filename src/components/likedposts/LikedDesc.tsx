@@ -1,3 +1,4 @@
+import { memo } from "react";
 import LoadingImage from "../LoadingStates/LoadingImage";
 
 type DescProps = {
@@ -39,4 +40,4 @@ const LikedDesc = ({ userPicture, username, status, loading }: DescProps) => {
   );
 };
 
-export default LikedDesc;
+export default memo(LikedDesc);

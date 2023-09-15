@@ -1,5 +1,6 @@
+import { memo } from "react";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import type { LikedPost, DeleteLikedMutation } from "../../types/Types";
+import { LikedPost, DeleteLikedMutation } from "../../types/Types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
@@ -43,4 +44,4 @@ const PostList = ({ posts }: { posts: LikedPost[] }) => {
   );
 };
 
-export default PostList;
+export default memo(PostList);
