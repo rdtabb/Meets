@@ -8,7 +8,8 @@ import Usersearch from "./components/Userlist/Usersearch";
 import Auser from "./components/AnotherUser/Auser";
 import LikedPosts from "./components/LikedPosts/LikedPosts";
 import Chat from "./components/Chat/Chat";
-// import ImagePopup from "./components/Profile/ImagePopup";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 export const cookies = new Cookies();
 
@@ -19,8 +20,6 @@ export type HandleNewPostData = {
 
 const App = () => {
   const { isAuth } = useGeneralContext();
-  // const location = useLocation();
-  // const previousLocation = location.state?.previousLocation;
 
   if (!isAuth) {
     return (
@@ -32,20 +31,15 @@ const App = () => {
 
   return (
     <ErrorBoundary>
-      <Routes
-      // location={previousLocation || location}
-      >
-        <Route path="/" element={<Profile />} />
-        <Route path="/usersearch" element={<Usersearch />} />
-        <Route path="/user/:id" element={<Auser />} />
-        <Route path="/likedposts" element={<LikedPosts />} />
-        <Route path="/chat" element={<Chat />} />
-      </Routes>
-      {/* // {previousLocation && (
-      //   <Routes>
-      //     <Route path="/image/:id" element={<ImagePopup />} />
-      //   </Routes>
-      // )} */}
+      <Provider store={store}>
+        <Routes>
+          <Route path="/" element={<Profile />} />
+          <Route path="/usersearch" element={<Usersearch />} />
+          <Route path="/user/:id" element={<Auser />} />
+          <Route path="/likedposts" element={<LikedPosts />} />
+          <Route path="/chat" element={<Chat />} />
+        </Routes>
+      </Provider>
     </ErrorBoundary>
   );
 };

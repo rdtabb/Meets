@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 import LoadingComments from "../LoadingStates/LoadingComments";
 import type { Comment, Post } from "../../types/Types";
@@ -21,11 +21,9 @@ type FormValues = {
 
 const ImagePopup = () => {
   const { cuid, comments } = useGeneralContext();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const post: Post = location.state?.post;
-  const opened: boolean | undefined = location.state?.opened;
-
+  const { selectedPost: post, isImagePopupOpen } = useSelector(
+    (state: RootState) => state.modal,
+  );
   const { register, handleSubmit } = useForm<FormValues>({ mode: "onChange" });
 
   const addComment = async ({ comment: message }: AddCommentMutationProps) => {
@@ -38,7 +36,7 @@ const ImagePopup = () => {
     const img = auth.currentUser?.photoURL!;
     const createdAt: string = `${format(new Date(), "MMMM dd, yyyy pp")}`;
 
-    const commentPost = posts.find((postf) => postf.id == post.id)!;
+    const commentPost = posts.find((postf) => postf.id == post?.id)!;
     const comments: Comment[] = commentPost?.comments;
 
     const id: number = comments.length
@@ -74,15 +72,10 @@ const ImagePopup = () => {
   };
 
   return (
-    <div
-      data-visible={!!opened}
-      className={
-        !!opened ? "popup popup--image popup_opened" : "popup popup--image"
-      }
-    >
+    <div data-visible={false} className={"popup popup--image"}>
       <div className="popup__container popup__container--image">
         <div className="popup--image__container">
-          <img src={post?.imgsrc} alt="" className="popup__image" />
+          <img src={post?.imgsrc} alt={post?.city} className="popup__image" />
           <div className="textarea">
             <p className="popup__caption">{post?.city}</p>
             <ul className="comments">
