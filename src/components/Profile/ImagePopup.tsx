@@ -1,93 +1,67 @@
+import { useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useSelector, useDispatch } from "react-redux";
+import { setOpenPopupType } from "../../features/modal/modalSlice";
+import { handlePopup, handleAddComment } from "../../methods/methods";
 
 import LoadingComments from "../LoadingStates/LoadingComments";
-import type { Comment, Post } from "../../types/Types";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db, auth } from "../../firebase-config";
-
-import format from "date-fns/format";
-
-type AddCommentMutationProps = {
-  comment: string;
-};
+import { Comment, AddCommentMutationProps } from "../../types/Types";
+import { RootState } from "../../store/store";
 
 type FormValues = {
   comment: string;
 };
 
 const ImagePopup = () => {
-  const { cuid, comments } = useGeneralContext();
-  const { selectedPost: post, isImagePopupOpen } = useSelector(
-    (state: RootState) => state.modal,
+  const dispatch = useDispatch();
+  const popupRef = useRef<HTMLDivElement>(null)!;
+  const selectedPost = useSelector(
+    (state: RootState) => state.modal.selectedPost,
   );
-  const { register, handleSubmit } = useForm<FormValues>({ mode: "onChange" });
-
-  const addComment = async ({ comment: message }: AddCommentMutationProps) => {
-    const userdoc = doc(db, "users", cuid);
-    const dataSnap = await getDoc(userdoc);
-    const dataset = dataSnap.data();
-    const posts: Post[] = dataset?.newPosts;
-    const creator = dataset?.name;
-
-    const img = auth.currentUser?.photoURL!;
-    const createdAt: string = `${format(new Date(), "MMMM dd, yyyy pp")}`;
-
-    const commentPost = posts.find((postf) => postf.id == post?.id)!;
-    const comments: Comment[] = commentPost?.comments;
-
-    const id: number = comments.length
-      ? comments[comments.length - 1].id + 1
-      : 1;
-    const newcomment: Comment = {
-      creator,
-      message,
-      createdAt,
-      id,
-      img,
-    };
-    const newComments = [...comments, newcomment];
-
-    const updatedPosts = posts.map((post) =>
-      post.id == post.id ? { ...post, comments: newComments } : post,
-    );
-    const newpostsdb = {
-      newPosts: updatedPosts,
-    };
-    await updateDoc(userdoc, newpostsdb);
-  };
-
-  const commentsMutation = useMutation({
-    mutationFn: (data: FormValues) => addComment(data),
+  const { register, handleSubmit, setFocus } = useForm<FormValues>({
+    mode: "onChange",
   });
 
-  const closeImagePopupRoute = (e: any): void => {
-    e.target.closest(".popup").setAttribute("data-visible", "false");
-    setTimeout(() => {
-      e.target.closest(".popup").classList.remove("popup_opened");
-    }, 200);
+  const commentsMutation = useMutation({
+    mutationFn: (data: AddCommentMutationProps) => handleAddComment(data),
+  });
+
+  useEffect(() => {
+    const popup = popupRef.current;
+
+    popup && handlePopup(popup, "open");
+    setFocus("comment");
+  }, []);
+
+  const closeImagePopup = async () => {
+    const popup = popupRef.current!;
+
+    await handlePopup(popup, "close");
+    dispatch(setOpenPopupType("close"));
   };
 
   return (
-    <div data-visible={false} className={"popup popup--image"}>
+    <div ref={popupRef} data-visible="false" className={"popup popup--image"}>
       <div className="popup__container popup__container--image">
         <div className="popup--image__container">
-          <img src={post?.imgsrc} alt={post?.city} className="popup__image" />
+          <img
+            src={selectedPost?.imgsrc}
+            alt={selectedPost?.city}
+            className="popup__image"
+          />
           <div className="textarea">
-            <p className="popup__caption">{post?.city}</p>
+            <p className="popup__caption">{selectedPost?.city}</p>
             <ul className="comments">
               {commentsMutation.isLoading ? (
                 <LoadingComments />
               ) : (
-                <CommentsSection comments={comments} />
+                <CommentsSection comments={selectedPost?.comments} />
               )}
             </ul>
             <form
               onSubmit={handleSubmit((data: FormValues) =>
-                commentsMutation.mutate(data),
+                commentsMutation.mutate({ ...data, post: selectedPost }),
               )}
             >
               <input
@@ -100,7 +74,7 @@ const ImagePopup = () => {
           </div>
         </div>
         <button
-          onClick={closeImagePopupRoute}
+          onClick={closeImagePopup}
           type="button"
           className="popup__close popup__close--image"
         ></button>

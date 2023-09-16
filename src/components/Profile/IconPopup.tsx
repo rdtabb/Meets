@@ -1,20 +1,21 @@
+import { useEffect, useRef } from "react";
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
-import { z, ZodType } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { setOpenPopupType } from "../../features/modal/modalSlice";
+import { handlePopup } from "../../methods/methods";
+import { iconSchema } from "../../schemas/iconSchema";
 
 export type AvatarIconType = {
   url: string;
 };
 
 const IconPopup = () => {
-  const { handleClose, handleProfileIcon } = useGeneralContext();
-  const iconSchema: ZodType<AvatarIconType> = z.object({
-    url: z.string().trim().url({
-      message: "Invalid url",
-    }),
-  });
+  const dispatch = useDispatch();
+  const popupRef = useRef<HTMLDivElement>(null);
+  const { handleProfileIcon } = useGeneralContext();
 
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation({
@@ -28,13 +29,33 @@ const IconPopup = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    setFocus,
   } = useForm<AvatarIconType>({
     resolver: zodResolver(iconSchema),
     mode: "onChange",
   });
 
+  useEffect(() => {
+    const popup = popupRef.current;
+
+    popup && handlePopup(popup, "open");
+    setFocus("url");
+  }, []);
+
+  const closeIconPopup = async () => {
+    const popup = popupRef.current;
+
+    popup && (await handlePopup(popup, "close"));
+    dispatch(setOpenPopupType("close"));
+  };
+
   return (
-    <div data-visible="false" id="popup--icon" className="popup popup--icon">
+    <div
+      ref={popupRef}
+      data-visible="false"
+      id="popup--icon"
+      className="popup popup--icon"
+    >
       <div className="popup__container">
         <form
           onSubmit={handleSubmit((variables: AvatarIconType) => {
@@ -70,7 +91,7 @@ const IconPopup = () => {
           </button>
         </form>
         <button
-          onClick={handleClose}
+          onClick={closeIconPopup}
           type="button"
           className="popup__close"
         ></button>

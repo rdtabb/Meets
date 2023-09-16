@@ -1,18 +1,23 @@
-import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { setSelectedPost } from "../../features/modal/modalSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import {
+  setSelectedPost,
+  setOpenPopupType,
+} from "../../features/modal/modalSlice";
 import { handleLike, handleDelete } from "../../methods/methods";
 import { Post } from "../../types/Types";
-import React from "react";
+import { memo } from "react";
 
 type FeedProps = {
   posts: Post[];
 };
 
 const Feed = ({ posts }: FeedProps) => {
-  const { openImagePopup } = useGeneralContext();
   const queryClient = useQueryClient();
+  const selectedPost = useSelector(
+    (state: RootState) => state.modal.selectedPost,
+  );
   const dispatch = useDispatch();
 
   const likeMutation = useMutation({
@@ -30,8 +35,9 @@ const Feed = ({ posts }: FeedProps) => {
   });
 
   const handleImagePopup = (post: Post): void => {
-    dispatch(setSelectedPost(post));
-    openImagePopup(post.imgsrc, post.city, post.id, post.comments);
+    dispatch(setOpenPopupType("image"));
+
+    if (selectedPost?.id !== post.id) dispatch(setSelectedPost(post));
   };
 
   return (
@@ -41,7 +47,6 @@ const Feed = ({ posts }: FeedProps) => {
           <div className="card__imgwrapper">
             <img
               onClick={() => handleImagePopup(post)}
-              loading="lazy"
               src={post.imgsrc}
               alt={post.city}
               className="card__image"
@@ -76,4 +81,4 @@ const Feed = ({ posts }: FeedProps) => {
   );
 };
 
-export default React.memo(Feed);
+export default memo(Feed);

@@ -16,7 +16,7 @@ const Header = () => {
           <img
             className="header__liked-icon header__icon"
             src={LikeWhite}
-            alt=""
+            alt="Liked posts"
           />
         </Link>
         <Signout />

@@ -1,11 +1,14 @@
+import { useDispatch } from "react-redux";
+import { setOpenPopupType } from "../../features/modal/modalSlice";
+
 const Signout = () => {
-  const openConfirm = () => {
-    document.querySelector('.popup--confirm')?.classList.add('popup_opened')
-    document.querySelector('.popup--confirm')?.setAttribute('data-visible', 'true')
-  }  
+  const dispatch = useDispatch();
 
   return (
-    <button onClick={openConfirm} className="signout">
+    <button
+      onClick={() => dispatch(setOpenPopupType("add"))}
+      className="signout"
+    >
       Sign Out
     </button>
   );

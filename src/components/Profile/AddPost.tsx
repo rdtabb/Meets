@@ -1,13 +1,18 @@
 import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { HandleNewPostData } from "../../App";
+import { HandleNewPostData } from "../../App";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addPostSchema } from "../../schemas/addPostSchema";
+import { useDispatch } from "react-redux";
+import { setOpenPopupType } from "../../features/modal/modalSlice";
+import { useEffect, useRef } from "react";
+import { handlePopup } from "../../methods/methods";
 
 const AddPost = () => {
-  const { handleClose, handleNewPost } = useGeneralContext();
+  const { handleNewPost } = useGeneralContext();
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
   const { mutate, isLoading } = useMutation({
     mutationFn: (variables: HandleNewPostData) => handleNewPost(variables),
     onSuccess: () => {
@@ -15,17 +20,34 @@ const AddPost = () => {
     },
   });
 
+  const popupRef = useRef<HTMLDivElement>(null);
+
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors, isValid },
   } = useForm<HandleNewPostData>({
     resolver: zodResolver(addPostSchema),
     mode: "onChange",
   });
 
+  useEffect(() => {
+    const popup = popupRef.current;
+
+    popup && handlePopup(popup, "open");
+    setFocus("url");
+  }, []);
+
+  const closeAddPostPopup = async () => {
+    const popup = popupRef.current;
+
+    popup && (await handlePopup(popup, "close"));
+    dispatch(setOpenPopupType("close"));
+  };
+
   return (
-    <div data-visible="false" className="popup popup-add-post">
+    <div ref={popupRef} data-visible="false" className="popup popup-add-post">
       <div className="popup__container">
         <form
           onSubmit={handleSubmit((variables) => mutate(variables))}
@@ -76,7 +98,7 @@ const AddPost = () => {
           </button>
         </form>
         <button
-          onClick={handleClose}
+          onClick={closeAddPostPopup}
           type="button"
           className="popup__close"
         ></button>

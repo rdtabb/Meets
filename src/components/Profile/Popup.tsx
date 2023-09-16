@@ -1,27 +1,41 @@
+import { useRef, useEffect } from "react";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { EditProfilePopupData } from "../../types/Types";
+import { useDispatch } from "react-redux";
+import { EditProfilePopupData } from "../../types/Types";
 import { formSchema } from "../../schemas/formSchema";
+import { setOpenPopupType } from "../../features/modal/modalSlice";
+import { handlePopup } from "../../methods/methods";
 
 const Popup = () => {
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    setFocus,
+  } = useForm<EditProfilePopupData>({
+    resolver: zodResolver(formSchema),
+    mode: "onChange",
+  });
+
   const handleEditProfile = async (variables: EditProfilePopupData) => {
-    const uid: string = localStorage.getItem("uid")!;
+    const uid = localStorage.getItem("uid")!;
     const newstatusdb = {
       name: variables.username,
       newStatus: variables.status,
     };
     const userdoc = doc(db, "users", uid);
     await updateDoc(userdoc, newstatusdb);
-    const popup = document.querySelector(".popup");
-    popup?.classList.remove("popup_opened");
-    popup?.setAttribute("data-visible", "false");
+    await closeEditProfilePopup();
   };
 
-  const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation({
     mutationFn: (variables: EditProfilePopupData) =>
       handleEditProfile(variables),
@@ -30,24 +44,22 @@ const Popup = () => {
     },
   });
 
-  const handleClose = (e: any) => {
-    e.target.closest(".popup").setAttribute("data-visible", "false");
-    setTimeout(() => {
-      e.target.closest(".popup").classList.remove("popup_opened");
-    }, 200);
+  useEffect(() => {
+    const popup = popupRef.current;
+
+    popup && handlePopup(popup, "open");
+    setFocus("username");
+  }, []);
+
+  const closeEditProfilePopup = async () => {
+    const popup = popupRef.current;
+
+    popup && (await handlePopup(popup, "close"));
+    dispatch(setOpenPopupType("close"));
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<EditProfilePopupData>({
-    resolver: zodResolver(formSchema),
-    mode: "onChange",
-  });
-
   return (
-    <div data-visible="false" className="popup popup--edit">
+    <div ref={popupRef} data-visible="false" className="popup popup--edit">
       <div className="popup__container">
         <form
           onSubmit={handleSubmit((variables) => mutate(variables))}
@@ -102,7 +114,7 @@ const Popup = () => {
           </button>
         </form>
         <button
-          onClick={handleClose}
+          onClick={closeEditProfilePopup}
           type="button"
           className="popup__close"
         ></button>

@@ -1,6 +1,16 @@
 import { ReactElement } from "react";
 import { FieldValue } from "firebase/firestore";
 
+export type AddCommentMutationProps = {
+  comment: string;
+  post?: Post;
+};
+
+export type DeletePostMutationProps = {
+  id: number;
+  posts: Post[];
+};
+
 export type AddPostData = {
   url: string;
   place: string;

@@ -2,20 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Post } from "../../types/Types";
 
+type PopupType = "add" | "edit" | "icon" | "image" | "confirm" | "close";
+
 interface IInitialState {
-  isAddPostPopupOpen: boolean;
-  isIconPopupOpen: boolean;
-  isEditProfilePopupOpen: boolean;
-  isImagePopupOpen: boolean;
   selectedPost: Post | undefined;
+  openPopupType: PopupType;
 }
 
 const initialState: IInitialState = {
-  isAddPostPopupOpen: false,
-  isIconPopupOpen: false,
-  isEditProfilePopupOpen: false,
-  isImagePopupOpen: false,
   selectedPost: undefined,
+  openPopupType: "close",
 };
 
 const modalSlice = createSlice({
@@ -25,23 +21,12 @@ const modalSlice = createSlice({
     setSelectedPost(state, { payload }: PayloadAction<Post>) {
       state.selectedPost = payload;
     },
-    setAddPostPopup(state, { payload }: PayloadAction<boolean>) {
-      state.isAddPostPopupOpen = payload;
-    },
-    setIconPopup(state, { payload }: PayloadAction<boolean>) {
-      state.isIconPopupOpen = payload;
-    },
-    setEditProfile(state, { payload }: PayloadAction<boolean>) {
-      state.isEditProfilePopupOpen = payload;
+    setOpenPopupType(state, { payload }: PayloadAction<PopupType>) {
+      state.openPopupType = payload;
     },
   },
 });
 
-export const {
-  setSelectedPost,
-  setAddPostPopup,
-  setEditProfile,
-  setIconPopup,
-} = modalSlice.actions;
+export const { setSelectedPost, setOpenPopupType } = modalSlice.actions;
 
 export default modalSlice.reducer;

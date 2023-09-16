@@ -1,27 +1,16 @@
-import React from "react";
+import { memo } from "react";
 import useUserData from "../../hooks/useQueryHooks/useUserData";
 import AvatarImage from "./AvatarImage";
 import LoadingImage from "../LoadingStates/LoadingImage";
+import { useDispatch } from "react-redux";
+import { setOpenPopupType } from "../../features/modal/modalSlice";
 
 const Desc = () => {
   const userSet = useUserData();
+  const dispatch = useDispatch();
 
-  const handleAddPostButton = () => {
-    const addPost = document.querySelector(".popup-add-post");
-    addPost?.classList.add("popup_opened");
-    addPost?.setAttribute("data-visible", "true");
-  };
-
-  const handlePopup = () => {
-    const popup = document.querySelector(".popup");
-    const visibility = popup?.getAttribute("data-visible");
-    if (visibility == "false") {
-      popup?.classList.add("popup_opened");
-      popup?.setAttribute("data-visible", "true");
-    } else {
-      popup?.classList.remove("popup_opened");
-      popup?.setAttribute("data-visible", "false");
-    }
+  const handlePopup = (type: "edit" | "add") => {
+    dispatch(setOpenPopupType(type));
   };
 
   if (userSet.isError) console.log(userSet.error);
@@ -42,7 +31,7 @@ const Desc = () => {
               <h1 className="profile__header">{userSet.data?.name}</h1>
             )}
             <button
-              onClick={handlePopup}
+              onClick={() => handlePopup("edit")}
               type="button"
               className="profile__edit-button"
             ></button>
@@ -55,7 +44,7 @@ const Desc = () => {
         </div>
       </div>
       <button
-        onClick={handleAddPostButton}
+        onClick={() => handlePopup("add")}
         type="button"
         className="profile__add-button"
       ></button>
@@ -63,4 +52,4 @@ const Desc = () => {
   );
 };
 
-export default React.memo(Desc);
+export default memo(Desc);

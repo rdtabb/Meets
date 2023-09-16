@@ -9,8 +9,14 @@ import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import Posts from "./Posts";
 import Container from "../Container/Container";
 import SignoutConfirm from "../Signout/SignoutConfirm";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const Profile = () => {
+  const openPopupType = useSelector(
+    (state: RootState) => state.modal.openPopupType,
+  );
+
   return (
     <Container>
       <Header />
@@ -21,11 +27,11 @@ const Profile = () => {
         </ErrorBoundary>
       </main>
       <Footer />
-      <Popup />
-      <AddPost />
-      <ImagePopup />
-      <IconPopup />
-      <SignoutConfirm />
+      <>{openPopupType === "edit" && <Popup />}</>
+      <>{openPopupType === "add" && <AddPost />}</>
+      <>{openPopupType === "image" && <ImagePopup />}</>
+      <>{openPopupType === "icon" && <IconPopup />}</>
+      <>{openPopupType === "confirm" && <SignoutConfirm />}</>
     </Container>
   );
 };
