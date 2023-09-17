@@ -1,18 +1,18 @@
 import { memo } from "react";
 import { Post, LikePostMutation } from "../../types/Types";
-import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useModal from "../../hooks/useModal";
 
 type AfeedProps = {
   posts: Post[];
-  username: string | undefined;
+  username?: string;
 };
 
 const Afeed = ({ posts, username }: AfeedProps) => {
-  const { openImagePopup } = useGeneralContext();
   const queryClient = useQueryClient();
+  const { openImagePopup } = useModal();
 
   const handleLikeQuery = async (props: LikePostMutation) => {
     const uid = localStorage.getItem("uid")!;
@@ -47,9 +47,7 @@ const Afeed = ({ posts, username }: AfeedProps) => {
         <article key={post.id} className="card">
           <div className="card__imgwrapper">
             <img
-              onClick={() =>
-                openImagePopup(post.imgsrc, post.city, post.id, post.comments)
-              }
+              onClick={() => openImagePopup(post)}
               src={post.imgsrc}
               alt={post.city}
               className="card__image"

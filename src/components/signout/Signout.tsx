@@ -6,7 +6,7 @@ const Signout = () => {
 
   return (
     <button
-      onClick={() => dispatch(setOpenPopupType("add"))}
+      onClick={() => dispatch(setOpenPopupType("confirm"))}
       className="signout"
     >
       Sign Out

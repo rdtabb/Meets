@@ -725,6 +725,7 @@ body {
     z-index: 1000;
     width: min(430px, 100% - 38px);
     padding: clamp(1rem, 5vw, 3rem);
+    cursor: auto;
   }
 
   &--image__container {
@@ -824,6 +825,7 @@ body {
     transition: all var(--transition-time-primary)
       var(--timing-function-primary);
     overflow-y: scroll;
+    cursor: pointer;
   }
 
   &__header {

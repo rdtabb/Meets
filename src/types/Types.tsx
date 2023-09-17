@@ -11,6 +11,10 @@ export type DeletePostMutationProps = {
   posts: Post[];
 };
 
+export type EditIconMutationProps = {
+  url: string;
+};
+
 export type AddPostData = {
   url: string;
   place: string;

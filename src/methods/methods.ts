@@ -5,6 +5,9 @@ import {
   Comment,
   AddCommentMutationProps,
   DeletePostMutationProps,
+  EditProfilePopupData,
+  AddPostData,
+  EditIconMutationProps,
 } from "../types/Types";
 import format from "date-fns/format";
 
@@ -29,6 +32,28 @@ export const handleUserDataset = async () => {
   return dataSnap.data();
 };
 
+export const handleNewPost = async (variables: AddPostData) => {
+  const userdoc = doc(db, "users", uid);
+  const dataSnap = await getDoc(userdoc);
+  const dataset = dataSnap.data();
+  const nposts = await dataset?.newPosts;
+
+  const id = nposts.length ? nposts[0].id + 1 : 1;
+  const newPost = {
+    city: variables.place,
+    id,
+    imgsrc: variables.url,
+    liked: false,
+    comments: [],
+  };
+  const newPosts = [newPost, ...nposts];
+
+  const newpostsdb = {
+    newPosts: newPosts,
+  };
+  await updateDoc(userdoc, newpostsdb);
+};
+
 export const handleDelete = async (
   variables: DeletePostMutationProps,
 ): Promise<void> => {
@@ -38,6 +63,15 @@ export const handleDelete = async (
   };
   const userdoc = doc(db, "users", uid);
   await updateDoc(userdoc, newpostsdb);
+};
+
+export const handleProfileIcon = async (variables: EditIconMutationProps) => {
+  const uid = localStorage.getItem("uid")!;
+  const userdoc = doc(db, "users", uid);
+  const updatedImage = {
+    imgurl: variables.url,
+  };
+  await updateDoc(userdoc, updatedImage);
 };
 
 export const handleAddComment = async ({
@@ -73,6 +107,16 @@ export const handleAddComment = async ({
     newPosts: updatedPosts,
   };
   await updateDoc(userdoc, newpostsdb);
+};
+
+export const handleEditProfile = async (variables: EditProfilePopupData) => {
+  const uid = localStorage.getItem("uid")!;
+  const newstatusdb = {
+    name: variables.username,
+    newStatus: variables.status,
+  };
+  const userdoc = doc(db, "users", uid);
+  await updateDoc(userdoc, newstatusdb);
 };
 
 export const handlePopup = (
