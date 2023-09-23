@@ -82,6 +82,7 @@ export const handleAddComment = async ({
   post,
   id: userid,
 }: AddCommentMutationProps): Promise<void> => {
+  if (typeof userid === "undefined") throw new Error("You cannot provide uid of type undefined")
   const userdoc = doc(db, "users", userid);
   const dataSnap = await getDoc(userdoc);
   const dataset = dataSnap.data();

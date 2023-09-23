@@ -6,7 +6,7 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { handleAddComment, fetchComments } from "../../methods/methods";
-import { AddCommentMutationProps } from "../../types/Types";
+import { AddCommentMutationProps, Comment } from "../../types/Types";
 
 type UseCommentType = "query" | "mutation";
 

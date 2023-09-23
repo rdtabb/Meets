@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import Signout from "../Signout/Signout";
+import MeetsLogoIcon from '../../assets/meets-logo.svg'
+import SearchIcon from '../../assets/icons8-search.svg'
+import ProfileIcon from '../../../public/profile-icon.svg'
 
 const LikedHeader = () => {
   return (
     <header className="header header-profile">
       <img
-        src="src/assets/meets-logo.svg"
+        src={MeetsLogoIcon}
         alt="Meets-logo"
         className="header__logo"
       ></img>
@@ -13,15 +16,15 @@ const LikedHeader = () => {
         <Link className="header__search" to="/usersearch">
           <img
             className="header__search-icon header__icon"
-            src="src/assets/icons8-search.svg"
+            src={SearchIcon}
             alt="search-icon"
           />
         </Link>
         <Link to="/">
           <img
             className="header__icon"
-            src="../../../public/profile-icon.svg"
-            alt=""
+            src={ProfileIcon}
+            alt="ProfileIcoon"
           />
         </Link>
         <Signout />

@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useDispatch } from "react-redux";
 import { setOpenPopupType } from "../../features/modal/modalSlice";
+import EditPopupIcon from '../../assets/editPopupIcon.svg'
 
 type AvatarImageProps = {
   userPicture: string;
@@ -20,7 +21,7 @@ const AvatarImage = ({ userPicture }: AvatarImageProps) => {
       />
       <img
         className="avatar-wrapper__icon"
-        src="src/assets/editPopupIcon.svg"
+        src={EditPopupIcon}
         alt="edit profile icon"
       />
     </div>
