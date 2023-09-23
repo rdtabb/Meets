@@ -8,8 +8,6 @@ import Usersearch from "./components/Userlist/Usersearch";
 import Auser from "./components/AnotherUser/Auser";
 import LikedPosts from "./components/LikedPosts/LikedPosts";
 import Chat from "./components/Chat/Chat";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
 
 export const cookies = new Cookies();
 
@@ -31,15 +29,13 @@ const App = () => {
 
   return (
     <ErrorBoundary>
-      <Provider store={store}>
-        <Routes>
-          <Route path="/" element={<Profile />} />
-          <Route path="/usersearch" element={<Usersearch />} />
-          <Route path="/user/:id" element={<Auser />} />
-          <Route path="/likedposts" element={<LikedPosts />} />
-          <Route path="/chat" element={<Chat />} />
-        </Routes>
-      </Provider>
+      <Routes>
+        <Route path="/" element={<Profile />} />
+        <Route path="/usersearch" element={<Usersearch />} />
+        <Route path="/user/:id" element={<Auser />} />
+        <Route path="/likedposts" element={<LikedPosts />} />
+        <Route path="/chat" element={<Chat />} />
+      </Routes>
     </ErrorBoundary>
   );
 };

@@ -7,10 +7,15 @@ import Container from "../Container/Container";
 import useAuserData from "../../hooks/useQueryHooks/useAuserData";
 import LoadingImage from "../LoadingStates/LoadingImage";
 import Loading from "../LoadingStates/LoadingPosts";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const Auser = () => {
   const { id } = useParams();
   const auserData = useAuserData(id!);
+  const openPopupType = useSelector(
+    (state: RootState) => state.modal.openPopupType,
+  );
 
   return (
     <Container>
@@ -50,7 +55,7 @@ const Auser = () => {
         <Aposts posts={auserData.data?.newPosts} name={auserData.data?.name} />
       )}
       <Footer />
-      <Auserpopup id={id} />
+      <>{openPopupType === "image" && <Auserpopup id={id} />}</>
     </Container>
   );
 };

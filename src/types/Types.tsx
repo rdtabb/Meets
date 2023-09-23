@@ -4,6 +4,7 @@ import { FieldValue } from "firebase/firestore";
 export type AddCommentMutationProps = {
   comment: string;
   post?: Post;
+  id?: string;
 };
 
 export type DeletePostMutationProps = {

@@ -11,6 +11,7 @@ import {
   DocumentReference,
   DocumentData,
 } from "firebase/firestore";
+import MeetsLogoIcon from "../assets/meets-logo.svg";
 import useGeneralContext from "../hooks/useContextHooks/useGeneralContext";
 
 export const Auth = () => {
@@ -59,11 +60,7 @@ export const Auth = () => {
   return (
     <main className="auth">
       <div className="img-container">
-        <img
-          className="auth__logo"
-          src="src/assets/meets-logo.svg"
-          alt="meets-logo"
-        />
+        <img className="auth__logo" src={MeetsLogoIcon} alt="meets-logo" />
       </div>
       <h1 className="auth__header">Sign in with Google</h1>
       <button onClick={signin} className="auth__signin">

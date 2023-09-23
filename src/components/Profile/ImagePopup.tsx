@@ -1,13 +1,12 @@
 import { useEffect, useRef } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { handleAddComment } from "../../methods/methods";
 
 import Modal from "../Modal/Modal";
 import LoadingComments from "../LoadingStates/LoadingComments";
-import { Comment, AddCommentMutationProps } from "../../types/Types";
+import CommentsSection from "../Modal/components/Comments";
 import { RootState } from "../../store/store";
+import useComments from "../../hooks/useQueryHooks/useComments";
 
 type FormValues = {
   comment: string;
@@ -15,16 +14,16 @@ type FormValues = {
 
 const ImagePopup = () => {
   const popupRef = useRef<HTMLDivElement>(null)!;
+  const uid = localStorage.getItem("uid")!;
   const selectedPost = useSelector(
     (state: RootState) => state.modal.selectedPost,
   );
-  const { register, handleSubmit, setFocus } = useForm<FormValues>({
+  const { register, handleSubmit, setFocus, reset } = useForm<FormValues>({
     mode: "onChange",
   });
 
-  const commentsMutation = useMutation({
-    mutationFn: (data: AddCommentMutationProps) => handleAddComment(data),
-  });
+  const commentsMutation = useComments("mutation");
+  const commentsQuery = useComments("query", uid, selectedPost?.id);
 
   useEffect(() => {
     setFocus("comment");
@@ -45,16 +44,21 @@ const ImagePopup = () => {
         <div className="textarea">
           <p className="popup__caption">{selectedPost?.city}</p>
           <ul className="comments">
-            {commentsMutation.isLoading ? (
+            {commentsQuery?.isLoading ? (
               <LoadingComments />
             ) : (
-              <CommentsSection comments={selectedPost?.comments} />
+              <CommentsSection comments={commentsQuery?.data} />
             )}
           </ul>
           <form
-            onSubmit={handleSubmit((data: FormValues) =>
-              commentsMutation.mutate({ ...data, post: selectedPost }),
-            )}
+            onSubmit={handleSubmit((data: FormValues) => {
+              reset();
+              return commentsMutation.mutate({
+                ...data,
+                post: selectedPost,
+                id: uid,
+              });
+            })}
           >
             <input
               {...register("comment")}
@@ -66,29 +70,6 @@ const ImagePopup = () => {
         </div>
       </div>
     </Modal>
-  );
-};
-
-type CommentsSectionProps = {
-  comments: Comment[] | undefined;
-};
-
-const CommentsSection = ({ comments }: CommentsSectionProps) => {
-  return (
-    <>
-      {comments?.map((comment) => (
-        <li key={comment.id} className="comment">
-          <img className="comment__icon" src={comment.img} alt="" />
-          <article>
-            <div className="comment__info">
-              <p className="comment__creator">{comment.creator}</p>
-              <p className="comment__date">{comment.createdAt}</p>
-            </div>
-            <p className="comment__message">{comment.message}</p>
-          </article>
-        </li>
-      ))}
-    </>
   );
 };
 

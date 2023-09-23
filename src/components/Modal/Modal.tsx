@@ -49,27 +49,23 @@ const Modal = forwardRef(
       };
     }, []);
 
-    return (
-      <>
-        {createPortal(
-          <div
-            ref={popupRef}
-            data-visible="false"
-            onClick={closePopupOnOverlay}
-            className={`popup ${modalModifier}`}
-          >
-            <div className={`popup__container ${containerModifier}`}>
-              {children}
-              <button
-                onClick={closePopup}
-                type="button"
-                className="popup__close"
-              ></button>
-            </div>
-          </div>,
-          document.getElementById("root")!,
-        )}
-      </>
+    return createPortal(
+      <div
+        ref={popupRef}
+        data-visible="false"
+        onClick={closePopupOnOverlay}
+        className={`popup ${modalModifier}`}
+      >
+        <div className={`popup__container ${containerModifier}`}>
+          {children}
+          <button
+            onClick={closePopup}
+            type="button"
+            className="popup__close"
+          ></button>
+        </div>
+      </div>,
+      document.getElementById("root")!,
     );
   },
 );

@@ -1,57 +1,71 @@
-import { useState } from "react";
-import useGeneralContext from "../../hooks/useContextHooks/useGeneralContext";
+import { useRef, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import Modal from "../Modal/Modal";
+
+import useComments from "../../hooks/useQueryHooks/useComments";
+import CommentsSection from "../Modal/components/Comments";
+import LoadingComments from "../LoadingStates/LoadingComments";
 
 type PropsType = {
   id: string | undefined;
 };
 
 const Auserpopup = ({ id }: PropsType) => {
-  const { handleClose, handleComment, comments } = useGeneralContext();
-  const [currAMessage, setCurrAMessage] = useState<string>("");
+  const post = useSelector((state: RootState) => state.modal.selectedPost);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  const commentsMutation = useComments("mutation");
+  const commentsQuery = useComments("query", id, post?.id);
+
+  const { register, handleSubmit, setFocus, reset } = useForm<{
+    comment: string;
+  }>({
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    setFocus("comment");
+  }, []);
 
   return (
-    <div data-visible="false" className="popup popup--image">
-      <div className="popup__container popup__container--image">
-        <div className="popup--image__container">
-          <img src="" alt="" className="popup__image" />
-          <div className="textarea">
-            <p className="popup__caption"></p>
-            <ul className="comments">
-              {comments.map((comment) => (
-                <li key={comment.id} className="comment">
-                  <img className="comment__icon" src={comment.img} alt="" />
-                  <article>
-                    <div className="comment__info">
-                      <p className="comment__creator">{comment.creator}</p>
-                      <p className="comment__date">{comment.createdAt}</p>
-                    </div>
-                    <p className="comment__message">{comment.message}</p>
-                  </article>
-                </li>
-              ))}
-            </ul>
-            <form
-              onSubmit={(e) =>
-                handleComment(e, currAMessage, id, setCurrAMessage)
-              }
-            >
-              <input
-                value={currAMessage}
-                onChange={(e) => setCurrAMessage(e.target.value)}
-                placeholder="Leave your comment..."
-                type="text"
-                className="popup__comment"
-              />
-            </form>
-          </div>
+    <Modal
+      ref={popupRef}
+      modalModifier="popup--image"
+      containerModifier="popup__container--image"
+    >
+      <div className="popup--image__container">
+        <img src={post?.imgsrc} alt={post?.city} className="popup__image" />
+        <div className="textarea">
+          <p className="popup__caption"></p>
+          <ul className="comments">
+            {commentsQuery?.isLoading ? (
+              <LoadingComments />
+            ) : (
+              <CommentsSection comments={commentsQuery?.data} />
+            )}
+          </ul>
+          <form
+            onSubmit={handleSubmit((data) => {
+              reset();
+              return commentsMutation.mutate({
+                comment: data.comment,
+                post,
+                id,
+              });
+            })}
+          >
+            <input
+              placeholder="Leave your comment..."
+              type="text"
+              className="popup__comment"
+              {...register("comment")}
+            />
+          </form>
         </div>
-        <button
-          onClick={handleClose}
-          type="button"
-          className="popup__close popup__close--image"
-        ></button>
       </div>
-    </div>
+    </Modal>
   );
 };
 

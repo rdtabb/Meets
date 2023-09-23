@@ -11,6 +11,9 @@ import {
 } from "../types/Types";
 import format from "date-fns/format";
 
+/**
+ * ID of the current user
+ * */
 const uid = localStorage.getItem("uid")!;
 
 export const handleLike = async (
@@ -77,8 +80,9 @@ export const handleProfileIcon = async (variables: EditIconMutationProps) => {
 export const handleAddComment = async ({
   comment: message,
   post,
+  id: userid,
 }: AddCommentMutationProps): Promise<void> => {
-  const userdoc = doc(db, "users", uid);
+  const userdoc = doc(db, "users", userid);
   const dataSnap = await getDoc(userdoc);
   const dataset = dataSnap.data();
   const posts: Post[] = dataset?.newPosts;
@@ -99,14 +103,31 @@ export const handleAddComment = async ({
     img,
   };
   const newComments = [...comments, newcomment];
-
-  const updatedPosts = posts.map((post) =>
-    post.id == post.id ? { ...post, comments: newComments } : post,
+  const updatedPosts = posts.map((npost) =>
+    npost.id == post?.id ? { ...npost, comments: newComments } : npost,
   );
   const newpostsdb = {
     newPosts: updatedPosts,
   };
   await updateDoc(userdoc, newpostsdb);
+};
+
+export const fetchComments = async ({
+  uid,
+  post_id,
+}: {
+  uid: string | undefined;
+  post_id: number | undefined;
+}) => {
+  if (!uid || !post_id)
+    throw new Error("Provide correct uid and post_id to fetch comments");
+  const userdoc = doc(db, "users", uid);
+  const dataSnap = await getDoc(userdoc);
+  const dataset = dataSnap.data();
+
+  const posts: Post[] = dataset?.newPosts;
+  const post = posts.find((post) => post.id === post_id);
+  return post?.comments;
 };
 
 export const handleEditProfile = async (variables: EditProfilePopupData) => {

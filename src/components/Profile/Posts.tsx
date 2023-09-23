@@ -7,7 +7,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useQuery } from "@tanstack/react-query";
 
-
 const Posts = () => {
   const uid = localStorage.getItem("uid")!;
 

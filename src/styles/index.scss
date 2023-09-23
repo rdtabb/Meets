@@ -934,8 +934,10 @@ body {
   gap: 1rem;
 
   &--empty {
-    min-height: 1rem;
+    min-height: 4rem;
     background-color: white;
+    border-radius: 1rem;
+    animation: opacious infinite 3s ease-in;
   }
 
   &__icon {
