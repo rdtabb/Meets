@@ -32,7 +32,7 @@ const IconPopup = () => {
   });
 
   useEffect(() => {
-    setFocus("url");
+    if (window.innerWidth > 690) setFocus("url");
   }, []);
 
   return (

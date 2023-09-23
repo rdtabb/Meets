@@ -26,7 +26,7 @@ const Auserpopup = ({ id }: PropsType) => {
   });
 
   useEffect(() => {
-    setFocus("comment");
+    if (window.innerWidth > 690) setFocus("comment");
   }, []);
 
   return (

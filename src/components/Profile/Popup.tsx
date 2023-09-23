@@ -32,7 +32,7 @@ const Popup = () => {
   });
 
   useEffect(() => {
-    setFocus("username");
+    if (window.innerWidth > 690) setFocus("username");
   }, []);
 
   return (

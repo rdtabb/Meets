@@ -26,7 +26,7 @@ const ImagePopup = () => {
   const commentsQuery = useComments("query", uid, selectedPost?.id);
 
   useEffect(() => {
-    setFocus("comment");
+    if (window.innerWidth > 690) setFocus("comment");
   }, []);
 
   return (
