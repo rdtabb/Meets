@@ -52,7 +52,11 @@ const Auser = () => {
       {auserData.isLoading ? (
         <Loading />
       ) : (
-        <Aposts posts={auserData.data?.newPosts} name={auserData.data?.name} />
+        <Aposts
+          uid={id}
+          posts={auserData.data?.newPosts}
+          name={auserData.data?.name}
+        />
       )}
       <Footer />
       <>{openPopupType === "image" && <Auserpopup id={id} />}</>

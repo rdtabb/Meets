@@ -1,10 +1,10 @@
 import { memo } from "react";
 import { useDispatch } from "react-redux";
 import { setOpenPopupType } from "../../features/modal/modalSlice";
-import EditPopupIcon from '../../assets/editPopupIcon.svg'
+import EditPopupIcon from "../../assets/editPopupIcon.svg";
 
 type AvatarImageProps = {
-  userPicture: string;
+  userPicture?: string;
 };
 
 const AvatarImage = ({ userPicture }: AvatarImageProps) => {

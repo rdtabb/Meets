@@ -1,6 +1,7 @@
 import { db, auth } from "../firebase-config";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { doc, updateDoc, getDoc, DocumentData } from "firebase/firestore";
 import {
+  User,
   Post,
   Comment,
   AddCommentMutationProps,
@@ -8,6 +9,7 @@ import {
   EditProfilePopupData,
   AddPostData,
   EditIconMutationProps,
+  HandleLikeMutationParams,
 } from "../types/Types";
 import format from "date-fns/format";
 
@@ -17,25 +19,48 @@ import format from "date-fns/format";
 const uid = localStorage.getItem("uid")!;
 
 export const handleLike = async (
-  variables: DeletePostMutationProps,
+  variables: HandleLikeMutationParams,
 ): Promise<void> => {
+  console.log(variables);
+  if (!variables.user_id)
+    throw new Error("Provide correct user_id for like mutation");
+  const newLikes = [...variables.target_post.likes, variables.like];
   const newPosts: Post[] = variables.posts.map((post) =>
-    post.id == variables.id ? { ...post, liked: !post.liked } : post,
+    post.id === variables.post_id ? { ...post, likes: newLikes } : post,
   );
   const newpostsdb = {
-    newPosts: newPosts,
+    newPosts,
   };
-  const userdoc = doc(db, "users", `${uid}`);
+  const userdoc = doc(db, "users", variables.user_id);
   await updateDoc(userdoc, newpostsdb);
 };
 
-export const handleUserDataset = async () => {
-  const userdoc = doc(db, "users", uid);
-  const dataSnap = await getDoc(userdoc);
-  return dataSnap.data();
+export const handleUnlike = async (
+  variables: HandleLikeMutationParams,
+): Promise<void> => {
+  if (!variables.user_id)
+    throw new Error("Provide correct user_id for unlike mutation");
+  const newLikes = variables.target_post.likes.filter((like) => {
+    like.user_id === variables.like.user_id;
+  });
+  const newPosts: Post[] = variables.posts.map((post) =>
+    post.id === variables.post_id ? { ...post, likes: newLikes } : post,
+  );
+  const newpostsdb = {
+    newPosts,
+  };
+  const userdoc = doc(db, "users", variables.user_id);
+  await updateDoc(userdoc, newpostsdb);
 };
 
-export const handleNewPost = async (variables: AddPostData) => {
+export const handleUserDataset = async (): Promise<User> => {
+  const userdoc = doc(db, "users", uid);
+  const dataSnap = await getDoc(userdoc);
+  const user: DocumentData | undefined = dataSnap.data();
+  return user as User;
+};
+
+export const handleNewPost = async (variables: AddPostData): Promise<void> => {
   const userdoc = doc(db, "users", uid);
   const dataSnap = await getDoc(userdoc);
   const dataset = dataSnap.data();
@@ -48,6 +73,7 @@ export const handleNewPost = async (variables: AddPostData) => {
     imgsrc: variables.url,
     liked: false,
     comments: [],
+    likes: [],
   };
   const newPosts = [newPost, ...nposts];
 
@@ -68,7 +94,9 @@ export const handleDelete = async (
   await updateDoc(userdoc, newpostsdb);
 };
 
-export const handleProfileIcon = async (variables: EditIconMutationProps) => {
+export const handleProfileIcon = async (
+  variables: EditIconMutationProps,
+): Promise<void> => {
   const uid = localStorage.getItem("uid")!;
   const userdoc = doc(db, "users", uid);
   const updatedImage = {
@@ -82,7 +110,8 @@ export const handleAddComment = async ({
   post,
   id: userid,
 }: AddCommentMutationProps): Promise<void> => {
-  if (typeof userid === "undefined") throw new Error("You cannot provide uid of type undefined")
+  if (typeof userid === "undefined")
+    throw new Error("You cannot provide uid of type undefined");
   const userdoc = doc(db, "users", userid);
   const dataSnap = await getDoc(userdoc);
   const dataset = dataSnap.data();
@@ -119,7 +148,7 @@ export const fetchComments = async ({
 }: {
   uid: string | undefined;
   post_id: number | undefined;
-}) => {
+}): Promise<Comment[] | undefined> => {
   if (!uid || !post_id)
     throw new Error("Provide correct uid and post_id to fetch comments");
   const userdoc = doc(db, "users", uid);
@@ -131,7 +160,9 @@ export const fetchComments = async ({
   return post?.comments;
 };
 
-export const handleEditProfile = async (variables: EditProfilePopupData) => {
+export const handleEditProfile = async (
+  variables: EditProfilePopupData,
+): Promise<void> => {
   const uid = localStorage.getItem("uid")!;
   const newstatusdb = {
     name: variables.username,

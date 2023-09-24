@@ -2,9 +2,9 @@ import { memo } from "react";
 import LoadingImage from "../LoadingStates/LoadingImage";
 
 type DescProps = {
-  username: string;
-  status: string;
-  userPicture: string;
+  username?: string;
+  status?: string;
+  userPicture?: string;
   loading: boolean;
 };
 
@@ -24,9 +24,9 @@ const LikedDesc = ({ userPicture, username, status, loading }: DescProps) => {
         <div className="profile__info">
           <div className="profile__info-wrapper">
             {loading ? (
-                <h1 className="profile__header">Loading...</h1>
+              <h1 className="profile__header">Loading...</h1>
             ) : (
-                <h1 className="profile__header">{username}</h1>
+              <h1 className="profile__header">{username}</h1>
             )}
           </div>
           {loading ? (

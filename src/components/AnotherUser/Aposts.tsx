@@ -2,16 +2,17 @@ import Afeed from "./Afeed";
 import NoPosts from "./NoPosts";
 import type { Post } from "../../types/Types";
 
-type apostsprops = {
+type APostsProps = {
   posts: Post[];
-  name: string | undefined;
+  name?: string;
+  uid?: string;
 };
 
-const Aposts = ({ posts, name }: apostsprops) => {
+const Aposts = ({ posts, name, uid }: APostsProps) => {
   return (
     <>
       {posts.length ? (
-        <Afeed posts={posts} username={name} />
+        <Afeed uid={uid} posts={posts} username={name} />
       ) : (
         <NoPosts name={name} />
       )}

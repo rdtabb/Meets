@@ -622,6 +622,17 @@ body {
     overflow: hidden;
     white-space: nowrap;
   }
+
+  &__like-count {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    gap: 1px;
+  }
+
+  &__count {
+    font-size: 0.9rem;
+  }
 }
 
 @keyframes opacious {
@@ -937,6 +948,7 @@ body {
     min-height: 4rem;
     background-color: white;
     border-radius: 1rem;
+    opacity: 0.3;
     animation: opacious infinite 3s ease-in;
   }
 

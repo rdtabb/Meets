@@ -5,15 +5,16 @@ import {
   setSelectedPost,
   setOpenPopupType,
 } from "../../features/modal/modalSlice";
-import { handleLike, handleDelete } from "../../methods/methods";
+import { handleLike, handleDelete, handleUnlike } from "../../methods/methods";
 import { Post } from "../../types/Types";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
 type FeedProps = {
   posts: Post[];
 };
 
 const Feed = ({ posts }: FeedProps) => {
+  const uid: string = localStorage.getItem("uid")!;
   const queryClient = useQueryClient();
   const selectedPost = useSelector(
     (state: RootState) => state.modal.selectedPost,
@@ -22,6 +23,13 @@ const Feed = ({ posts }: FeedProps) => {
 
   const likeMutation = useMutation({
     mutationFn: handleLike,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["postsdata"]);
+    },
+  });
+
+  const unlikeMutation = useMutation({
+    mutationFn: handleUnlike,
     onSuccess: () => {
       queryClient.invalidateQueries(["postsdata"]);
     },
@@ -40,6 +48,14 @@ const Feed = ({ posts }: FeedProps) => {
     if (selectedPost?.id !== post.id) dispatch(setSelectedPost(post));
   };
 
+  const isLiked = useCallback(
+    (post: Post) => {
+      if (!post.likes.length) return false;
+      return post.likes.some((like) => like.user_id === uid);
+    },
+    [likeMutation, unlikeMutation],
+  );
+
   return (
     <section className="cards">
       {posts.map((post: Post) => (
@@ -55,18 +71,40 @@ const Feed = ({ posts }: FeedProps) => {
 
           <div className="card__action">
             <h2 className="card__description">{post.city}</h2>
-            <button
-              onClick={() =>
-                likeMutation.mutate({
-                  id: post.id,
-                  posts: posts,
-                })
-              }
-              type="button"
-              className={post.liked ? "card__like--active" : "card__like"}
-            ></button>
+            <div className="card__like-count">
+              <button
+                name="likePostButton"
+                type="button"
+                className={isLiked(post) ? "card__like--active" : "card__like"}
+                onClick={
+                  isLiked(post)
+                    ? () =>
+                        unlikeMutation.mutate({
+                          post_id: post.id,
+                          user_id: uid,
+                          target_post: post,
+                          posts,
+                          like: {
+                            user_id: uid,
+                          },
+                        })
+                    : () =>
+                        likeMutation.mutate({
+                          post_id: post.id,
+                          user_id: uid,
+                          target_post: post,
+                          posts,
+                          like: {
+                            user_id: uid,
+                          },
+                        })
+                }
+              ></button>
+              <p className="card__count">{post.likes.length}</p>
+            </div>
           </div>
           <button
+            name="deletePostButton"
             onClick={() =>
               deleteMutation.mutate({
                 id: post.id,

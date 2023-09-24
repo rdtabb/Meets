@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { auth, db } from "../../../firebase-config";
 import { useLocation } from "react-router-dom";
-import { FieldValue, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  FieldValue,
+  addDoc,
+  collection,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IHandleSubmitMessageParams } from "../../../types/Types";
 import { format } from "date-fns";
 
 type SubmitMessageProps = {
-  username: string;
+  username?: string;
 };
 
 const SubmitMessage = ({ username }: SubmitMessageProps) => {

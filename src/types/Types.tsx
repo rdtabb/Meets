@@ -1,6 +1,20 @@
 import { ReactElement } from "react";
 import { FieldValue } from "firebase/firestore";
 
+// --------------------------------------
+// Mutation handlers params
+// --------------------------------------
+
+export type HandleLikeMutationParams = {
+  post_id: number;
+  user_id?: string;
+  target_post: Post;
+  posts: Post[];
+  like: Like;
+};
+
+// --------------------------------------
+
 export type AddCommentMutationProps = {
   comment: string;
   post?: Post;
@@ -30,37 +44,14 @@ export type EditProfilePopupData = {
   status: string;
 };
 
-export type LikedPost = {
-  city: string;
-  creator: string;
-  id: number;
-  imgsrc: string;
-};
-
 export interface IHandleSubmitMessageParams {
   e: React.FormEvent<HTMLFormElement>;
-  creator: string;
+  creator?: string;
   image: string | null | undefined;
   message: string;
   timestamp: FieldValue;
   userpair: string;
 }
-
-export type Comment = {
-  creator: string;
-  message: string;
-  createdAt: string;
-  id: number;
-  img: string;
-};
-
-export type Post = {
-  city: string;
-  id: number;
-  imgsrc: string;
-  liked: boolean;
-  comments: Comment[];
-};
 
 export type CommentsQuery = {
   cuid: string;
@@ -86,4 +77,45 @@ export type SnapType = {
   timestamp: object;
   userpair: string;
   id: string;
+};
+
+/**
+ * Fundamental types
+ */
+
+export type Comment = {
+  creator: string;
+  message: string;
+  createdAt: string;
+  id: number;
+  img: string;
+};
+
+export type Post = {
+  city: string;
+  id: number;
+  imgsrc: string;
+  liked: boolean;
+  comments: Comment[];
+  likes: Like[];
+};
+
+export type LikedPost = {
+  city: string;
+  creator: string;
+  id: number;
+  imgsrc: string;
+};
+
+export type Like = {
+  user_id?: string;
+};
+
+export type User = {
+  id: string;
+  imgurl: string;
+  liked: LikedPost[];
+  name: string;
+  newPosts: Post[];
+  newStatus: string;
 };

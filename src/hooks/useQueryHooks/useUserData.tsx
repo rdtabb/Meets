@@ -1,13 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase-config";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { handleUserDataset } from "../../methods/methods";
+import { User } from "../../types/Types";
 
-const useUserData = () => {
-  return useQuery({
+const useUserData = (): UseQueryResult<User, unknown> => {
+  return useQuery<User>({
     queryFn: handleUserDataset,
     queryKey: ["userdataset"],
   });
 };
+
+export type UseUserData = ReturnType<typeof useUserData>;
 
 export default useUserData;
