@@ -9,13 +9,15 @@ import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import Posts from "./Posts";
 import Container from "../Container/Container";
 import SignoutConfirm from "../Signout/SignoutConfirm";
+
+import { useMemo, memo } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { selectOpenPopupType } from "../../features/modal/modalSlice";
 
 const Profile = () => {
-  const openPopupType = useSelector(
-    (state: RootState) => state.modal.openPopupType,
-  );
+  const memoizedOpenPopupType = useMemo(selectOpenPopupType, []);
+
+  const openPopupType = useSelector(memoizedOpenPopupType);
 
   return (
     <Container>
@@ -36,4 +38,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default memo(Profile);

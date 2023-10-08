@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { RootState } from "../../store/store";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { Post } from "../../types/Types";
 
@@ -28,5 +29,10 @@ const modalSlice = createSlice({
 });
 
 export const { setSelectedPost, setOpenPopupType } = modalSlice.actions;
+
+const stateModalSelector = (state: RootState) => state.modal;
+
+export const selectOpenPopupType = () =>
+  createSelector([stateModalSelector], (state) => state.openPopupType);
 
 export default modalSlice.reducer;

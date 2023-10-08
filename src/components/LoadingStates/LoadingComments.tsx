@@ -1,7 +1,6 @@
 const LoadingComments = () => {
   return (
     <li className="comment comment--empty">
-      <img className="comment__icon" alt="" />
       <article>
         <div className="comment__info">
           <p className="comment__creator"></p>

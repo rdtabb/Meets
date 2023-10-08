@@ -13,6 +13,11 @@ export type HandleLikeMutationParams = {
   like: Like;
 };
 
+export type HandleNewPostParams = {
+  url: string;
+  place: string;
+};
+
 // --------------------------------------
 
 export type AddCommentMutationProps = {

@@ -3,6 +3,7 @@ import Signout from "../Signout/Signout";
 import MeetsLogoIcon from "../../assets/meets-logo.svg";
 import LikeWhite from "../../assets/likew.svg";
 import SearchIcon from "../../assets/icons8-search.svg";
+import { memo } from "react";
 
 const Header = () => {
   return (
@@ -25,4 +26,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

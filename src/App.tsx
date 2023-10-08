@@ -11,11 +11,6 @@ import Chat from "./components/Chat/Chat";
 
 export const cookies = new Cookies();
 
-export type HandleNewPostData = {
-  url: string;
-  place: string;
-};
-
 const App = () => {
   const { isAuth } = useGeneralContext();
 

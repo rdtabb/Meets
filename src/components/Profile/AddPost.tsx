@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { HandleNewPostData } from "../../App";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addPostSchema } from "../../schemas/addPostSchema";
 import { useEffect, useRef } from "react";
 import { handleNewPost } from "../../methods/methods";
 import useModal, { UseModal } from "../../hooks/useModal";
 import Modal from "../Modal/Modal";
+import { HandleNewPostParams } from "../../types/Types";
 
 const AddPost = () => {
   const popupRef = useRef<HTMLDivElement>(null);
@@ -14,7 +14,7 @@ const AddPost = () => {
   const { closePopup }: UseModal = useModal();
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: (variables: HandleNewPostData) =>
+    mutationFn: (variables: HandleNewPostParams) =>
       handleNewPost(variables).then(() => closePopup(popupRef.current)),
     onSuccess: () => {
       queryClient.invalidateQueries(["postsdata"]);
@@ -26,7 +26,7 @@ const AddPost = () => {
     handleSubmit,
     setFocus,
     formState: { errors, isValid },
-  } = useForm<HandleNewPostData>({
+  } = useForm<HandleNewPostParams>({
     resolver: zodResolver(addPostSchema),
     mode: "onChange",
   });

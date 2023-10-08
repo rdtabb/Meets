@@ -588,6 +588,13 @@ body {
       background: transparent no-repeat center;
       background-size: contain;
       background-image: url("../assets/like-active.svg");
+      cursor: pointer;
+      transition: opacity var(--transition-time-primary)
+        var(--timing-function-primary);
+
+      &:hover {
+        opacity: 0.5;
+      }
     }
   }
 
@@ -926,6 +933,7 @@ body {
   display: grid;
   gap: 0.5rem;
   list-style: none;
+  min-height: 2rem;
   max-height: 120px;
   overflow-x: scroll;
 
@@ -945,7 +953,7 @@ body {
   gap: 1rem;
 
   &--empty {
-    min-height: 4rem;
+    min-height: 2rem;
     background-color: white;
     border-radius: 1rem;
     opacity: 0.3;
