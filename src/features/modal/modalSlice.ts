@@ -1,38 +1,38 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../../store/store";
-import { PayloadAction } from "@reduxjs/toolkit";
-import { Post } from "../../types/Types";
+import { createSlice, createSelector } from '@reduxjs/toolkit'
+import { PayloadAction } from '@reduxjs/toolkit'
 
-type PopupType = "add" | "edit" | "icon" | "image" | "confirm" | "close";
+import { Post, PopupType } from '@constants/index'
+import { RootState } from '@store/store'
 
 interface IInitialState {
-  selectedPost: Post | undefined;
-  openPopupType: PopupType;
+    selectedPost: Post | undefined
+    openPopupType: PopupType
 }
 
 const initialState: IInitialState = {
-  selectedPost: undefined,
-  openPopupType: "close",
-};
+    selectedPost: undefined,
+    openPopupType: 'close'
+}
 
 const modalSlice = createSlice({
-  name: "feature/modal",
-  initialState,
-  reducers: {
-    setSelectedPost(state, { payload }: PayloadAction<Post>) {
-      state.selectedPost = payload;
-    },
-    setOpenPopupType(state, { payload }: PayloadAction<PopupType>) {
-      state.openPopupType = payload;
-    },
-  },
-});
+    name: 'feature/modal',
+    initialState,
+    reducers: {
+        setSelectedPost(state, { payload }: PayloadAction<Post>) {
+            state.selectedPost = payload
+        },
+        setOpenPopupType(state, { payload }: PayloadAction<PopupType>) {
+            state.openPopupType = payload
+        }
+    }
+})
 
-export const { setSelectedPost, setOpenPopupType } = modalSlice.actions;
+export const { setSelectedPost, setOpenPopupType } = modalSlice.actions
 
-const stateModalSelector = (state: RootState) => state.modal;
+const selectOpenPopupType = (state: RootState) => state.modal.openPopupType
+const selectSelectedPost = (state: RootState) => state.modal.selectedPost
 
-export const selectOpenPopupType = () =>
-  createSelector([stateModalSelector], (state) => state.openPopupType);
+export const openPopupTypeSelector = createSelector([selectOpenPopupType], (type) => type)
+export const selectedPostSelector = createSelector([selectSelectedPost], (post) => post)
 
-export default modalSlice.reducer;
+export default modalSlice.reducer

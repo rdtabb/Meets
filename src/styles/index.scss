@@ -37,6 +37,7 @@
 
   --timing-function-primary: ease-in;
   --transition-time-primary: 200ms;
+  scrollbar-gutter: stable;
 }
 
 ::selection {
@@ -56,6 +57,11 @@
 /* ---------------------------------------- */
 /* body and root                            */
 /* ---------------------------------------- */
+
+html {
+    scrollbar-gutter: stable;
+    overflow-y: scroll;
+}
 
 body {
   background-color: hsl(var(--clr-primary-100));
@@ -190,6 +196,10 @@ body {
     &:hover {
       opacity: 1;
     }
+
+    &--active {
+        opacity: 1;
+    }
   }
 
   &__icon {
@@ -200,16 +210,10 @@ body {
     object-fit: cover;
     transition: all var(--transition-time-primary)
       var(--timing-function-primary);
-    opacity: 0.6;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 
   &__liked-icon {
     object-fit: contain;
-    opacity: 0.3;
   }
 
   &__routes {

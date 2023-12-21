@@ -1,8 +1,9 @@
-import type { ChildrenType } from "../../types/Types";
-import { memo } from "react";
+import React, { memo, PropsWithChildren } from 'react'
 
-const Container = ({ children }: ChildrenType) => {
-  return <div className="container">{children}</div>;
-};
+interface ContainterProps extends PropsWithChildren {
+    modifierClass?: string
+}
 
-export default memo(Container);
+export const Container = memo(({ children, modifierClass }: ContainterProps) => {
+    return <div className={`container ${modifierClass}`}>{children}</div>
+})
