@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 
 import { HandleNewPostParams, QueryKeys } from '@constants/index'
 import { useModal } from '@hooks/index'
-import { createPost } from '@methods/methods'
+import { createPost } from '@methods/index'
 
 import Modal from '../../Modal/Modal'
 
@@ -17,11 +17,11 @@ export const CreatePostModal = () => {
     const queryClient = useQueryClient()
     const { closePopup } = useModal()
 
-    const { mutate: addPost, isLoading } = useMutation({
+    const { mutate: addPost, isPending } = useMutation({
         mutationFn: (variables: HandleNewPostParams) =>
             createPost(variables).then(() => closePopup(popupRef.current)),
         onSuccess: () => {
-            queryClient.invalidateQueries([QueryKeys.POSTS])
+            queryClient.invalidateQueries({ queryKey: [QueryKeys.POSTS] })
         }
     })
 
@@ -75,8 +75,8 @@ export const CreatePostModal = () => {
                         {errors.place && <p className="popup__error">{errors.place.message}</p>}
                     </fieldset>
                 </div>
-                <button disabled={!isValid || isLoading} type="submit" className="popup__submit">
-                    {isLoading ? 'Saving...' : 'Save'}
+                <button disabled={!isValid || isPending} type="submit" className="popup__submit">
+                    {isPending ? 'Saving...' : 'Save'}
                 </button>
             </form>
         </Modal>

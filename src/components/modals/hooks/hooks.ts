@@ -2,16 +2,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { type EditIconMutationProps, QueryKeys } from '@constants/index'
 import { UseModal, useModal } from '@hooks/index'
-import { updateProfileIcon } from '@methods/methods'
+import { updateProfileIcon } from '@methods/index'
 
 export const useChangeAvatarMutation = () => {
     const queryClient = useQueryClient()
     const { closePopup }: UseModal = useModal()
 
-    const { mutateAsync, isLoading } = useMutation({
+    const { mutateAsync, isPending } = useMutation({
         mutationFn: updateProfileIcon,
         onSuccess: () => {
-            queryClient.invalidateQueries([QueryKeys.USER])
+            queryClient.invalidateQueries({ queryKey: [QueryKeys.USER] })
         }
     })
 
@@ -21,7 +21,7 @@ export const useChangeAvatarMutation = () => {
     }
 
     return {
-        isLoading,
+        isPending,
         changeAvatar
     }
 }

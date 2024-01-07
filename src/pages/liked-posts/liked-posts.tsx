@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { PostList, PostsLoading, PostsEmpty, ProfileInfo } from '@components/index'
-import { useUserQuery } from '@hooks/index'
+import { useUser } from '@hooks/index'
 
 export const LikedPosts = () => {
-    const { profileImageUrl, username, status, isLoading, likedPosts } = useUserQuery()
+    const { profileImageUrl, username, status, isLoading, likedPosts } = useUser()
 
     return (
         <>

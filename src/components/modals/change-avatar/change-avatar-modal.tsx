@@ -13,7 +13,7 @@ import { changeAvatarSchema } from './form-schema'
 export const ChangeAvatarModal = () => {
     const popupRef = useRef<HTMLDivElement>(null)
 
-    const { isLoading, changeAvatar } = useChangeAvatarMutation()
+    const { isPending, changeAvatar } = useChangeAvatarMutation()
 
     const {
         register,
@@ -50,8 +50,8 @@ export const ChangeAvatarModal = () => {
                         {errors.url && <p className="popup__error">{errors.url.message}</p>}
                     </fieldset>
                 </div>
-                <button type="submit" className="popup__submit" disabled={!isValid || isLoading}>
-                    {isLoading ? 'Saving...' : 'Save'}
+                <button type="submit" className="popup__submit" disabled={!isValid || isPending}>
+                    {isPending ? 'Saving...' : 'Save'}
                 </button>
             </form>
         </Modal>

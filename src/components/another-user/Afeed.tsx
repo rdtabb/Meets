@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { type Post, QueryKeys } from '@constants/index'
 import { useModal } from '@hooks/use-modal'
-import { unlikePost, likePost } from '@methods/methods'
+import { unlikePost, likePost } from '@methods/index'
 
 interface AfeedProps {
     posts: Post[]
@@ -20,14 +20,14 @@ export const Afeed = memo(({ posts, uid: target_id }: AfeedProps): JSX.Element =
     const likeMutation = useMutation({
         mutationFn: likePost,
         onSuccess: () => {
-            queryClient.invalidateQueries([QueryKeys.AUSER])
+            queryClient.invalidateQueries({ queryKey: [QueryKeys.AUSER] })
         }
     })
 
     const unlikeMutation = useMutation({
         mutationFn: unlikePost,
         onSuccess: () => {
-            queryClient.invalidateQueries([QueryKeys.AUSER])
+            queryClient.invalidateQueries({ queryKey: [QueryKeys.AUSER] })
         }
     })
 
@@ -46,7 +46,7 @@ export const Afeed = memo(({ posts, uid: target_id }: AfeedProps): JSX.Element =
                 <article key={post.id} className="card">
                     <div className="card__imgwrapper">
                         <img
-                            onClick={() => openImagePopup(post)}
+                            onClick={() => openImagePopup(post, true)}
                             src={post.imgsrc}
                             alt={post.city}
                             className="card__image"

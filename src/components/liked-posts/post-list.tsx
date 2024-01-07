@@ -1,34 +1,17 @@
-/* eslint-disable react/prop-types */
 import React, { memo } from 'react'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { doc, updateDoc } from 'firebase/firestore'
+import { LikedPost } from '@constants/index'
 
-import { db } from '../../firebase-config'
-import { LikedPost, DeleteLikedMutation } from '../../constants/types'
 import { ErrorBoundary } from '../error-boundary/error-boundary'
+
+import { useDeletePost } from './hooks/use-delete-post'
 
 interface IPostListProps {
     posts: LikedPost[]
 }
 
 export const PostList = memo(({ posts }: IPostListProps): JSX.Element => {
-    const handleDelete = async (props: DeleteLikedMutation) => {
-        const uid = localStorage.getItem('uid')!
-        const newPosts = posts.filter((post: LikedPost) => post.id != props.id)
-        const updateLiked = {
-            liked: newPosts
-        }
-        const userdoc = doc(db, 'users', uid)
-        await updateDoc(userdoc, updateLiked)
-    }
-    const queryClient = useQueryClient()
-    const deleteMutation = useMutation({
-        mutationFn: handleDelete,
-        onSuccess: () => {
-            queryClient.invalidateQueries(['userdataset'])
-        }
-    })
+    const { deletePost } = useDeletePost()
 
     return (
         <section className="cards">
@@ -42,7 +25,7 @@ export const PostList = memo(({ posts }: IPostListProps): JSX.Element => {
                         </div>
                         <button
                             className="card__delete"
-                            onClick={() => deleteMutation.mutate({ id: post.id })}
+                            onClick={() => deletePost({ id: post.id, posts })}
                         ></button>
                     </article>
                 ))}

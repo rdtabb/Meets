@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 
 import { EditProfilePopupData, QueryKeys } from '@constants/index'
 import { useModal } from '@hooks/index'
-import { editProfile } from '@methods/methods'
+import { editProfile } from '@methods/index'
 
 import Modal from '../../Modal/Modal'
 
@@ -27,11 +27,11 @@ export const EditProfileModal = () => {
         mode: 'onChange'
     })
 
-    const { mutate, isLoading } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: (variables: EditProfilePopupData) =>
             editProfile(variables).then(() => closePopup(popupRef.current)),
         onSuccess: () => {
-            queryClient.invalidateQueries([QueryKeys.USER])
+            queryClient.invalidateQueries({ queryKey: [QueryKeys.USER] })
         }
     })
 
@@ -83,8 +83,8 @@ export const EditProfileModal = () => {
                         {errors.status && <p className="popup__error">{errors.status.message}</p>}
                     </fieldset>
                 </div>
-                <button type="submit" className="popup__submit" disabled={!isValid || isLoading}>
-                    {isLoading ? 'Saving...' : 'Save'}
+                <button type="submit" className="popup__submit" disabled={!isValid || isPending}>
+                    {isPending ? 'Saving...' : 'Save'}
                 </button>
             </form>
         </Modal>

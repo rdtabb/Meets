@@ -56,7 +56,6 @@ export type EditProfilePopupData = {
 }
 
 export interface IHandleSubmitMessageParams {
-    e: React.FormEvent<HTMLFormElement>
     creator?: string
     image: string | null | undefined
     message: string
@@ -71,6 +70,7 @@ export type CommentsQuery = {
 
 export type DeleteLikedMutation = {
     id: number
+    posts: LikedPost[]
 }
 
 export type SnapType = {
@@ -124,4 +124,4 @@ export type User = {
     newStatus: string
 }
 
-export type PopupType = 'add' | 'edit' | 'icon' | 'image' | 'confirm' | 'close'
+export type PopupType = 'add' | 'edit' | 'icon' | 'image' | 'confirm' | 'close' | 'auserimage'

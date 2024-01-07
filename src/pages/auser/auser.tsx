@@ -22,7 +22,7 @@ export const Auser = () => {
                 isLoading={isLoading}
             />
             {isLoading ? <PostsLoading /> : <Aposts uid={id} posts={posts} name={username} />}
-            <>{openPopupType === 'image' && <ViewImageModal id={id} />}</>
+            <>{openPopupType === 'auserimage' && <ViewImageModal id={id} />}</>
         </>
     )
 }

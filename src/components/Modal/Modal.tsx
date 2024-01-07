@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { memo, useEffect, forwardRef } from 'react'
+import React, { memo, useEffect, forwardRef, PropsWithChildren } from 'react'
 
 import { createPortal } from 'react-dom'
 import { useDispatch } from 'react-redux'
 
-import { setOpenPopupType } from '../../features/modal/modalSlice'
-import { handlePopup } from '../../methods/methods'
-import { ChildrenType } from '../../constants/types'
+import { setOpenPopupType } from '@features/modal/modalSlice'
+import { handlePopup } from '@methods/index'
 
-type ModalProps = ChildrenType & {
+interface ModalProps extends PropsWithChildren {
     modalModifier?: string
     containerModifier?: string
 }

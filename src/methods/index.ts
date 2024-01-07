@@ -1,0 +1,6 @@
+export * from './posts-methods/posts-methods'
+export * from './comments-methods/comments-methods'
+export * from './chat-methods/chat-methods'
+export * from './profile-methods/profile-methods'
+export * from './users-methods/users-methods'
+export * from './popup-methods/popup-methods'

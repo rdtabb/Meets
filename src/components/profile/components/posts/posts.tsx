@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import { QueryKeys } from '@constants/index'
-import { getPosts } from '@methods/methods'
+import { getPosts } from '@methods/index'
 
 import { ErrorBoundary } from '../../../error-boundary/error-boundary'
 import { Feed } from '../feed/feed'

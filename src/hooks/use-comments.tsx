@@ -7,8 +7,8 @@ import {
     UseQueryResult
 } from '@tanstack/react-query'
 
-import { AddCommentMutationProps, Comment } from '@constants/index'
-import { createComment, fetchComments } from '@methods/methods'
+import { AddCommentMutationProps, Comment, QueryKeys } from '@constants/index'
+import { createComment, fetchComments } from '@methods/index'
 
 type UseCommentType = 'query' | 'mutation'
 
@@ -37,7 +37,9 @@ function useComments(
         return useMutation({
             mutationFn: (data: AddCommentMutationProps) => createComment(data),
             onSuccess: () => {
-                queryClient.invalidateQueries(['comments'])
+                queryClient.invalidateQueries({
+                    queryKey: [QueryKeys.COMMENTS]
+                })
             }
         })
     }

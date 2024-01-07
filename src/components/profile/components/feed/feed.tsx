@@ -1,49 +1,19 @@
 import React, { memo, useCallback } from 'react'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useDispatch, useSelector } from 'react-redux'
-
 import { Post } from '@constants/index'
-import { selectedPostSelector, setOpenPopupType, setSelectedPost } from '@features/index'
-import { likePost, unlikePost, deletePost } from '@methods/methods'
+import { useModal } from '@hooks/use-modal'
 
-type FeedProps = {
+import { useFeedMutations } from '../hooks/use-feed-mutations'
+
+interface FeedProps {
     posts: Post[]
 }
 
-export const Feed = memo(({ posts }: FeedProps) => {
+export const Feed = memo(({ posts }: FeedProps): JSX.Element => {
     const uid: string = localStorage.getItem('uid')!
-    const selectedPost = useSelector(selectedPostSelector)
 
-    const queryClient = useQueryClient()
-    const dispatch = useDispatch()
-
-    const likeMutation = useMutation({
-        mutationFn: likePost,
-        onSuccess: () => {
-            queryClient.invalidateQueries(['postsdata'])
-        }
-    })
-
-    const unlikeMutation = useMutation({
-        mutationFn: unlikePost,
-        onSuccess: () => {
-            queryClient.invalidateQueries(['postsdata'])
-        }
-    })
-
-    const deleteMutation = useMutation({
-        mutationFn: deletePost,
-        onSuccess: () => {
-            queryClient.invalidateQueries(['postsdata'])
-        }
-    })
-
-    const handleImagePopup = (post: Post): void => {
-        dispatch(setOpenPopupType('image'))
-
-        if (selectedPost?.id !== post.id) dispatch(setSelectedPost(post))
-    }
+    const { likePost, unlikePost, deletePost } = useFeedMutations()
+    const { openImagePopup } = useModal()
 
     const isLiked = useCallback(
         (post: Post) => {
@@ -59,7 +29,7 @@ export const Feed = memo(({ posts }: FeedProps) => {
                 <article key={post.id} className="card">
                     <div className="card__imgwrapper">
                         <img
-                            onClick={() => handleImagePopup(post)}
+                            onClick={() => openImagePopup(post)}
                             src={post.imgsrc}
                             alt={post.city}
                             className="card__image"
@@ -76,7 +46,7 @@ export const Feed = memo(({ posts }: FeedProps) => {
                                 onClick={
                                     isLiked(post)
                                         ? () =>
-                                              unlikeMutation.mutate({
+                                              unlikePost({
                                                   post_id: post.id,
                                                   user_id: uid,
                                                   target_post: post,
@@ -86,7 +56,7 @@ export const Feed = memo(({ posts }: FeedProps) => {
                                                   }
                                               })
                                         : () =>
-                                              likeMutation.mutate({
+                                              likePost({
                                                   post_id: post.id,
                                                   user_id: uid,
                                                   target_post: post,
@@ -103,7 +73,7 @@ export const Feed = memo(({ posts }: FeedProps) => {
                     <button
                         name="deletePostButton"
                         onClick={() =>
-                            deleteMutation.mutate({
+                            deletePost({
                                 id: post.id,
                                 posts: posts
                             })

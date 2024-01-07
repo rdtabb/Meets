@@ -35,4 +35,4 @@ const selectSelectedPost = (state: RootState) => state.modal.selectedPost
 export const openPopupTypeSelector = createSelector([selectOpenPopupType], (type) => type)
 export const selectedPostSelector = createSelector([selectSelectedPost], (post) => post)
 
-export default modalSlice.reducer
+export const modalReducer = modalSlice.reducer

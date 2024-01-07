@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Post } from '@constants/index'
 import { setOpenPopupType, setSelectedPost, selectedPostSelector } from '@features/index'
-import { handlePopup } from '@methods/methods'
+import { handlePopup } from '@methods/index'
 
 export const useModal = () => {
     const selectedPost = useSelector(selectedPostSelector)
@@ -16,8 +16,12 @@ export const useModal = () => {
     }, [])
 
     const openImagePopup = useCallback(
-        (post: Post) => {
-            dispatch(setOpenPopupType('image'))
+        (post: Post, auser?: boolean) => {
+            if (auser) {
+                dispatch(setOpenPopupType('auserimage'))
+            } else {
+                dispatch(setOpenPopupType('image'))
+            }
             if (selectedPost?.id !== post.id) dispatch(setSelectedPost(post))
         },
         [selectedPost]

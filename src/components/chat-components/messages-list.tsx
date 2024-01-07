@@ -1,23 +1,15 @@
 import React from 'react'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { type SnapType } from '@constants/index'
 
-import { type SnapType, QueryKeys } from '@constants/index'
-import { deleteChatMessage } from '@methods/methods'
+import { useDeleteMessage } from './hooks/use-delete-message'
 
 interface MessageProps {
     messages?: SnapType[]
 }
 
 export const MessagesList = ({ messages }: MessageProps) => {
-    const queryClient = useQueryClient()
-
-    const deleteMessage = useMutation({
-        mutationFn: deleteChatMessage,
-        onSuccess: () => {
-            queryClient.invalidateQueries([QueryKeys.MESSAGES])
-        }
-    })
+    const deleteMessage = useDeleteMessage()
 
     return (
         <>
@@ -35,7 +27,7 @@ export const MessagesList = ({ messages }: MessageProps) => {
                             </article>
                         </div>
                         <button
-                            onClick={() => deleteMessage.mutate(message.id)}
+                            onClick={() => deleteMessage(message.id)}
                             className="item__delete"
                         ></button>
                     </li>

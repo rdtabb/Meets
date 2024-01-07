@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { UserlistLoading, User } from '@components/userlist'
 import { QueryKeys } from '@constants/queryKeys'
-import { getUsers } from '@methods/methods'
+import { getUsers } from '@methods/index'
 
 export const Userlist = () => {
     const usersQuery = useQuery({
@@ -19,9 +19,7 @@ export const Userlist = () => {
                 {usersQuery.isLoading ? (
                     <UserlistLoading />
                 ) : (
-                    usersQuery.data?.map((user: any, index: number) => (
-                        <User key={index} user={user} />
-                    ))
+                    usersQuery.data?.map((user, index: number) => <User key={index} user={user} />)
                 )}
             </ul>
         </main>

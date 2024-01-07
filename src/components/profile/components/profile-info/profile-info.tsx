@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { useUserQuery } from '@hooks/index'
+import { useUser } from '@hooks/index'
 
 import { openPopup } from '../../../../utils/utils'
 
@@ -8,7 +8,7 @@ import { AvatarImage } from './avatar-image'
 import { AvatarImageLoading } from './avatar-image-loading'
 
 export const ProfileInfo = memo(() => {
-    const { isLoading, username, status, profileImageUrl } = useUserQuery()
+    const { isLoading, username, status, profileImageUrl } = useUser()
 
     return (
         <section className="profile">
