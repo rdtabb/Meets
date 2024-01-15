@@ -4,9 +4,9 @@ import { FieldValue, serverTimestamp } from 'firebase/firestore'
 import { useLocation } from 'react-router-dom'
 
 import { localStorageKeys } from '@constants/index'
+import { setLocalStorageItem } from '@utils/utils'
 
 import { auth } from '../../firebase-config'
-import { setLocalStorageItem } from '../../utils/utils'
 
 import { useCreateMessage } from './hooks/use-create-message'
 

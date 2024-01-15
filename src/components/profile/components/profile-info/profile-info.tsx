@@ -1,8 +1,7 @@
 import React, { memo } from 'react'
 
 import { useUser } from '@hooks/index'
-
-import { openPopup } from '../../../../utils/utils'
+import { openPopup } from '@utils/utils'
 
 import { AvatarImage } from './avatar-image'
 import { AvatarImageLoading } from './avatar-image-loading'

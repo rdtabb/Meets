@@ -17,7 +17,13 @@ export const CommentsSection = memo(({ comments }: CommentsSectionProps): JSX.El
         <>
             {comments?.map((comment) => (
                 <li key={comment.id} className="comment">
-                    <img className="comment__icon" src={comment.img} alt={comment.message} />
+                    <img
+                        width="40px"
+                        height="40px"
+                        className="comment__icon"
+                        src={comment.img}
+                        alt={comment.message}
+                    />
                     <article>
                         <div className="comment__info">
                             <p className="comment__creator">{comment.creator}</p>

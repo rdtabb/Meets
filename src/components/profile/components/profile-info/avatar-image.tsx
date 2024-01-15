@@ -15,6 +15,8 @@ export const AvatarImage = memo(({ url }: AvatarImageProps) => (
             src={url}
             alt="Avatar"
             className="profile__avatar"
+            height={120}
+            width={120}
         />
         <img className="avatar-wrapper__icon" src={editProfile} alt="edit profile icon" />
     </div>

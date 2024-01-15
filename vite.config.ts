@@ -16,7 +16,8 @@ export default defineConfig({
             '@methods': path.resolve(__dirname, './src/methods'),
             '@assets': path.resolve(__dirname, './src/assets'),
             '@context': path.resolve(__dirname, './src/context'),
-            '@store': path.resolve(__dirname, './src/store')
+            '@store': path.resolve(__dirname, './src/store'),
+            '@utils': path.resolve(__dirname, './src/utils')
         }
     }
 })

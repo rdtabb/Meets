@@ -9,6 +9,7 @@ lerna-debug.log*
 
 firebase-config.tsx
 node_modules
+./cypress
 dist
 dist-ssr
 *.local

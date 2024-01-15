@@ -3,7 +3,7 @@ import React from 'react'
 import { box } from '../../assets'
 
 interface NoPostsProps {
-    name: string | undefined
+    name?: string
 }
 
 export const NoPosts = ({ name }: NoPostsProps): JSX.Element => (
