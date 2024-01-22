@@ -75,6 +75,10 @@ body {
     display: grid;
 }
 
+body:has(.chat) {
+    padding: 45px 0 0;
+}
+
 .container {
     --width: 50rem;
     --padding: 1rem;
@@ -997,6 +1001,8 @@ body {
 
 .popup[data-visible='true'] {
     animation: fadein 200ms linear;
+    -webkit-backdrop-filter: blur(0.5rem);
+    backdrop-filter: blur(0.5rem);
 }
 
 .popup[data-visible='false'] {
@@ -1154,6 +1160,14 @@ body {
         max-height: var(--box-sizing);
         border-radius: 50%;
         object-fit: cover;
+
+        &--error {
+            border: 1px solid red;
+        }
+
+        &--loading {
+            background: hsl(var(--clr-primary-900));
+        }
     }
 
     &__heading {

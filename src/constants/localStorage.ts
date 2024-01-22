@@ -1,4 +1,5 @@
 export const localStorageKeys = {
     userpair: 'userpair',
-    reversed: 'reversed'
+    reversed: 'reversed',
+    uid: 'uid'
 } as const

@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
-import { QueryKeys, Post as TPost } from '@constants/index'
+import { QueryKeys, type Post as TPost } from '@constants/index'
 import { useUid } from '@hooks/use-uid'
 import { getPosts } from '@methods/index'
 

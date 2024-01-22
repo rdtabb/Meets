@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { SetStateAction, createContext, useContext, useState } from 'react'
+import React, { SetStateAction, createContext, useContext, useState, useMemo } from 'react'
 
 import { cookies } from '../App'
 import { ChildrenType } from '../constants/types'
@@ -19,16 +18,15 @@ const AuthState = createContext<AuthState>(initialState)
 export const AuthStateProvider = ({ children }: ChildrenType) => {
     const [isAuth, setIsAuth] = useState<boolean>(cookies.get('auth-token'))
 
-    return (
-        <AuthState.Provider
-            value={{
-                isAuth,
-                setIsAuth
-            }}
-        >
-            {children}
-        </AuthState.Provider>
+    const authStateValue: AuthState = useMemo(
+        () => ({
+            isAuth,
+            setIsAuth
+        }),
+        [isAuth]
     )
+
+    return <AuthState.Provider value={authStateValue}>{children}</AuthState.Provider>
 }
 
 export const useAuthState = () => useContext(AuthState)

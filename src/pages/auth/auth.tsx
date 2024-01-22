@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { signInWithPopup, getAdditionalUserInfo, AdditionalUserInfo } from 'firebase/auth'
-import { setDoc, doc, DocumentReference, DocumentData } from 'firebase/firestore'
+import { setDoc, doc } from 'firebase/firestore'
 import Cookies from 'universal-cookie'
 
 import { meetsLogo, google } from '@assets/index'
@@ -23,7 +23,7 @@ export const Auth = () => {
             const name: string | null = response.user.displayName
             const imgurl: string | null = response.user.photoURL
             const id: string = response.user.uid
-            const docref: DocumentReference<DocumentData> = doc(db, 'users', `${id}`)
+            const docref = doc(db, 'users', `${id}`)
             localStorage.setItem('uid', `${id}`)
 
             if (!isNew) {
@@ -54,11 +54,23 @@ export const Auth = () => {
         <ErrorBoundary>
             <main className="auth">
                 <div className="img-container">
-                    <img className="auth__logo" src={meetsLogo} alt="meets-logo" />
+                    <img
+                        className="auth__logo"
+                        src={meetsLogo}
+                        alt="meets-logo"
+                        width={142}
+                        height={40}
+                    />
                 </div>
                 <h1 className="auth__header">Sign in with Google</h1>
                 <button onClick={signin} className="auth__signin">
-                    <img className="signin-icon" src={google} alt="Google icon" />
+                    <img
+                        className="signin-icon"
+                        src={google}
+                        alt="Google icon"
+                        width={25}
+                        height={25}
+                    />
                     Sign in
                 </button>
             </main>

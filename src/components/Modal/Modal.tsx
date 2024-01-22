@@ -17,20 +17,22 @@ const Modal = forwardRef(
     ({ children, containerModifier, modalModifier }: ModalProps, popupRef: any) => {
         const dispatch = useDispatch()
 
-        const closePopup = async () => {
+        const closePopup = async (): Promise<void> => {
             const popup = popupRef.current
 
             popup && (await handlePopup(popup, 'close'))
             dispatch(setOpenPopupType('close'))
         }
 
-        const closePopupOnEsc = async (e: KeyboardEvent) => {
+        const closePopupOnEsc = async (e: KeyboardEvent): Promise<void> => {
             if (e.key === 'Escape') {
                 await closePopup()
             }
         }
 
-        const closePopupOnOverlay = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const closePopupOnOverlay = async (
+            e: React.MouseEvent<HTMLDivElement, MouseEvent>
+        ): Promise<void> => {
             if (e.currentTarget === e.target) {
                 await closePopup()
             }
@@ -38,12 +40,15 @@ const Modal = forwardRef(
 
         useEffect(() => {
             const popup = popupRef.current
+            const htmlElement = document.querySelector('html')!
             popup && handlePopup(popup, 'open')
 
             document.addEventListener('keydown', closePopupOnEsc)
+            htmlElement.style.overflow = 'hidden'
 
             return () => {
                 document.removeEventListener('keydown', closePopupOnEsc)
+                htmlElement.style.overflow = 'auto'
             }
         }, [])
 

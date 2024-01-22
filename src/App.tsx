@@ -30,7 +30,7 @@ const Userlist = lazy(() => import('@pages/userlist/userlist'))
 
 export const cookies = new Cookies()
 
-export const App = () => {
+export const App = (): JSX.Element => {
     const openPopupType = useSelector(openPopupTypeSelector)
     const uid = localStorage.getItem('uid')!
     const { isAuth } = useAuthState()

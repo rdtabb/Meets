@@ -20,7 +20,7 @@ export const Post = ({ post, posts, target_id }: PostProps): JSX.Element => {
     })
 
     return (
-        <article key={post.id} className="card">
+        <article className="card">
             <div className="card__imgwrapper">
                 <img
                     onClick={() => openImagePopup(post, true)}

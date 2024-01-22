@@ -9,7 +9,7 @@ import { openPopup } from '../../utils/utils'
 
 export const AppHeader = memo(() => (
     <header className="header header-profile">
-        <img src={meetsLogo} alt="Meets-logo" className="header__logo" />
+        <img src={meetsLogo} alt="Meets-logo" className="header__logo" width={142} height={40} />
         <div className="header__routes">
             <NavLink
                 className={({ isActive }) =>
@@ -17,7 +17,13 @@ export const AppHeader = memo(() => (
                 }
                 to={ROUTES.PROFILE}
             >
-                <img className="header__icon" src={profile} alt="Go to your profile" />
+                <img
+                    className="header__icon"
+                    src={profile}
+                    alt="Go to your profile"
+                    height={30}
+                    width={30}
+                />
             </NavLink>
             <NavLink
                 className={({ isActive }) =>
@@ -25,7 +31,13 @@ export const AppHeader = memo(() => (
                 }
                 to={ROUTES.USERSEARCH}
             >
-                <img className="header__icon" src={search} alt="Go to search page" />
+                <img
+                    className="header__icon"
+                    src={search}
+                    alt="Go to search page"
+                    height={30}
+                    width={30}
+                />
             </NavLink>
             <NavLink
                 className={({ isActive }) =>
@@ -37,6 +49,8 @@ export const AppHeader = memo(() => (
                     className="header__liked-icon header__icon"
                     src={likeClrWhite}
                     alt="Go to page with liked posts"
+                    height={30}
+                    width={30}
                 />
             </NavLink>
             <button onClick={() => openPopup('confirm')} className="signout" type="button">

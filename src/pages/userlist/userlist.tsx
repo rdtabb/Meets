@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
 
 import { useQuery } from '@tanstack/react-query'
@@ -7,19 +6,21 @@ import { UserlistLoading, User } from '@components/userlist'
 import { QueryKeys } from '@constants/queryKeys'
 import { getUsers } from '@methods/index'
 
-export const Userlist = () => {
-    const usersQuery = useQuery({
+export const Userlist = (): JSX.Element => {
+    const { data: users, isLoading } = useQuery({
         queryFn: getUsers,
-        queryKey: [QueryKeys.USERLIST]
+        queryKey: [QueryKeys.USERLIST],
+        staleTime: Infinity,
+        refetchOnWindowFocus: false
     })
 
     return (
         <main className="search">
             <ul className="search__userlist">
-                {usersQuery.isLoading ? (
+                {isLoading ? (
                     <UserlistLoading />
                 ) : (
-                    usersQuery.data?.map((user, index: number) => <User key={index} user={user} />)
+                    users?.map((user) => <User key={user.id} user={user} />)
                 )}
             </ul>
         </main>

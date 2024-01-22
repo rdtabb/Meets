@@ -37,8 +37,8 @@ export const fetchChatMessages = async ({
             messages.push(snap.data() as SnapType)
         })
         return messages
-    } catch (err) {
-        throw `${err} in the ChatContext in getMessages()`
+    } catch (error) {
+        throw `Error in fetchChatMessages: ${error}`
     }
 }
 
@@ -62,6 +62,6 @@ export const createChatMessage = async ({
             id: ''
         })
     } catch (error) {
-        console.log(`Error in ChatContext in handleSubmit: ${error}`)
+        console.error(`Error in createChatMessage: ${error}`)
     }
 }

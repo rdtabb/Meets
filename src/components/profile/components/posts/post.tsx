@@ -24,7 +24,7 @@ export const Post = memo(({ posts, post, target_uid }: PostProps): JSX.Element =
     const deletePost = useDeletePost()
 
     return (
-        <article key={post.id} className="card">
+        <article className="card">
             <div className="card__imgwrapper">
                 <img
                     onClick={() => openImagePopup(post)}

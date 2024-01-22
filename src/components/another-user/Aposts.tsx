@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Post as TPost } from '@constants/types'
+import { type Post as TPost } from '@constants/types'
 
 import { PostsLoading } from '../profile/components/posts/posts-loading'
 

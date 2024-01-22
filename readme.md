@@ -8,7 +8,7 @@ Meets is the social network where after authenticating with Google account you c
 
 ## Tech stack
 
--   React (with react-router-v6)
+-   React
 -   Typescript
 -   Redux
 -   SCSS

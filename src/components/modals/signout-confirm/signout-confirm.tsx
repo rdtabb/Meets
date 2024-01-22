@@ -12,7 +12,7 @@ export const SignoutConfirmModal = () => {
     const { setIsAuth } = useAuthState()
     const popupRef = useRef<HTMLDivElement>(null)
 
-    const signout = async () => {
+    const signout = async (): Promise<void> => {
         await signOut(auth)
         cookies.remove('auth-token')
         setIsAuth(false)
