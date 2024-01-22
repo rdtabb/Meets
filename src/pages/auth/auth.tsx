@@ -1,30 +1,38 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
-import { signInWithPopup, getAdditionalUserInfo, AdditionalUserInfo } from 'firebase/auth'
+import { signInWithPopup, getAdditionalUserInfo } from 'firebase/auth'
 import { setDoc, doc } from 'firebase/firestore'
 import Cookies from 'universal-cookie'
 
 import { meetsLogo, google } from '@assets/index'
 import { ErrorBoundary } from '@components/index'
+import { Toaster } from '@components/ui/toaster'
 import { useAuthState } from '@context/auth-state'
+import { Tabs, TabsTrigger, TabsList, TabsContent } from '@ui/index'
 
 import { auth, provider, db } from '../../firebase-config'
 
+import { LoginForm } from './login-form/login-form'
+import { RegisterForm } from './login-form/reg-form'
+
 export const Auth = () => {
-    const cookies = new Cookies()
     const { setIsAuth } = useAuthState()
 
-    const signin = async (): Promise<void> => {
+    const signinWithGoogle = useCallback(async (): Promise<void> => {
         try {
+            const cookies = new Cookies()
             const response = await signInWithPopup(auth, provider)
-            const info: AdditionalUserInfo | null = getAdditionalUserInfo(response)
+            const info = getAdditionalUserInfo(response)
+
             const isNew: boolean | undefined = info?.isNewUser
             cookies.set('auth-token', response.user.refreshToken)
+
             const name: string | null = response.user.displayName
             const imgurl: string | null = response.user.photoURL
-            const id: string = response.user.uid
-            const docref = doc(db, 'users', `${id}`)
-            localStorage.setItem('uid', `${id}`)
+            const id = response.user.uid
+
+            const docref = doc(db, 'users', id)
+            localStorage.setItem('uid', id)
 
             if (!isNew) {
                 setIsAuth(true)
@@ -48,11 +56,11 @@ export const Auth = () => {
         } catch (error) {
             console.log(error)
         }
-    }
+    }, [setIsAuth])
 
     return (
         <ErrorBoundary>
-            <main className="auth">
+            <main className="auth" data-kb-theme="dark">
                 <div className="img-container">
                     <img
                         className="auth__logo"
@@ -62,8 +70,23 @@ export const Auth = () => {
                         height={40}
                     />
                 </div>
-                <h1 className="auth__header">Sign in with Google</h1>
-                <button onClick={signin} className="auth__signin">
+                <Tabs defaultValue="login" className="mt-8 mb-10">
+                    <TabsList className="w-full">
+                        <TabsTrigger value="login" className="w-full">
+                            Login
+                        </TabsTrigger>
+                        <TabsTrigger value="register" className="w-full">
+                            Register
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="login">
+                        <LoginForm />
+                    </TabsContent>
+                    <TabsContent value="register">
+                        <RegisterForm />
+                    </TabsContent>
+                </Tabs>
+                <button onClick={signinWithGoogle} className="auth__signinGoogle">
                     <img
                         className="signin-icon"
                         src={google}
@@ -71,8 +94,9 @@ export const Auth = () => {
                         width={25}
                         height={25}
                     />
-                    Sign in
+                    Sign in with Google
                 </button>
+                <Toaster />
             </main>
         </ErrorBoundary>
     )

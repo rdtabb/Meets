@@ -1,9 +1,16 @@
 import { useMemo } from 'react'
 
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+import { ImageProps } from '@components/index'
 import { type PopupType, localStorageKeys } from '@constants/index'
 import { setOpenPopupType } from '@features/index'
 import { store } from '@store/store'
-import { ImageProps } from '@components/index'
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
+}
 
 export const openPopup = (popupType: PopupType): void => {
     store.dispatch(setOpenPopupType(popupType))

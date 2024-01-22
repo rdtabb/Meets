@@ -35,7 +35,7 @@
                         "position": "before"
                     },
                     {
-                        "pattern": "{@components/**,@methods/**,@utils/**,@pages/**,@store/**,@hooks/**,@constants/**,@assets/**,@context/**,@features/**,@utils/**}",
+                        "pattern": "{@components/**,@methods/**,@utils/**,@pages/**,@store/**,@hooks/**,@constants/**,@assets/**,@context/**,@features/**,@utils/**,@ui/**}",
                         "group": "external",
                         "position": "after"
                     }
