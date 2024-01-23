@@ -211,9 +211,9 @@ body:has(.chat) {
 .auth {
     padding: 2rem;
     border-radius: 1rem;
-    place-self: center;
+    justify-self: center;
     width: min(474px, 100% - 10px);
-    place-content: start;
+    margin-top: 20vh;
 
     background-color: hsl(var(--clr-primary-200), 0.4);
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
@@ -15,7 +15,9 @@ import { App } from './App'
 
 const queryClient = new QueryClient()
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+const root = createRoot(document.getElementById('root') as HTMLElement)
+
+root.render(
     <React.StrictMode>
         <ErrorBoundary>
             <QueryClientProvider client={queryClient}>
