@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 
 import { useToast } from '@components/ui/useToast'
 import { firebaseErrors, type FirebaseErrorsCodes, Collections } from '@constants/index'
+import { useAuthState } from '@context/auth-state'
 import {
     Input,
     Form,
@@ -25,6 +26,7 @@ import { createUser } from '../auth-utils'
 import { FormValues, regFormSchema } from './reg-form-schema'
 
 export const RegisterForm = () => {
+    const { setIsAuth } = useAuthState()
     const { toast } = useToast()
 
     const form = useForm<FormValues>({
@@ -45,6 +47,7 @@ export const RegisterForm = () => {
                     name: email.split('@')[0],
                     imgurl: null
                 })
+                setIsAuth(true)
             } catch (error) {
                 const { title, description } =
                     firebaseErrors[(error as FirebaseError).code as FirebaseErrorsCodes]

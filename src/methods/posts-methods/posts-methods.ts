@@ -14,10 +14,13 @@ import { db } from '../../firebase-config'
 
 const uid = localStorage.getItem('uid')!
 
-export const getPosts = async (): Promise<Post[]> => {
-    const userdoc = doc(db, Collections.USERS, uid)
+export const getPosts = async (user_id?: string): Promise<Post[]> => {
+    if (!user_id) throw new Error('Provide correct user_id for getPosts')
+
+    const userdoc = doc(db, Collections.USERS, user_id)
     const dataSnap = await getDoc(userdoc)
     const dataset = dataSnap.data()
+    console.log(dataset)
     const posts: Post[] = await dataset?.newPosts
     return posts
 }
@@ -29,11 +32,11 @@ export const likePost = async (variables: HandleLikeMutationParams): Promise<voi
     const newPosts: Post[] = variables.posts.map((post) =>
         post.id === variables.post_id ? { ...post, likes: newLikes } : post
     )
-    const newpostsdb = {
-        newPosts
-    }
+
     const userdoc = doc(db, Collections.USERS, variables.user_id)
-    await updateDoc(userdoc, newpostsdb)
+    await updateDoc(userdoc, {
+        newPosts
+    })
 }
 
 export const unlikePost = async (variables: HandleLikeMutationParams): Promise<void> => {
@@ -45,11 +48,11 @@ export const unlikePost = async (variables: HandleLikeMutationParams): Promise<v
     const newPosts: Post[] = variables.posts.map((post) =>
         post.id === variables.post_id ? { ...post, likes: newLikes } : post
     )
-    const newpostsdb = {
-        newPosts
-    }
+
     const userdoc = doc(db, Collections.USERS, variables.user_id)
-    await updateDoc(userdoc, newpostsdb)
+    await updateDoc(userdoc, {
+        newPosts
+    })
 }
 
 export const createPost = async (variables: AddPostData): Promise<void> => {
@@ -69,26 +72,23 @@ export const createPost = async (variables: AddPostData): Promise<void> => {
     }
     const newPosts = [newPost, ...nposts]
 
-    const newpostsdb = {
+    await updateDoc(userdoc, {
         newPosts: newPosts
-    }
-    await updateDoc(userdoc, newpostsdb)
+    })
 }
 
 export const deletePost = async (variables: DeletePostMutationProps): Promise<void> => {
     const newPosts = variables.posts.filter((post) => post.id != variables.id)
-    const newpostsdb = {
-        newPosts: newPosts
-    }
     const userdoc = doc(db, Collections.USERS, uid)
-    await updateDoc(userdoc, newpostsdb)
+    await updateDoc(userdoc, {
+        newPosts: newPosts
+    })
 }
 
 export const deleteLikedPost = async ({ posts, id }: DeleteLikedMutation): Promise<void> => {
     const newPosts = posts.filter((post: LikedPost) => post.id != id)
-    const updateLiked = {
+    const userdoc = doc(db, Collections.USERS, uid)
+    await updateDoc(userdoc, {
         liked: newPosts
-    }
-    const userdoc = doc(db, 'users', uid)
-    await updateDoc(userdoc, updateLiked)
+    })
 }

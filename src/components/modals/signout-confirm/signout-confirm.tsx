@@ -15,6 +15,7 @@ export const SignoutConfirmModal = () => {
     const signout = async (): Promise<void> => {
         await signOut(auth)
         cookies.remove('auth-token')
+        localStorage.removeItem('uid')
         setIsAuth(false)
     }
 

@@ -40,15 +40,15 @@ const Modal = forwardRef(
 
         useEffect(() => {
             const popup = popupRef.current
-            const htmlElement = document.querySelector('html')!
+            // const htmlElement = document.querySelector('html')!
             popup && handlePopup(popup, 'open')
 
             document.addEventListener('keydown', closePopupOnEsc)
-            htmlElement.style.overflow = 'hidden'
+            // htmlElement.style.overflow = 'hidden'
 
             return () => {
                 document.removeEventListener('keydown', closePopupOnEsc)
-                htmlElement.style.overflow = 'auto'
+                // htmlElement.style.overflow = 'auto'
             }
         }, [])
 

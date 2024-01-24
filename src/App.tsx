@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
 
 import { useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
@@ -24,6 +24,8 @@ import { useAuthState } from '@context/auth-state'
 import { openPopupTypeSelector } from '@features/modal/modalSlice'
 import { Profile, Auth, Chat } from '@pages/index'
 
+import { auth } from './firebase-config'
+
 const Auser = lazy(() => import('@pages/auser/auser'))
 const LikedPosts = lazy(() => import('@pages/liked-posts/liked-posts'))
 const Userlist = lazy(() => import('@pages/userlist/userlist'))
@@ -33,7 +35,17 @@ export const cookies = new Cookies()
 export const App = (): JSX.Element => {
     const openPopupType = useSelector(openPopupTypeSelector)
     const uid = localStorage.getItem('uid')!
-    const { isAuth } = useAuthState()
+    const { isAuth, setUserId } = useAuthState()
+
+    useEffect(() => {
+        const unsub = auth.onIdTokenChanged(() => {
+            setUserId(auth.currentUser?.uid)
+        })
+
+        return (): void => {
+            unsub()
+        }
+    }, [])
 
     if (!isAuth) {
         return <Auth />

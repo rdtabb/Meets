@@ -1,37 +1,32 @@
 import React, { memo } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
-
-import { QueryKeys, type Post as TPost } from '@constants/index'
-import { useUid } from '@hooks/use-uid'
-import { getPosts } from '@methods/index'
+import { type Post as TPost } from '@constants/index'
+import { useAuthState } from '@context/auth-state'
 
 import { ErrorBoundary } from '../../../error-boundary/error-boundary'
+import { usePostsQuery } from '../hooks/use-posts-query'
 
 import { Post } from './post'
 import { PostsEmpty } from './posts-empty'
 import { PostsLoading } from './posts-loading'
 
 export const Posts = memo((): JSX.Element => {
-    const { data: posts, isLoading } = useQuery({
-        queryKey: [QueryKeys.POSTS],
-        queryFn: getPosts
-    })
-    const uid = useUid()
+    const { userId } = useAuthState()
+    const { posts, isLoading, isEmpty } = usePostsQuery(userId)
 
     if (isLoading) {
         return <PostsLoading />
     }
 
-    if (!posts?.length) {
+    if (isEmpty) {
         return <PostsEmpty />
     }
 
     return (
         <ErrorBoundary>
             <section className="cards">
-                {posts.map((post: TPost) => (
-                    <Post post={post} posts={posts} target_uid={uid} key={post.id} />
+                {posts?.map((post: TPost) => (
+                    <Post post={post} posts={posts} target_uid={userId} key={post.id} />
                 ))}
             </section>
         </ErrorBoundary>
