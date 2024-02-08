@@ -1,6 +1,5 @@
 import React, { SetStateAction, createContext, useContext, useState, useMemo } from 'react'
 
-import { cookies } from '../App'
 import { ChildrenType } from '../constants/types'
 
 export type AuthState = {
@@ -17,12 +16,18 @@ const initialState: AuthState = {
     setUserId: () => {}
 }
 
+// const initialSetterState: Pick<AuthState, 'setIsAuth' | 'setUserId'> = {
+//     setIsAuth: () => {},
+//     setUserId: () => {}
+// }
+
 const AuthState = createContext<AuthState>(initialState)
+const AuthStateSetters = createContext<AuthState>(initialState)
 
 export const AuthStateProvider = ({ children }: ChildrenType) => {
-    const [isAuth, setIsAuth] = useState<boolean>(cookies.get('auth-token'))
-    // TODO: probably move uid to different place in state
     const [userId, setUserId] = useState<string | undefined>(undefined)
+    const [isAuth, setIsAuth] = useState<boolean>(!!userId)
+    // TODO: probably move uid to different place in state
 
     const authStateValue: AuthState = useMemo(
         () => ({
@@ -37,6 +42,24 @@ export const AuthStateProvider = ({ children }: ChildrenType) => {
     return <AuthState.Provider value={authStateValue}>{children}</AuthState.Provider>
 }
 
-export const useAuthState = () => useContext(AuthState)
+export const useAuthState = () => {
+    const context = useContext(AuthState)
+
+    if (!context) {
+        throw new Error('AuthStateGetters context is not available')
+    }
+
+    return context
+}
+
+export const useAuthStateSetters = () => {
+    const context = useContext(AuthStateSetters)
+
+    if (!context) {
+        throw new Error('AuthStateSetters context is not available')
+    }
+
+    return context
+}
 
 export default AuthState
