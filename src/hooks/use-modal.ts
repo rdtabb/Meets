@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -27,10 +27,13 @@ export const useModal = () => {
         [selectedPost]
     )
 
-    return {
-        closePopup,
-        openImagePopup
-    }
+    return useMemo(
+        () => ({
+            closePopup,
+            openImagePopup
+        }),
+        [closePopup, openImagePopup]
+    )
 }
 
 export type UseModal = ReturnType<typeof useModal>

@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useEffect } from 'react'
 
+import { useAtom, useAtomValue } from 'jotai'
 import { useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 import Cookies from 'universal-cookie'
@@ -20,8 +21,8 @@ import {
     ViewImageModal
 } from '@components/modals'
 import { ROUTES } from '@constants/index'
-import { useAuthState } from '@context/auth-state'
-import { openPopupTypeSelector } from '@features/modal/modalSlice'
+import { isAuthAtom } from '@features/auth/auth'
+import { openPopupTypeSelector, userIdAtom } from '@features/index'
 import { Profile, Auth, Chat } from '@pages/index'
 
 import { auth } from './firebase-config'
@@ -34,12 +35,12 @@ export const cookies = new Cookies()
 
 export const App = (): JSX.Element => {
     const openPopupType = useSelector(openPopupTypeSelector)
-    const uid = localStorage.getItem('uid')!
-    const { isAuth, setUserId } = useAuthState()
+    const [uid, setUid] = useAtom(userIdAtom)
+    const isAuth = useAtomValue(isAuthAtom)
 
     useEffect(() => {
         const unsub = auth.onIdTokenChanged(() => {
-            setUserId(auth.currentUser?.uid)
+            setUid(auth.currentUser?.uid)
         })
 
         return (): void => {

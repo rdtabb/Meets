@@ -1,8 +1,6 @@
-import { z, ZodType } from 'zod'
+import { z } from 'zod'
 
-import type { EditProfilePopupData } from '@constants/index'
-
-export const editProfileSchema: ZodType<EditProfilePopupData> = z.object({
+export const editProfileSchema = z.object({
     username: z
         .string()
         .regex(/^[A-Za-z0-9\s]+$/, {
@@ -18,3 +16,5 @@ export const editProfileSchema: ZodType<EditProfilePopupData> = z.object({
         })
         .max(70)
 })
+
+export type EditProfileFormValues = z.infer<typeof editProfileSchema>

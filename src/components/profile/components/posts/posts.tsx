@@ -1,7 +1,9 @@
 import React, { memo } from 'react'
 
+import { useAtomValue } from 'jotai'
+
 import { type Post as TPost } from '@constants/index'
-import { useAuthState } from '@context/auth-state'
+import { userIdAtom } from '@features/index'
 
 import { ErrorBoundary } from '../../../error-boundary/error-boundary'
 import { usePostsQuery } from '../hooks/use-posts-query'
@@ -11,7 +13,7 @@ import { PostsEmpty } from './posts-empty'
 import { PostsLoading } from './posts-loading'
 
 export const Posts = memo((): JSX.Element => {
-    const { userId } = useAuthState()
+    const userId = useAtomValue(userIdAtom)
     const { posts, isLoading, isEmpty } = usePostsQuery(userId)
 
     if (isLoading) {

@@ -1,39 +1,42 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
-import { HandleNewPostParams, QueryKeys } from '@constants/index'
 import { useModal } from '@hooks/index'
-import { createPost } from '@methods/index'
 
 import Modal from '../../Modal/Modal'
+import { useCreatePostMutation } from '../hooks/hooks'
 
-import { addPostSchema } from './form-schema'
+import { addPostSchema, type CreatePostFormValues } from './form-schema'
 
 export const CreatePostModal = () => {
     const popupRef = useRef<HTMLDivElement>(null)
-    const queryClient = useQueryClient()
     const { closePopup } = useModal()
 
-    const { mutate: addPost, isPending } = useMutation({
-        mutationFn: (variables: HandleNewPostParams) =>
-            createPost(variables).then(() => closePopup(popupRef.current)),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QueryKeys.POSTS] })
-        }
-    })
+    const { addPost, isPending } = useCreatePostMutation()
 
     const {
         register,
         handleSubmit,
         setFocus,
         formState: { errors, isValid }
-    } = useForm<HandleNewPostParams>({
+    } = useForm<CreatePostFormValues>({
         resolver: zodResolver(addPostSchema),
         mode: 'onChange'
     })
+
+    const onSubmit = useCallback(
+        async (variables: CreatePostFormValues) => {
+            try {
+                await addPost(variables)
+                closePopup(popupRef.current)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        [addPost, closePopup]
+    )
 
     useEffect(() => {
         if (window.innerWidth > 690) setFocus('url')
@@ -42,7 +45,7 @@ export const CreatePostModal = () => {
     return (
         <Modal ref={popupRef}>
             <form
-                onSubmit={handleSubmit((variables) => addPost(variables))}
+                onSubmit={handleSubmit(onSubmit)}
                 name="popupForm"
                 className="popup__form"
                 noValidate

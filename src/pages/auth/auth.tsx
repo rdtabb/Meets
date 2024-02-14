@@ -7,7 +7,6 @@ import Cookies from 'universal-cookie'
 import { meetsLogo, google } from '@assets/index'
 import { ErrorBoundary } from '@components/index'
 import { Toaster } from '@components/ui/toaster'
-import { useAuthState } from '@context/auth-state'
 import { Tabs, TabsTrigger, TabsList, TabsContent } from '@ui/index'
 
 import { auth, provider, db } from '../../firebase-config'
@@ -16,8 +15,6 @@ import { LoginForm } from './login-form/login-form'
 import { RegisterForm } from './login-form/reg-form'
 
 export const Auth = () => {
-    const { setIsAuth } = useAuthState()
-
     const signinWithGoogle = useCallback(async (): Promise<void> => {
         try {
             const cookies = new Cookies()
@@ -33,11 +30,6 @@ export const Auth = () => {
             const id: string = response.user.uid
 
             const docref = doc(db, 'users', id)
-            localStorage.setItem('uid', id)
-
-            if (!isNew) {
-                setIsAuth(true)
-            }
 
             if (isNew) {
                 try {
@@ -49,7 +41,6 @@ export const Auth = () => {
                         liked: [],
                         newStatus: 'Add your status!'
                     })
-                    setIsAuth(true)
                 } catch (error) {
                     console.log(error)
                 }
@@ -57,7 +48,7 @@ export const Auth = () => {
         } catch (error) {
             console.log(error)
         }
-    }, [setIsAuth])
+    }, [])
 
     return (
         <ErrorBoundary>

@@ -1,7 +1,10 @@
 import React, { memo } from 'react'
 
+import { useAtomValue } from 'jotai'
+
 import { Post as TPost, QueryKeys } from '@constants/index'
-import { useLikeMutations, useModal, useUid } from '@hooks/index'
+import { userIdAtom } from '@features/index'
+import { useLikeMutations, useModal } from '@hooks/index'
 
 import { useDeletePost } from '../hooks/use-delete-post'
 
@@ -12,9 +15,8 @@ interface PostProps {
 }
 
 export const Post = memo(({ posts, post, target_uid }: PostProps): JSX.Element => {
+    const userId = useAtomValue(userIdAtom)
     const { openImagePopup } = useModal()
-
-    const uid: string = useUid()
 
     const { isLiked, currentMutation } = useLikeMutations({
         post,
@@ -48,7 +50,7 @@ export const Post = memo(({ posts, post, target_uid }: PostProps): JSX.Element =
                                 target_post: post,
                                 posts,
                                 like: {
-                                    user_id: uid
+                                    user_id: userId
                                 }
                             })
                         }

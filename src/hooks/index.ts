@@ -1,7 +1,5 @@
 export * from './use-modal'
 export * from './use-auser-data'
-export { default as useComments } from './use-comments'
 export * from './use-user-query'
 export * from './use-auser-data'
 export * from './use-like-post-mutations'
-export * from './use-uid'

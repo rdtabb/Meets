@@ -1,13 +1,15 @@
 import { useMemo } from 'react'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
 
 import { QueryKeys } from '@constants/queryKeys'
 import { Post } from '@constants/types'
+import { userIdAtom } from '@features/index'
 import { likePost, unlikePost } from '@methods/index'
 
 export const useLikeMutations = (post: Post) => {
-    const uid: string = localStorage.getItem('uid')!
+    const uid = useAtomValue(userIdAtom)
     const queryClient = useQueryClient()
 
     const likeMutation = useMutation({

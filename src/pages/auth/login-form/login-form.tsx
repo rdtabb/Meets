@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FirebaseError } from 'firebase/app'
@@ -23,6 +23,7 @@ import { auth } from '../../../firebase-config'
 import { FormValues, loginFormSchema } from './login-form-schema'
 
 export const LoginForm = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const { toast } = useToast()
 
     const form = useForm<FormValues>({
@@ -33,14 +34,15 @@ export const LoginForm = () => {
     const login = useCallback(
         async (values: FormValues): Promise<void> => {
             try {
-                const result = await signInWithEmailAndPassword(auth, values.email, values.password)
-                console.log(result)
+                setIsLoading(true)
+                await signInWithEmailAndPassword(auth, values.email, values.password)
                 toast({
                     title: 'You have logged in',
                     description: `Your email: ${values.email}`
                 })
-                console.log(values)
+                setIsLoading(false)
             } catch (error) {
+                setIsLoading(false)
                 const { title, description } =
                     firebaseErrors[(error as FirebaseError).code as FirebaseErrorsCodes]
                 toast({
@@ -89,8 +91,8 @@ export const LoginForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" variant="secondary" className="w-min">
-                    Login
+                <Button disabled={isLoading} type="submit" variant="secondary" className="w-min">
+                    {isLoading ? 'Logging in...' : 'Login'}
                 </Button>
             </form>
         </Form>

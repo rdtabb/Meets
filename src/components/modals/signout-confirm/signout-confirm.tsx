@@ -1,22 +1,22 @@
 import React, { useRef } from 'react'
 
 import { signOut } from 'firebase/auth'
+import { useDispatch } from 'react-redux'
 
-import { useAuthState } from '@context/auth-state'
+import { setOpenPopupType } from '@features/index'
 
 import { cookies } from '../../../App'
 import { auth } from '../../../firebase-config'
 import Modal from '../../Modal/Modal'
 
 export const SignoutConfirmModal = () => {
-    const { setIsAuth } = useAuthState()
+    const dispatch = useDispatch()
     const popupRef = useRef<HTMLDivElement>(null)
 
     const signout = async (): Promise<void> => {
+        dispatch(setOpenPopupType('close'))
         await signOut(auth)
         cookies.remove('auth-token')
-        localStorage.removeItem('uid')
-        setIsAuth(false)
     }
 
     return (

@@ -5,10 +5,12 @@ import { EditIconMutationProps, EditProfilePopupData } from '@constants/types'
 
 import { db } from '../../firebase-config'
 
-const uid = localStorage.getItem('uid')!
-
 export const updateProfileIcon = async (variables: EditIconMutationProps): Promise<void> => {
-    const userdoc = doc(db, Collections.USERS, uid)
+    if (!variables.user_id) {
+        throw new Error('Provide user_id for updateProfileIcon')
+    }
+
+    const userdoc = doc(db, Collections.USERS, variables.user_id)
     const updatedImage = {
         imgurl: variables.url
     }
@@ -16,10 +18,13 @@ export const updateProfileIcon = async (variables: EditIconMutationProps): Promi
 }
 
 export const editProfile = async (variables: EditProfilePopupData): Promise<void> => {
+    if (!variables.user_id) {
+        throw new Error('Provide user_id for editProfile ')
+    }
     const newstatusdb = {
         name: variables.username,
         newStatus: variables.status
     }
-    const userdoc = doc(db, Collections.USERS, uid)
+    const userdoc = doc(db, Collections.USERS, variables.user_id)
     await updateDoc(userdoc, newstatusdb)
 }
