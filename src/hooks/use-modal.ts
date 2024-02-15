@@ -1,38 +1,49 @@
 import { useCallback, useMemo } from 'react'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSetAtom } from 'jotai'
 
-import { Post } from '@constants/index'
-import { setOpenPopupType, setSelectedPost, selectedPostSelector } from '@features/index'
+import { PopupType, Post } from '@constants/index'
+import { selectedPostAtom, openPopupAtom } from '@features/index'
 import { handlePopup } from '@methods/index'
 
 export const useModal = () => {
-    const selectedPost = useSelector(selectedPostSelector)
-    const dispatch = useDispatch()
+    const setSelectedPost = useSetAtom(selectedPostAtom)
+    const setOpenPopup = useSetAtom(openPopupAtom)
 
-    const closePopup = useCallback(async (popup: HTMLDivElement | null) => {
-        popup && (await handlePopup(popup, 'close'))
-        dispatch(setOpenPopupType('close'))
-    }, [])
+    const openPopup = useCallback(
+        (popup: PopupType) => {
+            setOpenPopup(popup)
+        },
+        [setOpenPopup]
+    )
+
+    const closePopup = useCallback(
+        async (popup: HTMLDivElement | null) => {
+            popup && (await handlePopup(popup, 'close'))
+            setOpenPopup('close')
+        },
+        [setOpenPopup]
+    )
 
     const openImagePopup = useCallback(
         (post: Post, auser?: boolean) => {
             if (auser) {
-                dispatch(setOpenPopupType('auserimage'))
+                setOpenPopup('auserimage')
             } else {
-                dispatch(setOpenPopupType('image'))
+                setOpenPopup('image')
             }
-            if (selectedPost?.id !== post.id) dispatch(setSelectedPost(post))
+            setSelectedPost(post)
         },
-        [selectedPost]
+        [setOpenPopup, setSelectedPost]
     )
 
     return useMemo(
         () => ({
             closePopup,
-            openImagePopup
+            openImagePopup,
+            openPopup
         }),
-        [closePopup, openImagePopup]
+        [closePopup, openImagePopup, openPopup]
     )
 }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import { type Post as TPost } from '@constants/types'
 
@@ -14,7 +14,7 @@ interface APostsProps {
     isLoading: boolean
 }
 
-export const Aposts = ({ posts, name, uid, isLoading }: APostsProps): JSX.Element => {
+export const Aposts = memo(({ posts, name, uid, isLoading }: APostsProps): JSX.Element => {
     if (isLoading) {
         return <PostsLoading />
     }
@@ -30,4 +30,4 @@ export const Aposts = ({ posts, name, uid, isLoading }: APostsProps): JSX.Elemen
             ))}
         </section>
     )
-}
+})

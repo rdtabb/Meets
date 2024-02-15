@@ -2,7 +2,6 @@ import React, { useCallback } from 'react'
 
 import { signInWithPopup, getAdditionalUserInfo, browserSessionPersistence } from 'firebase/auth'
 import { setDoc, doc } from 'firebase/firestore'
-import Cookies from 'universal-cookie'
 
 import { meetsLogo, google } from '@assets/index'
 import { ErrorBoundary } from '@components/index'
@@ -17,13 +16,11 @@ import { RegisterForm } from './login-form/reg-form'
 export const Auth = () => {
     const signinWithGoogle = useCallback(async (): Promise<void> => {
         try {
-            const cookies = new Cookies()
             await auth.setPersistence(browserSessionPersistence)
             const response = await signInWithPopup(auth, provider)
             const info = getAdditionalUserInfo(response)
 
             const isNew: boolean | undefined = info?.isNewUser
-            cookies.set('auth-token', response.user.refreshToken)
 
             const name: string | null = response.user.displayName
             const imgurl: string | null = response.user.photoURL

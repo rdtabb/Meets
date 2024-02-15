@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 
+import { useAtomValue } from 'jotai'
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
 
-import { selectedPostSelector } from '@features/index'
+import { selectedPostAtom } from '@features/index'
 
 import Modal from '../../Modal/Modal'
 import { useCommentsQuery, useCommentsMutation } from '../hooks/hooks'
@@ -19,7 +19,7 @@ export interface AddCommentFormValues {
 }
 
 export const ViewImageModal = ({ id }: ViewImageModalProps): JSX.Element => {
-    const selectedPost = useSelector(selectedPostSelector)
+    const selectedPost = useAtomValue(selectedPostAtom)
     const popupRef = useRef<HTMLDivElement>(null)!
 
     const { register, handleSubmit, setFocus, reset } = useForm<AddCommentFormValues>({

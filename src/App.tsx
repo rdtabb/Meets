@@ -1,9 +1,7 @@
 import React, { lazy, Suspense, useEffect } from 'react'
 
 import { useAtom, useAtomValue } from 'jotai'
-import { useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
-import Cookies from 'universal-cookie'
 
 import {
     ErrorBoundary,
@@ -22,7 +20,7 @@ import {
 } from '@components/modals'
 import { ROUTES } from '@constants/index'
 import { isAuthAtom } from '@features/auth/auth'
-import { openPopupTypeSelector, userIdAtom } from '@features/index'
+import { userIdAtom, openPopupAtom } from '@features/index'
 import { Profile, Auth, Chat } from '@pages/index'
 
 import { auth } from './firebase-config'
@@ -31,10 +29,8 @@ const Auser = lazy(() => import('@pages/auser/auser'))
 const LikedPosts = lazy(() => import('@pages/liked-posts/liked-posts'))
 const Userlist = lazy(() => import('@pages/userlist/userlist'))
 
-export const cookies = new Cookies()
-
 export const App = (): JSX.Element => {
-    const openPopupType = useSelector(openPopupTypeSelector)
+    const openPopupType = useAtomValue(openPopupAtom)
     const [uid, setUid] = useAtom(userIdAtom)
     const isAuth = useAtomValue(isAuthAtom)
 
