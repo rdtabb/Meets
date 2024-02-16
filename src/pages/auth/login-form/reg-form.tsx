@@ -114,7 +114,12 @@ export const RegisterForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" variant="secondary" className="w-min">
+                <Button
+                    disabled={form.formState.isSubmitting || !form.formState.isValid}
+                    type="submit"
+                    variant="secondary"
+                    className="w-min"
+                >
                     Register
                 </Button>
             </form>

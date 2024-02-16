@@ -123,7 +123,7 @@ export const useCommentsQuery = ({
     post_id?: number
 }) => {
     const { data } = useQuery({
-        queryKey: ['comments', post_owner_id, post_id],
+        queryKey: [QueryKeys.COMMENTS, post_owner_id, post_id],
         queryFn: () => fetchComments({ uid: post_owner_id, post_id })
     })
 

@@ -65,7 +65,15 @@ export const App = (): JSX.Element => {
                     <Route
                         path={ROUTES.USERSEARCH}
                         element={
-                            <Suspense fallback={<UserlistLoading />}>
+                            <Suspense
+                                fallback={
+                                    <main className="search">
+                                        <ul className="search__userlist">
+                                            <UserlistLoading />
+                                        </ul>
+                                    </main>
+                                }
+                            >
                                 <Userlist />
                             </Suspense>
                         }

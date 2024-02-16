@@ -1,6 +1,5 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { memo, useEffect, forwardRef, PropsWithChildren } from 'react'
+/* eslint-disable react/prop-types -- what the fuck? */
+import React, { memo, useEffect, forwardRef, PropsWithChildren, ForwardedRef } from 'react'
 
 import { useSetAtom } from 'jotai'
 import { createPortal } from 'react-dom'
@@ -14,10 +13,17 @@ interface ModalProps extends PropsWithChildren {
 }
 
 const Modal = forwardRef(
-    ({ children, containerModifier, modalModifier }: ModalProps, popupRef: any) => {
+    (
+        { children, containerModifier, modalModifier }: ModalProps,
+        popupRef: ForwardedRef<HTMLDivElement>
+    ) => {
         const setOpenPopup = useSetAtom(openPopupAtom)
 
         const closePopup = async (): Promise<void> => {
+            if (typeof popupRef === 'function' || popupRef === null) {
+                return void 0
+            }
+
             const popup = popupRef.current
 
             popup && (await handlePopup(popup, 'close'))
@@ -39,6 +45,10 @@ const Modal = forwardRef(
         }
 
         useEffect(() => {
+            if (typeof popupRef === 'function' || popupRef === null) {
+                return void 0
+            }
+
             const popup = popupRef.current
             popup && handlePopup(popup, 'open')
 

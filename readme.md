@@ -10,10 +10,9 @@ Meets is the social network where after authenticating with Google account you c
 
 -   React
 -   Typescript
--   Redux
+-   Jotai
 -   SCSS
 -   Firebase
--   Docker
 
 ## Functionality
 
