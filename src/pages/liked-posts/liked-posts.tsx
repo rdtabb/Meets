@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { PostList, PostsLoading, PostsEmpty, ProfileInfo } from '@components/index'
-import { useUser } from '@hooks/index'
+import { useCurrentUser } from '@hooks/index'
 
 export const LikedPosts = () => {
-    const { profileImageUrl, username, status, isLoading, likedPosts } = useUser()
+    const { profileImageUrl, username, status, isLoading, likedPosts } = useCurrentUser()
 
     return (
         <>
@@ -19,7 +19,7 @@ export const LikedPosts = () => {
             ) : likedPosts?.length ? (
                 <PostList posts={likedPosts} />
             ) : (
-                <PostsEmpty />
+                <PostsEmpty message="no liked posts yet" />
             )}
         </>
     )

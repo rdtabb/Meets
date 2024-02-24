@@ -1,9 +1,11 @@
 import { useMemo } from 'react'
 
 import { UseMutateFunction, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useAtomValue } from 'jotai'
 
 import { QueryKeys } from '@constants/queryKeys'
 import { HandleLikeMutationParams, Post } from '@constants/types'
+import { userIdAtom } from '@features/index'
 import { likePost, unlikePost } from '@methods/index'
 
 interface UseLikeMutationsProps {
@@ -17,8 +19,8 @@ interface UseLikeMutations {
 }
 
 export const useLikeMutations = ({ post, queryKey }: UseLikeMutationsProps): UseLikeMutations => {
-    const uid: string = localStorage.getItem('uid')!
     const queryClient = useQueryClient()
+    const userId = useAtomValue(userIdAtom)
 
     const likeMutation = useMutation({
         mutationFn: likePost,
@@ -37,11 +39,14 @@ export const useLikeMutations = ({ post, queryKey }: UseLikeMutationsProps): Use
     const isLiked = useMemo((): boolean => {
         if (!post.likes.length) return false
 
-        return post.likes.some((like) => like.user_id === uid)
-    }, [post.likes, uid])
+        return post.likes.some((like) => like.user_id === userId)
+    }, [post.likes, userId])
 
-    return {
-        isLiked,
-        currentMutation: isLiked ? unlikeMutation.mutate : likeMutation.mutate
-    }
+    return useMemo(
+        () => ({
+            isLiked,
+            currentMutation: isLiked ? unlikeMutation.mutate : likeMutation.mutate
+        }),
+        [isLiked, unlikeMutation.mutate, likeMutation.mutate]
+    )
 }

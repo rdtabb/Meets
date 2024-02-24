@@ -12,10 +12,10 @@ import {
 
 import { db } from '../../firebase-config'
 
-const uid = localStorage.getItem('uid')!
+export const getPosts = async (user_id?: string): Promise<Post[]> => {
+    if (!user_id) throw new Error('Provide correct user_id for getPosts')
 
-export const getPosts = async (): Promise<Post[]> => {
-    const userdoc = doc(db, Collections.USERS, uid)
+    const userdoc = doc(db, Collections.USERS, user_id)
     const dataSnap = await getDoc(userdoc)
     const dataset = dataSnap.data()
     const posts: Post[] = await dataset?.newPosts
@@ -29,31 +29,35 @@ export const likePost = async (variables: HandleLikeMutationParams): Promise<voi
     const newPosts: Post[] = variables.posts.map((post) =>
         post.id === variables.post_id ? { ...post, likes: newLikes } : post
     )
-    const newpostsdb = {
-        newPosts
-    }
+
     const userdoc = doc(db, Collections.USERS, variables.user_id)
-    await updateDoc(userdoc, newpostsdb)
+    await updateDoc(userdoc, {
+        newPosts
+    })
 }
 
 export const unlikePost = async (variables: HandleLikeMutationParams): Promise<void> => {
     if (!variables.user_id) throw new Error('Provide correct user_id for unlike mutation')
 
     const newLikes = variables.target_post.likes.filter((like) => {
-        like.user_id === variables.like.user_id
+        return like.user_id !== variables.like.user_id
     })
     const newPosts: Post[] = variables.posts.map((post) =>
         post.id === variables.post_id ? { ...post, likes: newLikes } : post
     )
-    const newpostsdb = {
-        newPosts
-    }
+
     const userdoc = doc(db, Collections.USERS, variables.user_id)
-    await updateDoc(userdoc, newpostsdb)
+    await updateDoc(userdoc, {
+        newPosts
+    })
 }
 
 export const createPost = async (variables: AddPostData): Promise<void> => {
-    const userdoc = doc(db, Collections.USERS, uid)
+    if (!variables.user_id) {
+        throw new Error('Provide user_id for createPost')
+    }
+
+    const userdoc = doc(db, Collections.USERS, variables.user_id)
     const dataSnap = await getDoc(userdoc)
     const dataset = dataSnap.data()
     const nposts = await dataset?.newPosts
@@ -69,26 +73,31 @@ export const createPost = async (variables: AddPostData): Promise<void> => {
     }
     const newPosts = [newPost, ...nposts]
 
-    const newpostsdb = {
+    await updateDoc(userdoc, {
         newPosts: newPosts
-    }
-    await updateDoc(userdoc, newpostsdb)
+    })
 }
 
-export const deletePost = async (variables: DeletePostMutationProps): Promise<void> => {
-    const newPosts = variables.posts.filter((post) => post.id != variables.id)
-    const newpostsdb = {
-        newPosts: newPosts
+export const deletePost = async (values: DeletePostMutationProps): Promise<void> => {
+    if (!values.user_id) {
+        throw new Error('Provide user_id fro deletePost')
     }
-    const userdoc = doc(db, Collections.USERS, uid)
-    await updateDoc(userdoc, newpostsdb)
+
+    const newPosts = values.posts.filter((post) => post.id != values.id)
+    const userdoc = doc(db, Collections.USERS, values.user_id)
+    await updateDoc(userdoc, {
+        newPosts: newPosts
+    })
 }
 
-export const deleteLikedPost = async ({ posts, id }: DeleteLikedMutation): Promise<void> => {
-    const newPosts = posts.filter((post: LikedPost) => post.id != id)
-    const updateLiked = {
+export const deleteLikedPost = async (values: DeleteLikedMutation): Promise<void> => {
+    if (!values.user_id) {
+        throw new Error('Provide user_id fro deleteLikedPost')
+    }
+
+    const newPosts = values.posts.filter((post: LikedPost) => post.id != values.id)
+    const userdoc = doc(db, Collections.USERS, values.user_id)
+    await updateDoc(userdoc, {
         liked: newPosts
-    }
-    const userdoc = doc(db, 'users', uid)
-    await updateDoc(userdoc, updateLiked)
+    })
 }

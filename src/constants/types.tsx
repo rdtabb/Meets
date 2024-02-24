@@ -35,13 +35,16 @@ export type AddCommentMutationProps = {
 export type DeletePostMutationProps = {
     id: number
     posts: Post[]
+    user_id?: string
 }
 
 export type EditIconMutationProps = {
+    user_id?: string
     url: string
 }
 
 export type AddPostData = {
+    user_id?: string
     url: string
     place: string
 }
@@ -51,6 +54,7 @@ export type ChildrenType = {
 }
 
 export type EditProfilePopupData = {
+    user_id?: string
     username: string
     status: string
 }
@@ -71,6 +75,7 @@ export type CommentsQuery = {
 export type DeleteLikedMutation = {
     id: number
     posts: LikedPost[]
+    user_id?: string
 }
 
 export type SnapType = {

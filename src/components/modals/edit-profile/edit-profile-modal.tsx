@@ -1,39 +1,38 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useCallback } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
-import { EditProfilePopupData, QueryKeys } from '@constants/index'
 import { useModal } from '@hooks/index'
-import { editProfile } from '@methods/index'
 
 import Modal from '../../Modal/Modal'
+import { useEditProfileMutation } from '../hooks/hooks'
 
-import { editProfileSchema } from './form-schema'
+import { editProfileSchema, type EditProfileFormValues } from './form-schema'
 
 export const EditProfileModal = () => {
-    const queryClient = useQueryClient()
     const popupRef = useRef<HTMLDivElement>(null)
     const { closePopup } = useModal()
+
+    const { editProfile, isPending } = useEditProfileMutation()
 
     const {
         register,
         handleSubmit,
         formState: { errors, isValid },
         setFocus
-    } = useForm<EditProfilePopupData>({
+    } = useForm<EditProfileFormValues>({
         resolver: zodResolver(editProfileSchema),
         mode: 'onChange'
     })
 
-    const { mutate, isPending } = useMutation({
-        mutationFn: (variables: EditProfilePopupData) =>
-            editProfile(variables).then(() => closePopup(popupRef.current)),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QueryKeys.USER] })
-        }
-    })
+    const onSubmit = useCallback(
+        async (values: EditProfileFormValues) => {
+            await editProfile(values)
+            closePopup(popupRef.current)
+        },
+        [editProfile, closePopup]
+    )
 
     useEffect(() => {
         if (window.innerWidth > 690) setFocus('username')
@@ -42,7 +41,7 @@ export const EditProfileModal = () => {
     return (
         <Modal ref={popupRef}>
             <form
-                onSubmit={handleSubmit((variables) => mutate(variables))}
+                onSubmit={handleSubmit(onSubmit)}
                 name="popupForm"
                 className="popup__form"
                 noValidate

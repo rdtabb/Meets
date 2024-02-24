@@ -1,1 +1,2 @@
-export * from './modal/modalSlice'
+export * from './modal/modal'
+export * from './auth/auth'

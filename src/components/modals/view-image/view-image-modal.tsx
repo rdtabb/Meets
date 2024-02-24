@@ -1,33 +1,48 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 
+import { useAtomValue } from 'jotai'
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
 
-import { selectedPostSelector } from '@features/index'
-import { useComments } from '@hooks/index'
+import { selectedPostAtom } from '@features/index'
 
 import Modal from '../../Modal/Modal'
+import { useCommentsQuery, useCommentsMutation } from '../hooks/hooks'
 
 import { CommentsSection } from './comments'
 
-interface FormValues {
-    comment: string
-}
-
-interface IViewImageModalProps {
+interface ViewImageModalProps {
     id?: string
 }
 
-export const ViewImageModal = ({ id }: IViewImageModalProps): JSX.Element => {
-    const selectedPost = useSelector(selectedPostSelector)
+export interface AddCommentFormValues {
+    comment: string
+}
+
+export const ViewImageModal = ({ id }: ViewImageModalProps): JSX.Element => {
+    const selectedPost = useAtomValue(selectedPostAtom)
     const popupRef = useRef<HTMLDivElement>(null)!
 
-    const { register, handleSubmit, setFocus, reset } = useForm<FormValues>({
+    const { register, handleSubmit, setFocus, reset } = useForm<AddCommentFormValues>({
         mode: 'onChange'
     })
 
-    const commentsMutation = useComments('mutation')
-    const commentsQuery = useComments('query', id, selectedPost?.id)
+    const { createComment } = useCommentsMutation()
+    const comments = useCommentsQuery({
+        post_owner_id: id,
+        post_id: selectedPost?.id
+    })
+
+    const onSubmit = useCallback(
+        async (values: AddCommentFormValues) => {
+            reset()
+            await createComment({
+                ...values,
+                post: selectedPost,
+                id
+            })
+        },
+        [createComment, id, reset, selectedPost]
+    )
 
     useEffect(() => {
         if (window.innerWidth > 690) setFocus('comment')
@@ -50,18 +65,9 @@ export const ViewImageModal = ({ id }: IViewImageModalProps): JSX.Element => {
                 <div className="textarea">
                     <p className="popup__caption">{selectedPost?.city}</p>
                     <ul className="comments">
-                        <CommentsSection comments={commentsQuery?.data} />
+                        <CommentsSection comments={comments} />
                     </ul>
-                    <form
-                        onSubmit={handleSubmit((data: FormValues) => {
-                            reset()
-                            return commentsMutation.mutate({
-                                ...data,
-                                post: selectedPost,
-                                id
-                            })
-                        })}
-                    >
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <input
                             {...register('comment')}
                             placeholder="Leave your comment..."

@@ -1,14 +1,16 @@
 import React from 'react'
 
-import { box } from '@assets/index'
+interface PostsEmptyProps {
+    message: string
+}
 
-export const PostsEmpty = (): JSX.Element => (
+export const PostsEmpty = ({ message }: PostsEmptyProps): JSX.Element => (
     <section className="cards cards--empty">
+        <article className="card card--empty"></article>
+        <article className="card card--empty"></article>
+        <article className="card card--empty"></article>
         <div className="cards--empty__wrapper">
-            <img src={box} alt="Your feed is empty!" className="cards--empty__img" />
-            <h1 className="cards--empty__header">
-                Whoopsies, the feed is empty! Click plus button to add post
-            </h1>
+            <h1 className="cards--empty__header">{message}</h1>
         </div>
     </section>
 )

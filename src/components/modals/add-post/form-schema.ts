@@ -1,8 +1,6 @@
-import { z, ZodType } from 'zod'
+import { z } from 'zod'
 
-import type { AddPostData } from '@constants/index'
-
-export const addPostSchema: ZodType<AddPostData> = z.object({
+export const addPostSchema = z.object({
     url: z.string().trim().url({
         message: 'Invalid url'
     }),
@@ -14,3 +12,5 @@ export const addPostSchema: ZodType<AddPostData> = z.object({
         })
         .max(30)
 })
+
+export type CreatePostFormValues = z.infer<typeof addPostSchema>

@@ -1,18 +1,16 @@
-import { useMemo } from 'react'
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
-import { type PopupType, localStorageKeys } from '@constants/index'
-import { setOpenPopupType } from '@features/index'
-import { store } from '@store/store'
 import { ImageProps } from '@components/index'
+import { localStorageKeys } from '@constants/index'
 
-export const openPopup = (popupType: PopupType): void => {
-    store.dispatch(setOpenPopupType(popupType))
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
 }
 
 export const setLocalStorageItem = (key: keyof typeof localStorageKeys, value: string): void => {
     localStorage.setItem(key, value)
 }
-
 export const destroyLocalStorageItem = (
     keys: keyof typeof localStorageKeys | (keyof typeof localStorageKeys)[]
 ): void => {
@@ -20,10 +18,6 @@ export const destroyLocalStorageItem = (
         return void keys.forEach((key) => localStorage.removeItem(key))
     }
     localStorage.removeItem(keys)
-}
-
-export const useUid = (): string => {
-    return useMemo(() => localStorage.getItem('uid')!, [])
 }
 
 export const composeImageClassnames = (

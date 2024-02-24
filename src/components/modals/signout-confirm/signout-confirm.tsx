@@ -1,21 +1,20 @@
 import React, { useRef } from 'react'
 
 import { signOut } from 'firebase/auth'
+import { useSetAtom } from 'jotai'
 
-import { useAuthState } from '@context/auth-state'
+import { openPopupAtom } from '@features/index'
 
-import { cookies } from '../../../App'
 import { auth } from '../../../firebase-config'
 import Modal from '../../Modal/Modal'
 
 export const SignoutConfirmModal = () => {
-    const { setIsAuth } = useAuthState()
     const popupRef = useRef<HTMLDivElement>(null)
+    const setOpenPopup = useSetAtom(openPopupAtom)
 
     const signout = async (): Promise<void> => {
+        setOpenPopup('close')
         await signOut(auth)
-        cookies.remove('auth-token')
-        setIsAuth(false)
     }
 
     return (

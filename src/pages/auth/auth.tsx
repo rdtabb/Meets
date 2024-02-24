@@ -1,34 +1,40 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
-import { signInWithPopup, getAdditionalUserInfo, AdditionalUserInfo } from 'firebase/auth'
+import { signInWithPopup, getAdditionalUserInfo, browserSessionPersistence } from 'firebase/auth'
 import { setDoc, doc } from 'firebase/firestore'
-import Cookies from 'universal-cookie'
+import { useAtom } from 'jotai'
+import { Rings } from 'react-loader-spinner'
 
 import { meetsLogo, google } from '@assets/index'
 import { ErrorBoundary } from '@components/index'
-import { useAuthState } from '@context/auth-state'
+import { Toaster } from '@components/ui/toaster'
+import { isAuthLoadingAtom } from '@features/index'
+import { Tabs, TabsTrigger, TabsList, TabsContent } from '@ui/tabs'
 
 import { auth, provider, db } from '../../firebase-config'
 
-export const Auth = () => {
-    const cookies = new Cookies()
-    const { setIsAuth } = useAuthState()
+import { StarryBackground } from './blurry-background/blurry-background'
+import { Intro } from './intro/intro'
+import { LoginForm } from './login-form/login-form'
+import { RegisterForm } from './login-form/reg-form'
 
-    const signin = async (): Promise<void> => {
+export const Auth = () => {
+    const [isAuthLoading, setIsAuthLoading] = useAtom(isAuthLoadingAtom)
+
+    const signinWithGoogle = useCallback(async (): Promise<void> => {
         try {
+            setIsAuthLoading(true)
+            await auth.setPersistence(browserSessionPersistence)
             const response = await signInWithPopup(auth, provider)
-            const info: AdditionalUserInfo | null = getAdditionalUserInfo(response)
+            const info = getAdditionalUserInfo(response)
+
             const isNew: boolean | undefined = info?.isNewUser
-            cookies.set('auth-token', response.user.refreshToken)
+
             const name: string | null = response.user.displayName
             const imgurl: string | null = response.user.photoURL
             const id: string = response.user.uid
-            const docref = doc(db, 'users', `${id}`)
-            localStorage.setItem('uid', `${id}`)
 
-            if (!isNew) {
-                setIsAuth(true)
-            }
+            const docref = doc(db, 'users', id)
 
             if (isNew) {
                 try {
@@ -40,40 +46,69 @@ export const Auth = () => {
                         liked: [],
                         newStatus: 'Add your status!'
                     })
-                    setIsAuth(true)
                 } catch (error) {
                     console.log(error)
                 }
             }
+            setIsAuthLoading(false)
         } catch (error) {
+            setIsAuthLoading(false)
             console.log(error)
         }
-    }
+    }, [])
 
     return (
         <ErrorBoundary>
-            <main className="auth">
-                <div className="img-container">
-                    <img
-                        className="auth__logo"
-                        src={meetsLogo}
-                        alt="meets-logo"
-                        width={142}
-                        height={40}
-                    />
-                </div>
-                <h1 className="auth__header">Sign in with Google</h1>
-                <button onClick={signin} className="auth__signin">
-                    <img
-                        className="signin-icon"
-                        src={google}
-                        alt="Google icon"
-                        width={25}
-                        height={25}
-                    />
-                    Sign in
-                </button>
-            </main>
+            <div className="auth-wrapper">
+                <StarryBackground />
+                <Intro />
+                <main className="auth" data-kb-theme="dark">
+                    <div className="img-container">
+                        <img
+                            className="auth__logo"
+                            src={meetsLogo}
+                            alt="meets-logo"
+                            width={142}
+                            height={40}
+                        />
+                    </div>
+                    {!isAuthLoading ? (
+                        <>
+                            <Tabs defaultValue="login" className="mt-8 mb-10">
+                                <TabsList className="w-full">
+                                    <TabsTrigger value="login" className="w-full">
+                                        Login
+                                    </TabsTrigger>
+                                    <TabsTrigger value="register" className="w-full">
+                                        Register
+                                    </TabsTrigger>
+                                </TabsList>
+                                <TabsContent value="login">
+                                    <LoginForm />
+                                </TabsContent>
+                                <TabsContent value="register">
+                                    <RegisterForm />
+                                </TabsContent>
+                            </Tabs>
+                            <button onClick={signinWithGoogle} className="auth__signinGoogle">
+                                <img
+                                    className="signin-icon"
+                                    src={google}
+                                    alt="Google icon"
+                                    width={25}
+                                    height={25}
+                                />
+                                Sign in with Google
+                            </button>
+                        </>
+                    ) : (
+                        <div className="flex justify-center">
+                            <Rings color="white" height={300} width={300} />
+                        </div>
+                    )}
+                    <Toaster />
+                </main>
+            </div>
         </ErrorBoundary>
     )
 }

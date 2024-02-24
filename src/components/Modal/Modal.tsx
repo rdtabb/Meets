@@ -1,11 +1,10 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { memo, useEffect, forwardRef, PropsWithChildren } from 'react'
+/* eslint-disable react/prop-types -- what the fuck? */
+import React, { memo, useEffect, forwardRef, PropsWithChildren, ForwardedRef } from 'react'
 
+import { useSetAtom } from 'jotai'
 import { createPortal } from 'react-dom'
-import { useDispatch } from 'react-redux'
 
-import { setOpenPopupType } from '@features/modal/modalSlice'
+import { openPopupAtom } from '@features/index'
 import { handlePopup } from '@methods/index'
 
 interface ModalProps extends PropsWithChildren {
@@ -14,14 +13,21 @@ interface ModalProps extends PropsWithChildren {
 }
 
 const Modal = forwardRef(
-    ({ children, containerModifier, modalModifier }: ModalProps, popupRef: any) => {
-        const dispatch = useDispatch()
+    (
+        { children, containerModifier, modalModifier }: ModalProps,
+        popupRef: ForwardedRef<HTMLDivElement>
+    ) => {
+        const setOpenPopup = useSetAtom(openPopupAtom)
 
         const closePopup = async (): Promise<void> => {
+            if (typeof popupRef === 'function' || popupRef === null) {
+                return void 0
+            }
+
             const popup = popupRef.current
 
             popup && (await handlePopup(popup, 'close'))
-            dispatch(setOpenPopupType('close'))
+            setOpenPopup('close')
         }
 
         const closePopupOnEsc = async (e: KeyboardEvent): Promise<void> => {
@@ -39,16 +45,17 @@ const Modal = forwardRef(
         }
 
         useEffect(() => {
+            if (typeof popupRef === 'function' || popupRef === null) {
+                return void 0
+            }
+
             const popup = popupRef.current
-            const htmlElement = document.querySelector('html')!
             popup && handlePopup(popup, 'open')
 
             document.addEventListener('keydown', closePopupOnEsc)
-            htmlElement.style.overflow = 'hidden'
 
             return () => {
                 document.removeEventListener('keydown', closePopupOnEsc)
-                htmlElement.style.overflow = 'auto'
             }
         }, [])
 

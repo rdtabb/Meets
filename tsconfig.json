@@ -27,6 +27,7 @@
             "@context/*": ["./src/context/*"],
             "@store/*": ["./src/store/*"],
             "@utils/*": ["./src/utils/*"],
+            "@ui/*": ["./src/components/ui/*"]
         }
     },
     "include": ["src"],

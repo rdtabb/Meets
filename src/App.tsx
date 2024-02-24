@@ -1,8 +1,7 @@
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
 
-import { useSelector } from 'react-redux'
+import { useAtom, useAtomValue } from 'jotai'
 import { Routes, Route } from 'react-router-dom'
-import Cookies from 'universal-cookie'
 
 import {
     ErrorBoundary,
@@ -19,21 +18,32 @@ import {
     EditProfileModal,
     ViewImageModal
 } from '@components/modals'
+import { Toaster } from '@components/ui/toaster'
 import { ROUTES } from '@constants/index'
-import { useAuthState } from '@context/auth-state'
-import { openPopupTypeSelector } from '@features/modal/modalSlice'
+import { isAuthAtom } from '@features/auth/auth'
+import { userIdAtom, openPopupAtom } from '@features/index'
 import { Profile, Auth, Chat } from '@pages/index'
+
+import { auth } from './firebase-config'
 
 const Auser = lazy(() => import('@pages/auser/auser'))
 const LikedPosts = lazy(() => import('@pages/liked-posts/liked-posts'))
 const Userlist = lazy(() => import('@pages/userlist/userlist'))
 
-export const cookies = new Cookies()
-
 export const App = (): JSX.Element => {
-    const openPopupType = useSelector(openPopupTypeSelector)
-    const uid = localStorage.getItem('uid')!
-    const { isAuth } = useAuthState()
+    const openPopupType = useAtomValue(openPopupAtom)
+    const [uid, setUid] = useAtom(userIdAtom)
+    const isAuth = useAtomValue(isAuthAtom)
+
+    useEffect(() => {
+        const unsub = auth.onIdTokenChanged(() => {
+            setUid(auth.currentUser?.uid)
+        })
+
+        return (): void => {
+            unsub()
+        }
+    }, [])
 
     if (!isAuth) {
         return <Auth />
@@ -56,7 +66,15 @@ export const App = (): JSX.Element => {
                     <Route
                         path={ROUTES.USERSEARCH}
                         element={
-                            <Suspense fallback={<UserlistLoading />}>
+                            <Suspense
+                                fallback={
+                                    <main className="search">
+                                        <ul className="search__userlist">
+                                            <UserlistLoading />
+                                        </ul>
+                                    </main>
+                                }
+                            >
                                 <Userlist />
                             </Suspense>
                         }
@@ -71,6 +89,7 @@ export const App = (): JSX.Element => {
                     />
                     <Route path={ROUTES.CHAT} element={<Chat />} />
                 </Routes>
+                <Toaster />
                 <AppFooter />
             </Container>
             <>{openPopupType === 'edit' && <EditProfileModal />}</>

@@ -1,7 +1,10 @@
 import React from 'react'
 
+import { useAtomValue } from 'jotai'
+
 import { Post as TPost, QueryKeys } from '@constants/index'
-import { useLikeMutations, useModal, useUid } from '@hooks/index'
+import { userIdAtom } from '@features/index'
+import { useLikeMutations, useModal } from '@hooks/index'
 
 interface PostProps {
     post: TPost
@@ -10,9 +13,8 @@ interface PostProps {
 }
 
 export const Post = ({ post, posts, target_id }: PostProps): JSX.Element => {
+    const userId = useAtomValue(userIdAtom)
     const { openImagePopup } = useModal()
-
-    const uid: string = useUid()
 
     const { isLiked, currentMutation } = useLikeMutations({
         post,
@@ -42,7 +44,7 @@ export const Post = ({ post, posts, target_id }: PostProps): JSX.Element => {
                                 target_post: post,
                                 posts,
                                 like: {
-                                    user_id: uid
+                                    user_id: userId
                                 }
                             })
                         }

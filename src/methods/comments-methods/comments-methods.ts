@@ -11,7 +11,8 @@ export const createComment = async ({
     post,
     id: userid
 }: AddCommentMutationProps): Promise<void> => {
-    if (typeof userid === 'undefined') throw new Error('You cannot provide uid of type undefined')
+    if (!userid) throw new Error('You cannot provide uid of type undefined')
+
     const userdoc = doc(db, Collections.USERS, userid)
     const dataSnap = await getDoc(userdoc)
     const dataset = dataSnap.data()
@@ -50,6 +51,7 @@ export const fetchComments = async ({
     post_id: number | undefined
 }): Promise<Comment[] | undefined> => {
     if (!uid || !post_id) throw new Error('Provide correct uid and post_id to fetch comments')
+
     const userdoc = doc(db, Collections.USERS, uid)
     const dataSnap = await getDoc(userdoc)
     const dataset = dataSnap.data()
