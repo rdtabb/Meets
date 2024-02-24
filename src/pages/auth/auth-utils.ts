@@ -19,6 +19,6 @@ export const createUser = async ({
         id: userId,
         newPosts: [],
         liked: [],
-        newStatus: 'Add your status!'
+        newStatus: 'no status yet :('
     })
 }

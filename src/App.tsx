@@ -18,6 +18,7 @@ import {
     EditProfileModal,
     ViewImageModal
 } from '@components/modals'
+import { Toaster } from '@components/ui/toaster'
 import { ROUTES } from '@constants/index'
 import { isAuthAtom } from '@features/auth/auth'
 import { userIdAtom, openPopupAtom } from '@features/index'
@@ -88,6 +89,7 @@ export const App = (): JSX.Element => {
                     />
                     <Route path={ROUTES.CHAT} element={<Chat />} />
                 </Routes>
+                <Toaster />
                 <AppFooter />
             </Container>
             <>{openPopupType === 'edit' && <EditProfileModal />}</>

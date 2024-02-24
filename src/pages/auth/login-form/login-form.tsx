@@ -1,12 +1,14 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FirebaseError } from 'firebase/app'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
 
 import { useToast } from '@components/ui/useToast'
 import { firebaseErrors, FirebaseErrorsCodes } from '@constants/firebase-errors'
+import { isAuthLoadingAtom } from '@features/index'
 import {
     Input,
     Form,
@@ -23,7 +25,7 @@ import { auth } from '../../../firebase-config'
 import { FormValues, loginFormSchema } from './login-form-schema'
 
 export const LoginForm = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const setIsAuthLoading = useSetAtom(isAuthLoadingAtom)
     const { toast } = useToast()
 
     const form = useForm<FormValues>({
@@ -34,15 +36,15 @@ export const LoginForm = () => {
     const login = useCallback(
         async (values: FormValues): Promise<void> => {
             try {
-                setIsLoading(true)
+                setIsAuthLoading(true)
                 await signInWithEmailAndPassword(auth, values.email, values.password)
                 toast({
                     title: 'You have logged in',
                     description: `Your email: ${values.email}`
                 })
-                setIsLoading(false)
+                setIsAuthLoading(false)
             } catch (error) {
-                setIsLoading(false)
+                setIsAuthLoading(false)
                 const { title, description } =
                     firebaseErrors[(error as FirebaseError).code as FirebaseErrorsCodes]
                 toast({
@@ -84,6 +86,7 @@ export const LoginForm = () => {
                                 <Input
                                     placeholder="Enter password..."
                                     {...field}
+                                    type="password"
                                     className="bg-black"
                                 />
                             </FormControl>
@@ -91,8 +94,13 @@ export const LoginForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button disabled={isLoading} type="submit" variant="secondary" className="w-min">
-                    {isLoading ? 'Logging in...' : 'Login'}
+                <Button
+                    disabled={!form.formState.isValid}
+                    type="submit"
+                    variant="secondary"
+                    className="w-min"
+                >
+                    Login
                 </Button>
             </form>
         </Form>

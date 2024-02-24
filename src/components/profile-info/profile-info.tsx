@@ -22,6 +22,8 @@ export const ProfileInfo = memo(
                 <div className="profile__wrapper">
                     {isLoading ? (
                         <img className="profile__avatar--empty" />
+                    ) : !profileImageUrl ? (
+                        <img className="profile__avatar--null" />
                     ) : (
                         <div className="avatar-wrapper">
                             <img

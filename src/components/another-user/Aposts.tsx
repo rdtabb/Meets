@@ -2,10 +2,10 @@ import React, { memo } from 'react'
 
 import { type Post as TPost } from '@constants/types'
 
+import { PostsEmpty } from '../profile/components/posts/posts-empty'
 import { PostsLoading } from '../profile/components/posts/posts-loading'
 
 import { Post } from './a-feed/post'
-import { NoPosts } from './NoPosts'
 
 interface APostsProps {
     posts?: TPost[]
@@ -20,7 +20,7 @@ export const Aposts = memo(({ posts, name, uid, isLoading }: APostsProps): JSX.E
     }
 
     if (!posts?.length) {
-        return <NoPosts name={name} />
+        return <PostsEmpty message={`${name} has no posts`} />
     }
 
     return (

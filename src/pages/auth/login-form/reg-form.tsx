@@ -4,10 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FirebaseError } from 'firebase/app'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { doc } from 'firebase/firestore'
+import { useSetAtom } from 'jotai'
 import { useForm } from 'react-hook-form'
 
 import { useToast } from '@components/ui/useToast'
 import { firebaseErrors, type FirebaseErrorsCodes, Collections } from '@constants/index'
+import { isAuthLoadingAtom } from '@features/index'
 import {
     Input,
     Form,
@@ -25,6 +27,7 @@ import { createUser } from '../auth-utils'
 import { FormValues, regFormSchema } from './reg-form-schema'
 
 export const RegisterForm = () => {
+    const setIsAuthLoading = useSetAtom(isAuthLoadingAtom)
     const { toast } = useToast()
 
     const form = useForm<FormValues>({
@@ -35,6 +38,7 @@ export const RegisterForm = () => {
     const register = useCallback(
         async ({ email, password }: FormValues): Promise<void> => {
             try {
+                setIsAuthLoading(true)
                 const {
                     user: { uid }
                 } = await createUserWithEmailAndPassword(auth, email, password)
@@ -45,12 +49,17 @@ export const RegisterForm = () => {
                     name: email.split('@')[0],
                     imgurl: null
                 })
-            } catch (error) {
-                const { title, description } =
-                    firebaseErrors[(error as FirebaseError).code as FirebaseErrorsCodes]
+                setIsAuthLoading(false)
                 toast({
-                    title,
-                    description
+                    title: `You have registered as ${email.split('@')[0]}`
+                })
+            } catch (error) {
+                setIsAuthLoading(false)
+                const { title, description } =
+                    firebaseErrors[(error as FirebaseError)?.code as FirebaseErrorsCodes]
+                toast({
+                    title: title ?? 'Something went wrong',
+                    description: description ?? ''
                 })
             }
         },
@@ -115,7 +124,7 @@ export const RegisterForm = () => {
                     )}
                 />
                 <Button
-                    disabled={form.formState.isSubmitting || !form.formState.isValid}
+                    disabled={!form.formState.isValid}
                     type="submit"
                     variant="secondary"
                     className="w-min"

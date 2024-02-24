@@ -5,5 +5,9 @@ interface ContainterProps extends PropsWithChildren {
 }
 
 export const Container = memo(({ children, modifierClass }: ContainterProps) => {
-    return <div className={`container ${modifierClass}`}>{children}</div>
+    return (
+        <div className={`container ${modifierClass}`} data-kb-theme="dark">
+            {children}
+        </div>
+    )
 })
