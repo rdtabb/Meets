@@ -18,5 +18,12 @@ export const Intro = () => (
                 Github
             </a>
         </p>
+        <div className="intro__description intro__description--demo">
+            log in with demo credentials:
+            <ul>
+                <li> - (email) demouser@gmail.com</li>
+                <li> - (password) demouser</li>
+            </ul>
+        </div>
     </section>
 )

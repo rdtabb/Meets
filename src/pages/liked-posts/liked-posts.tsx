@@ -19,7 +19,7 @@ export const LikedPosts = () => {
             ) : likedPosts?.length ? (
                 <PostList posts={likedPosts} />
             ) : (
-                <PostsEmpty />
+                <PostsEmpty message="no liked posts yet" />
             )}
         </>
     )

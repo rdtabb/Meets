@@ -23,7 +23,19 @@ export const ProfileInfo = memo(
                     {isLoading ? (
                         <img className="profile__avatar--empty" />
                     ) : !profileImageUrl ? (
-                        <img className="profile__avatar--null" />
+                        <div className="avatar-wrapper">
+                            <img
+                                aria-controls="popup--icon"
+                                onClick={editable ? () => setOpenPopup('icon') : () => {}}
+                                src={profileImageUrl}
+                                className="profile__avatar--null"
+                            />
+                            <img
+                                className="avatar-wrapper__icon"
+                                src={editProfile}
+                                alt="edit profile icon"
+                            />
+                        </div>
                     ) : (
                         <div className="avatar-wrapper">
                             <img
