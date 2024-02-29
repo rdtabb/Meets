@@ -12,6 +12,7 @@ import { firebaseErrors, type FirebaseErrorsCodes, Collections } from '@constant
 import { isAuthLoadingAtom } from '@features/index'
 import {
     Input,
+    PasswordInput,
     Form,
     FormField,
     FormItem,
@@ -94,8 +95,7 @@ export const RegisterForm = () => {
                         <FormItem>
                             <FormLabel>Password: </FormLabel>
                             <FormControl>
-                                <Input
-                                    type="password"
+                                <PasswordInput
                                     placeholder="Enter password..."
                                     className="bg-black"
                                     {...field}
@@ -112,8 +112,7 @@ export const RegisterForm = () => {
                         <FormItem>
                             <FormLabel>Confirm password: </FormLabel>
                             <FormControl>
-                                <Input
-                                    type="password"
+                                <PasswordInput
                                     placeholder="Confirm password..."
                                     className="bg-black"
                                     {...field}

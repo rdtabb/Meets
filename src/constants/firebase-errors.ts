@@ -10,6 +10,10 @@ export const firebaseErrors = {
     'auth/user-not-found': {
         title: 'User not found!',
         description: 'Try different credentials'
+    },
+    'auth/popup-closed-by-user': {
+        title: 'You have closed Google signin popup',
+        description: 'Try again ;('
     }
 }
 

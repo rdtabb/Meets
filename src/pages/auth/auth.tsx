@@ -1,13 +1,17 @@
 import React, { useCallback } from 'react'
 
 import { signInWithPopup, getAdditionalUserInfo, browserSessionPersistence } from 'firebase/auth'
-import { setDoc, doc } from 'firebase/firestore'
+import { type FirebaseError } from 'firebase/app'
+import { setDoc, doc, getDoc } from 'firebase/firestore'
 import { useAtom } from 'jotai'
 import { Rings } from 'react-loader-spinner'
 
 import { meetsLogo, google } from '@assets/index'
 import { ErrorBoundary } from '@components/index'
 import { Toaster } from '@components/ui/toaster'
+import { useToast } from '@components/ui/useToast'
+import { firebaseErrors, FirebaseErrorsCodes } from '@constants/firebase-errors'
+import { type User } from '@constants/types'
 import { isAuthLoadingAtom } from '@features/index'
 import { Tabs, TabsTrigger, TabsList, TabsContent } from '@ui/tabs'
 
@@ -20,6 +24,7 @@ import { RegisterForm } from './login-form/reg-form'
 
 export const Auth = () => {
     const [isAuthLoading, setIsAuthLoading] = useAtom(isAuthLoadingAtom)
+    const { toast } = useToast()
 
     const signinWithGoogle = useCallback(async (): Promise<void> => {
         try {
@@ -46,16 +51,32 @@ export const Auth = () => {
                         liked: [],
                         newStatus: 'Add your status!'
                     })
+                    toast({
+                        title: `You have registered as ${name}`
+                    })
+                    setIsAuthLoading(false)
                 } catch (error) {
                     console.log(error)
                 }
             }
+            const userdata = (await getDoc(docref)).data() as User
+
             setIsAuthLoading(false)
+            toast({
+                title: `You have logged in as ${userdata.name}`
+            })
         } catch (error) {
             setIsAuthLoading(false)
-            console.log(error)
+            if (firebaseErrors[(error as FirebaseError).code as FirebaseErrorsCodes]) {
+                const { title, description } =
+                    firebaseErrors[(error as FirebaseError).code as FirebaseErrorsCodes]
+                toast({
+                    title,
+                    description
+                })
+            }
         }
-    }, [])
+    }, [toast, setIsAuthLoading])
 
     return (
         <ErrorBoundary>

@@ -1,5 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react'
 
+import { Button } from '@components/ui'
+
 import { error } from '../../assets'
 
 interface Props {
@@ -27,9 +29,17 @@ export class ErrorBoundary extends Component<Props, State> {
     public render() {
         if (this.state.hasError) {
             return (
-                <section className="error">
-                    <img src={error} alt="Something went wrong!" />
+                <section className="error place-self-center p-4">
+                    <img src={error} alt="Something went wrong!" height={300} width={300} />
                     <h1 className="error__heading">Sorry, something went wrong</h1>
+                    <Button
+                        variant="secondary"
+                        className="mt-4"
+                        onClick={() => window.location.reload()}
+                        type="button"
+                    >
+                        refresh
+                    </Button>
                 </section>
             )
         }
