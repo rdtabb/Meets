@@ -1510,7 +1510,8 @@ body:has(.chat) {
     text-align: center;
 
     &__heading {
-        font-size: clamp(var(--fs-400), 10vw, var(--fs-700));
+        font-size: clamp(var(--fs-400), 10vw, var(--fs-600));
+        text-wrap: balance;
         font-weight: var(--fw-700);
     }
 }

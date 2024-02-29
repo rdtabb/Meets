@@ -11,6 +11,7 @@ import { firebaseErrors, FirebaseErrorsCodes } from '@constants/firebase-errors'
 import { isAuthLoadingAtom } from '@features/index'
 import {
     Input,
+    PasswordInput,
     Form,
     FormField,
     FormItem,
@@ -80,13 +81,12 @@ export const LoginForm = () => {
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="relative">
                             <FormLabel>Password: </FormLabel>
                             <FormControl>
-                                <Input
+                                <PasswordInput
                                     placeholder="Enter password..."
                                     {...field}
-                                    type="password"
                                     className="bg-black"
                                 />
                             </FormControl>
