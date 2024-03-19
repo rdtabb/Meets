@@ -2,7 +2,7 @@ import React from 'react'
 
 import { type SnapType } from '@constants/index'
 
-import { useDeleteMessage } from './hooks/use-delete-message'
+import { useDeleteMessage } from '../_hooks/use-delete-message'
 
 interface MessageProps {
     messages?: SnapType[]

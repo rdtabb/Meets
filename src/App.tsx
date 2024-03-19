@@ -3,14 +3,7 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import { useAtom, useAtomValue } from 'jotai'
 import { Routes, Route } from 'react-router-dom'
 
-import {
-    ErrorBoundary,
-    Container,
-    AppFooter,
-    AppHeader,
-    ProfileLoading,
-    UserlistLoading
-} from '@components/index'
+import { ErrorBoundary, Container, AppFooter, AppHeader, ProfileLoading } from '@components/index'
 import {
     SignoutConfirmModal,
     CreatePostModal,
@@ -23,6 +16,7 @@ import { ROUTES } from '@constants/index'
 import { isAuthAtom } from '@features/auth/auth'
 import { userIdAtom, openPopupAtom } from '@features/index'
 import { Profile, Auth, Chat } from '@pages/index'
+import { UserlistLoading } from '@pages/userlist/_components/userlist-loading'
 
 import { auth } from './firebase-config'
 

@@ -6,9 +6,8 @@ import { useLocation } from 'react-router-dom'
 import { localStorageKeys } from '@constants/index'
 import { setLocalStorageItem } from '@utils/utils'
 
-import { auth } from '../../firebase-config'
-
-import { useCreateMessage } from './hooks/use-create-message'
+import { auth } from '../../../firebase-config'
+import { useCreateMessage } from '../_hooks/use-create-message'
 
 interface SubmitMessageProps {
     username?: string

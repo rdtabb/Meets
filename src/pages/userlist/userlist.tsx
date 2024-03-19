@@ -2,9 +2,11 @@ import React from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
-import { UserlistLoading, User } from '@components/userlist'
 import { QueryKeys } from '@constants/queryKeys'
 import { getUsers } from '@methods/index'
+
+import { User } from './_components/user'
+import { UserlistLoading } from './_components/userlist-loading'
 
 export const Userlist = (): JSX.Element => {
     const { data: users, isLoading } = useQuery({

@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { PostsLoading, ProfileInfo } from '..'
+import { PostsLoading } from '../posts'
+import { ProfileInfo } from '../profile-info/profile-info'
 
 export const ProfileLoading = () => (
     <>

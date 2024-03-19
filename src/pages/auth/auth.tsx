@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
-import { signInWithPopup, getAdditionalUserInfo, browserSessionPersistence } from 'firebase/auth'
 import { type FirebaseError } from 'firebase/app'
+import { signInWithPopup, getAdditionalUserInfo, browserSessionPersistence } from 'firebase/auth'
 import { setDoc, doc, getDoc } from 'firebase/firestore'
 import { useAtom } from 'jotai'
 import { Rings } from 'react-loader-spinner'
