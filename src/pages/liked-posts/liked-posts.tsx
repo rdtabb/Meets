@@ -1,7 +1,9 @@
 import React from 'react'
 
-import { PostList, PostsLoading, PostsEmpty, ProfileInfo } from '@components/index'
+import { PostsLoading, PostsEmpty, ProfileInfo } from '@components/index'
 import { useCurrentUser } from '@hooks/index'
+
+import { PostList } from './_components/post-list'
 
 export const LikedPosts = () => {
     const { profileImageUrl, username, status, isLoading, likedPosts } = useCurrentUser()

@@ -2,8 +2,8 @@ import React, { memo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Image } from '@components/index'
 import { profile, chat } from '@assets/index'
+import { Image } from '@components/index'
 import { ROUTES } from '@constants/index'
 
 interface User {
@@ -17,13 +17,6 @@ type UserProps = {
     user: User
 }
 
-// <img
-//     className="user__picture"
-//     src={user.imgurl}
-//     alt={user.name}
-//     width={'88px'}
-//     height={'88px'}
-// />
 export const User = memo(({ user }: UserProps) => (
     <li className="user">
         <div className="user__wrapper">

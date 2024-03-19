@@ -6,7 +6,7 @@ import { Post as TPost, QueryKeys } from '@constants/index'
 import { userIdAtom } from '@features/index'
 import { useLikeMutations, useModal } from '@hooks/index'
 
-import { useDeletePost } from '../hooks/use-delete-post'
+import { useDeletePost } from '../_hooks/use-delete-post'
 
 interface PostProps {
     posts: TPost[]

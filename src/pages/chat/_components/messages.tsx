@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { useMessagesQuery } from './hooks/use-messages-query'
+import { useMessagesQuery } from '../_hooks/use-messages-query'
+
 import { MessagesList } from './messages-list'
 import { MessagesLoading } from './messages-loading'
 

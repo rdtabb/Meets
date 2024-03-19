@@ -1,7 +1,9 @@
 import React, { memo } from 'react'
 
-import { Posts, ProfileInfo } from '@components/index'
+import { ProfileInfo } from '@components/index'
 import { useCurrentUser } from '@hooks/index'
+
+import { Posts } from './_components/posts'
 
 export const Profile = memo((): JSX.Element => {
     const { isLoading, username, status, profileImageUrl } = useCurrentUser()

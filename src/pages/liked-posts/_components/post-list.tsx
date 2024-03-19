@@ -1,10 +1,9 @@
 import React, { memo } from 'react'
 
+import { ErrorBoundary } from '@components/index'
 import { LikedPost } from '@constants/index'
 
-import { ErrorBoundary } from '../error-boundary/error-boundary'
-
-import { useDeletePost } from './hooks/use-delete-post'
+import { useDeletePost } from '../_hooks/use-delete-post'
 
 interface IPostListProps {
     posts: LikedPost[]

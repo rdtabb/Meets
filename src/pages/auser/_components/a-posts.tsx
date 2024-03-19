@@ -1,11 +1,10 @@
 import React, { memo } from 'react'
 
+import { PostsEmpty } from '@components/index'
+import { PostsLoading } from '@components/index'
 import { type Post as TPost } from '@constants/types'
 
-import { PostsEmpty } from '../profile/components/posts/posts-empty'
-import { PostsLoading } from '../profile/components/posts/posts-loading'
-
-import { Post } from './a-feed/post'
+import { Post } from './a-post'
 
 interface APostsProps {
     posts?: TPost[]

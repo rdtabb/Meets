@@ -3,10 +3,12 @@ import React from 'react'
 import { useAtomValue } from 'jotai'
 import { useParams } from 'react-router-dom'
 
-import { ProfileInfo, Aposts } from '@components/index'
+import { ProfileInfo } from '@components/index'
 import { ViewImageModal } from '@components/modals'
 import { openPopupAtom } from '@features/index'
 import { useAuserData } from '@hooks/index'
+
+import { Aposts } from './_components/a-posts'
 
 export const Auser = () => {
     const { id } = useParams()
