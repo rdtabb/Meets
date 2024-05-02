@@ -1,10 +1,9 @@
 import React, { memo } from 'react'
 
+import { Link } from '@tanstack/react-router'
 import { useSetAtom } from 'jotai'
-import { NavLink } from 'react-router-dom'
 
 import { meetsLogo, search, likeClrWhite, profile } from '@assets/index'
-import { ROUTES } from '@constants/routes'
 import { openPopupAtom } from '@features/index'
 
 export const AppHeader = memo(() => {
@@ -20,11 +19,12 @@ export const AppHeader = memo(() => {
                 height={40}
             />
             <div className="header__routes">
-                <NavLink
-                    className={({ isActive }) =>
-                        isActive ? 'header__search--active' : 'header__search'
-                    }
-                    to={ROUTES.PROFILE}
+                <Link
+                    to="/"
+                    activeProps={{
+                        className: 'header__search--active'
+                    }}
+                    className="header__search"
                 >
                     <img
                         className="header__icon"
@@ -33,12 +33,13 @@ export const AppHeader = memo(() => {
                         height={30}
                         width={30}
                     />
-                </NavLink>
-                <NavLink
-                    className={({ isActive }) =>
-                        isActive ? 'header__search--active' : 'header__search'
-                    }
-                    to={ROUTES.USERSEARCH}
+                </Link>
+                <Link
+                    activeProps={{
+                        className: 'header__search--active'
+                    }}
+                    className="header__search"
+                    to={'/usersearch'}
                 >
                     <img
                         className="header__icon"
@@ -47,12 +48,13 @@ export const AppHeader = memo(() => {
                         height={30}
                         width={30}
                     />
-                </NavLink>
-                <NavLink
-                    className={({ isActive }) =>
-                        isActive ? 'header__search--active' : 'header__search'
-                    }
-                    to={ROUTES.LIKEDPOSTS}
+                </Link>
+                <Link
+                    activeProps={{
+                        className: 'header__search--active'
+                    }}
+                    className="header__search"
+                    to={'/likedposts'}
                 >
                     <img
                         className="header__liked-icon header__icon"
@@ -61,7 +63,7 @@ export const AppHeader = memo(() => {
                         height={30}
                         width={30}
                     />
-                </NavLink>
+                </Link>
                 <button onClick={() => setOpenPopup('confirm')} className="signout" type="button">
                     Sign Out
                 </button>
