@@ -8,6 +8,8 @@ import { Posts } from './_components/posts'
 export const Profile = memo((): JSX.Element => {
     const { isLoading, username, status, profileImageUrl } = useCurrentUser()
 
+    console.log(crypto.randomUUID())
+
     return (
         <main className="main">
             <ProfileInfo
