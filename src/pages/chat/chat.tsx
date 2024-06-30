@@ -10,13 +10,11 @@ export const Chat = (): JSX.Element => {
     const { username } = useCurrentUser()
 
     return (
-        <>
-            <main className="chat">
-                <ErrorBoundary>
-                    <Messages />
-                </ErrorBoundary>
-            </main>
+        <main className="chat">
+            <ErrorBoundary>
+                <Messages />
+            </ErrorBoundary>
             <SubmitMessage username={username} />
-        </>
+        </main>
     )
 }

@@ -611,9 +611,9 @@ body:has(.chat) {
 }
 
 @media (max-width: 890px) {
-    .profile {
-        padding-inline: 19px;
-    }
+    // .profile {
+    //     padding-inline: 19px;
+    // }
 }
 
 @media (max-width: 690px) {
@@ -621,7 +621,7 @@ body:has(.chat) {
         flex-direction: column;
         gap: 34px;
         text-align: center;
-        padding-inline: 19px;
+        // padding-inline: 19px;
 
         margin: 0 0 36px;
 
@@ -718,7 +718,7 @@ body:has(.chat) {
 
 @media (max-width: 890px) {
     .cards {
-        padding-inline: 19px;
+        // padding-inline: 19px;
         margin-bottom: 48px;
     }
 }
@@ -1019,6 +1019,7 @@ body:has(.chat) {
         border: 0;
         color: hsl(var(--clr-primary-900));
         border-bottom: 2px solid hsl(var(--clr-primary-900), 0.4);
+        border-radius: 0px;
         background: transparent;
         padding: 0.25rem;
         transition: all var(--timing-function-primary) var(--transition-time-primary);
@@ -1326,9 +1327,8 @@ body:has(.chat) {
 /* ---------------------------------------- */
 .search {
     --width: 50rem;
-    --padding: 1rem;
 
-    width: min(var(--width), 100% - var(--padding) * 2);
+    width: min(var(--width), 100%);
     margin-inline: auto;
     display: grid;
 
@@ -1537,7 +1537,8 @@ body:has(.chat) {
     &__empty {
         text-align: center;
         font-weight: var(--fw-600);
-        font-size: clamp(var(--fs-400), 7vw, var(--fs-650));
+        font-size: clamp(var(--fs-200), 5vw, var(--fs-650));
+        text-wrap: balance;
         place-self: center;
     }
 }
@@ -1642,8 +1643,9 @@ body:has(.chat) {
 
     input {
         width: 100%;
-        padding: 0.75rem 2rem;
-        border-radius: 100vmax;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        font-size: var(--fs-300);
         border: 1px solid hsl(var(--clr-primary-900));
         background-color: hsl(var(--clr-primary-100));
         color: hsl(var(--clr-primary-900));
